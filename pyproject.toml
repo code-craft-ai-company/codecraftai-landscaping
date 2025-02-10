@@ -1,6 +1,6 @@
 [tool.poetry]
-name = "<package name>"
-description = "<package description>"
+name = "automojo-landscaping"
+description = "Automation Mojo - Landscaping Package"
 version = "0.0.1"
 authors = []
 readme = "README.rst"
@@ -17,6 +17,15 @@ packages = [{include="mojo", from="source/packages"}]
 
 [tool.poetry.dependencies]
 python = ">=3.10,<4.0"
+automojo-errors = { git = "git@github.com:automationmojo/automojo-errors.git", branch = "main" }
+automojo-interfaces = { git = "git@github.com:automationmojo/automojo-interfaces.git", branch = "main" }
+automojo-waiting = { git = "git@github.com:automationmojo/automojo-waiting.git", branch = "main" }
+automojo-foundation-kit = { git = "git@github.com:automationmojo/automojo-foundation-kit.git", branch = "main" }
+automojo-testbase = { git = "git@github.com:automationmojo/automojo-testbase.git", branch = "main" }
+automojo-credentials = { git = "git@github.com:automationmojo/automojo-credentials.git", branch = "main" }
+automojo-dataprofiles = { git = "git@github.com:automationmojo/automojo-dataprofiles.git", branch = "main" }
+automojo-networking = { git = "git@github.com:automationmojo/automojo-interfaces.git", branch = "main" }
+automojo-interop = { git = "git@github.com:automationmojo/automojo-interfaces.git", branch = "main" }
 
 [tool.poetry.group.dev.dependencies]
 
