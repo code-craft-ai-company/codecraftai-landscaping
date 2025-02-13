@@ -3,10 +3,10 @@
 from automojo.landscaping.wellknown import LandscapeSingleton
 
 from automojo.landscaping.landscape import Landscape
-from automojo.testbase.coupling.scopecoupling import ScopeCoupling
+from automojo.testbase.coupling.configurationcoupling import ConfigurationCoupling
 
 
-class AutomationPod(ScopeCoupling):
+class AutomationPod(ConfigurationCoupling):
     """
         The :class:`AutomationPodBase` object serves as a base class for derived :class:`AutomationPodBase` objects.
     """
