@@ -10,14 +10,14 @@
 """
 
 __author__ = "Myron Walker"
-__copyright__ = "Copyright 2023, Myron W Walker"
+__copyright__ = "Copyright 2025, Automation Mojo LLC"
 __credits__ = []
 
 
 
 from typing import Dict, TYPE_CHECKING
 
-from automojo.extension.wellknown import ConfiguredSuperFactorySingleton
+from automojo.foundation.extension.wellknown import ConfiguredSuperFactorySingleton
 
 from automojo.testbase.coupling.integrationcoupling import IntegrationCouplingType
 

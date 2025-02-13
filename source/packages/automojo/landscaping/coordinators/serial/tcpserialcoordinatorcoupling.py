@@ -8,22 +8,21 @@
 """
 
 __author__ = "Myron Walker"
-__copyright__ = "Copyright 2023, Myron W Walker"
+__copyright__ = "Copyright 2025, Automation Mojo LLC"
 __credits__ = []
 
 
 from typing import Any, Dict, List, Tuple, TYPE_CHECKING
 
-from mojo.landscaping.coupling.coordinatorcoupling import CoordinatorCoupling
+from automojo.landscaping.coupling.coordinatorcoupling import CoordinatorCoupling
+from automojo.landscaping.coordinators.integrationclasses import INTEGRATION_CLASS_NETWORK_TCPSERIAL
+from automojo.landscaping.coordinators.ssh.sshcoordinator import SshCoordinator
 
-from mojo.interop.protocols.integrationclasses import INTEGRATION_CLASS_NETWORK_TCPSERIAL
-from mojo.interop.protocols.ssh.sshcoordinator import SshCoordinator
-
-from mojo.landscaping.constants import StartupLevel
+from automojo.landscaping.constants import StartupLevel
 
 # Types imported only for type checking purposes
 if TYPE_CHECKING:
-    from mojo.landscaping.landscape import Landscape
+    from automojo.landscaping.landscape import Landscape
 
 def is_tcp_serial_type(config_info) -> bool:
     is_sst = False

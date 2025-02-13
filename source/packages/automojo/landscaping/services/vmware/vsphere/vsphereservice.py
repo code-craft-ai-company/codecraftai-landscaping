@@ -6,7 +6,7 @@ from automojo.landscaping.friendlyidentifier import FriendlyIdentifier
 from automojo.landscaping.landscape import Landscape
 from automojo.landscaping.services.servicebase import ServiceBase
 
-from automojo.interop.services.vmware.vsphere.vsphereagent import VSphereAgent
+from automojo.landscaping.services.vmware.vsphere.vsphereagent import VSphereAgent
 
 if TYPE_CHECKING:
     from automojo.landscaping.landscape import Landscape

@@ -7,7 +7,7 @@
 """
 
 __author__ = "Myron Walker"
-__copyright__ = "Copyright 2023, Myron W Walker"
+__copyright__ = "Copyright 2025, Automation Mojo LLC"
 __credits__ = []
 
 
@@ -19,41 +19,41 @@ import requests
 
 from automojo.credentials.basiccredential import BasicCredential
 
-from automojo.interop.services.vmware.datastructures.specs.vmplacement import VmPlacementSpec
+from automojo.landscaping.services.vmware.datastructures.specs.vmplacement import VmPlacementSpec
 
-from automojo.interop.services.vmware.datastructures.vcenter import (
+from automojo.landscaping.services.vmware.datastructures.vcenter import (
     DatacenterSummary, FolderSummary
 )
 
-from automojo.interop.services.vmware.vsphere.ext.certificatemanagementext import CertificateManagementExt
-from automojo.interop.services.vmware.vsphere.ext.clusterext import ClusterExt
-from automojo.interop.services.vmware.vsphere.ext.computeext import ComputeExt
-from automojo.interop.services.vmware.vsphere.ext.contentext import ContentExt
-from automojo.interop.services.vmware.vsphere.ext.cryptomanagerext import CryptoManagerExt
-from automojo.interop.services.vmware.vsphere.ext.datacenterext import DataCenterExt
-from automojo.interop.services.vmware.vsphere.ext.datastoreext import DataStoreExt
-from automojo.interop.services.vmware.vsphere.ext.deploymentext import DeploymentExt
-from automojo.interop.services.vmware.vsphere.ext.folderext import FolderExt
-from automojo.interop.services.vmware.vsphere.ext.guestext import GuestExt
-from automojo.interop.services.vmware.vsphere.ext.hostext import HostExt
-from automojo.interop.services.vmware.vsphere.ext.hvcext import HvcExt
-from automojo.interop.services.vmware.vsphere.ext.identityext import IdentityExt
-from automojo.interop.services.vmware.vsphere.ext.inventoryext import InventoryExt
-from automojo.interop.services.vmware.vsphere.ext.isoext import IsoExt
-from automojo.interop.services.vmware.vsphere.ext.lcmext import LcmExt
-from automojo.interop.services.vmware.vsphere.ext.namespacemanagementext import NamespaceManagementExt
-from automojo.interop.services.vmware.vsphere.ext.namespacesext import NamespacesExt
-from automojo.interop.services.vmware.vsphere.ext.networkext import NetworkExt
-from automojo.interop.services.vmware.vsphere.ext.ovfext import OvfExt
-from automojo.interop.services.vmware.vsphere.ext.resourcepoolext import ResourcePoolExt
-from automojo.interop.services.vmware.vsphere.ext.servicesext import ServicesExt
-from automojo.interop.services.vmware.vsphere.ext.storageext import StorageExt
-from automojo.interop.services.vmware.vsphere.ext.systemconfigext import SystemConfigExt
-from automojo.interop.services.vmware.vsphere.ext.taggingext import TaggingExt
-from automojo.interop.services.vmware.vsphere.ext.tokenserviceext import TokenServiceExt
-from automojo.interop.services.vmware.vsphere.ext.topologyext import TopologyExt
-from automojo.interop.services.vmware.vsphere.ext.trustedinfrastructureext import TrustedInfrastructureExt
-from automojo.interop.services.vmware.vsphere.ext.vmext import VmExt
+from automojo.landscaping.services.vmware.vsphere.ext.certificatemanagementext import CertificateManagementExt
+from automojo.landscaping.services.vmware.vsphere.ext.clusterext import ClusterExt
+from automojo.landscaping.services.vmware.vsphere.ext.computeext import ComputeExt
+from automojo.landscaping.services.vmware.vsphere.ext.contentext import ContentExt
+from automojo.landscaping.services.vmware.vsphere.ext.cryptomanagerext import CryptoManagerExt
+from automojo.landscaping.services.vmware.vsphere.ext.datacenterext import DataCenterExt
+from automojo.landscaping.services.vmware.vsphere.ext.datastoreext import DataStoreExt
+from automojo.landscaping.services.vmware.vsphere.ext.deploymentext import DeploymentExt
+from automojo.landscaping.services.vmware.vsphere.ext.folderext import FolderExt
+from automojo.landscaping.services.vmware.vsphere.ext.guestext import GuestExt
+from automojo.landscaping.services.vmware.vsphere.ext.hostext import HostExt
+from automojo.landscaping.services.vmware.vsphere.ext.hvcext import HvcExt
+from automojo.landscaping.services.vmware.vsphere.ext.identityext import IdentityExt
+from automojo.landscaping.services.vmware.vsphere.ext.inventoryext import InventoryExt
+from automojo.landscaping.services.vmware.vsphere.ext.isoext import IsoExt
+from automojo.landscaping.services.vmware.vsphere.ext.lcmext import LcmExt
+from automojo.landscaping.services.vmware.vsphere.ext.namespacemanagementext import NamespaceManagementExt
+from automojo.landscaping.services.vmware.vsphere.ext.namespacesext import NamespacesExt
+from automojo.landscaping.services.vmware.vsphere.ext.networkext import NetworkExt
+from automojo.landscaping.services.vmware.vsphere.ext.ovfext import OvfExt
+from automojo.landscaping.services.vmware.vsphere.ext.resourcepoolext import ResourcePoolExt
+from automojo.landscaping.services.vmware.vsphere.ext.servicesext import ServicesExt
+from automojo.landscaping.services.vmware.vsphere.ext.storageext import StorageExt
+from automojo.landscaping.services.vmware.vsphere.ext.systemconfigext import SystemConfigExt
+from automojo.landscaping.services.vmware.vsphere.ext.taggingext import TaggingExt
+from automojo.landscaping.services.vmware.vsphere.ext.tokenserviceext import TokenServiceExt
+from automojo.landscaping.services.vmware.vsphere.ext.topologyext import TopologyExt
+from automojo.landscaping.services.vmware.vsphere.ext.trustedinfrastructureext import TrustedInfrastructureExt
+from automojo.landscaping.services.vmware.vsphere.ext.vmext import VmExt
 
 class VSphereFilterState:
 

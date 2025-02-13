@@ -10,7 +10,7 @@
 """
 
 __author__ = "Myron Walker"
-__copyright__ = "Copyright 2023, Myron W Walker"
+__copyright__ = "Copyright 2025, Automation Mojo LLC"
 __credits__ = []
 
 
@@ -24,13 +24,14 @@ import yaml
 
 from automojo.errors.exceptions import ConfigurationError
 
-from automojo.collections.mergemap import MergeMap
-from automojo.collections.wellknown import ContextSingleton
+from automojo.foundation.collections.mergemap import MergeMap
+from automojo.foundation.collections.wellknown import ContextSingleton
 
 from automojo.credentials.credentialmanager import CredentialManager
 
-from automojo.config.configurationmaps import CONFIGURATION_MAPS
-from automojo.config.wellknown import CredentialManagerSingleton
+from automojo.foundation.configuration.configurationmaps import CONFIGURATION_MAPS
+from automojo.credentials.wellknown import CredentialManagerSingleton
+
 
 from automojo.interfaces.iexcludefilter import IExcludeFilter
 from automojo.interfaces.iincludefilter import IIncludeFilter

@@ -7,7 +7,7 @@
 """
 
 __author__ = "Myron Walker"
-__copyright__ = "Copyright 2020, Myron W Walker"
+__copyright__ = "Copyright 2025, Automation Mojo LLC"
 __credits__ = []
 
 
@@ -31,8 +31,8 @@ from requests.exceptions import ConnectionError
 from automojo.errors.exceptions import ConfigurationError, SemanticError
 from automojo.landscaping.friendlyidentifier import FriendlyIdentifier
 
-from automojo.collections.context import Context
-from automojo.collections.contextpaths import ContextPaths
+from automojo.foundation.collections.context import Context
+from automojo.foundation.collections.contextpaths import ContextPaths
 
 from automojo.networking.constants import HTTP1_1_LINESEP, HTTP1_1_END_OF_HEADER
 from automojo.networking.interfaces import get_interface_for_ip
@@ -40,7 +40,7 @@ from automojo.networking.multicast import create_multicast_socket
 from automojo.networking.resolution import get_arp_table, refresh_arp_table
 from automojo.networking.trafficcapturecontext import TrafficCaptureContext
 
-import mojo.interop.protocols.upnp as upnp_module
+import automojo.interop.protocols.upnp as upnp_module
 
 from automojo.landscaping.coordinators.coordinatorbase import CoordinatorBase
 from automojo.landscaping.landscapedevice import LandscapeDevice

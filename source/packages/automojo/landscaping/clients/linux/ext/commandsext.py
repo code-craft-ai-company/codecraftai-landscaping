@@ -1,6 +1,6 @@
 
 __author__ = "Myron Walker"
-__copyright__ = "Copyright 2023, Myron W Walker"
+__copyright__ = "Copyright 2025, Automation Mojo LLC"
 __credits__ = []
 
 
@@ -11,13 +11,13 @@ import weakref
 
 from automojo.errors.exceptions import CommandError, SemanticError
 
-from automojo.interfaces.isystemcontext import ISystemContext
+from automojo.interop.interfaces.isystemcontext import ISystemContext
 from automojo.xmods.xformatting import format_command_result
 
 from automojo.interop.protocols.ssh.sshagent import SshSession
 
 if TYPE_CHECKING:
-    from automojo.interop.clients.linux.linuxclient import LinuxClient
+    from automojo.landscaping.clients.linux.linuxclient import LinuxClient
 
 class CommandsExt:
 

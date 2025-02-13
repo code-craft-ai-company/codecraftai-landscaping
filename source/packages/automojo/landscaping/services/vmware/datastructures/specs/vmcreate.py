@@ -7,18 +7,18 @@
 """
 
 __author__ = "Myron Walker"
-__copyright__ = "Copyright 2023, Myron W Walker"
+__copyright__ = "Copyright 2025, Automation Mojo LLC"
 __credits__ = []
 
 from typing import List, Optional
 
 from dataclasses import dataclass
 
-from automojo.interop.services.vmware.metasphere.vmguestos import VmGuestOS
-from automojo.interop.services.vmware.metasphere.vmhardware import VmHardwareVersion
+from automojo.landscaping.services.vmware.metasphere.vmguestos import VmGuestOS
+from automojo.landscaping.services.vmware.metasphere.vmhardware import VmHardwareVersion
 
-from automojo.interop.services.vmware.datastructures.specs.vmplacement import VmPlacementSpec
-from automojo.interop.services.vmware.datastructures.specs.vmhardware import (
+from automojo.landscaping.services.vmware.datastructures.specs.vmplacement import VmPlacementSpec
+from automojo.landscaping.services.vmware.datastructures.specs.vmhardware import (
     VmHardwareBootCreateSpec,
     VmHardwareCpuUpdateSpec,
     VmHardwareDiskCreateSpec,
@@ -33,7 +33,7 @@ from automojo.interop.services.vmware.datastructures.specs.vmhardware import (
     VmHardwareAdapterScsiCreateSpec,
     VmHardwareSerialCreateSpec
 )
-from automojo.interop.services.vmware.datastructures.specs.vmstorage import VmStoragePolicySpec
+from automojo.landscaping.services.vmware.datastructures.specs.vmstorage import VmStoragePolicySpec
 
 @dataclass
 class VmCreateSpec:

@@ -8,7 +8,7 @@
 """
 
 __author__ = "Myron Walker"
-__copyright__ = "Copyright 2023, Myron W Walker"
+__copyright__ = "Copyright 2025, Automation Mojo LLC"
 __credits__ = []
 
 
@@ -21,8 +21,6 @@ from functools import partial
 from automojo.errors.exceptions import SemanticError
 
 from automojo.landscaping.coupling.coordinatorcoupling import CoordinatorCoupling
-from automojo.landscaping.friendlyidentifier import FriendlyIdentifier
-from automojo.landscaping.landscape import LandscapeDevice
 from automojo.landscaping.clusters.nodecoordinatorbase import NodeCoordinatorBase
 
 from automojo.landscaping.constants import StartupLevel

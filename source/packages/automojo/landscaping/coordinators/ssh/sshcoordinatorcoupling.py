@@ -7,7 +7,7 @@
 """
 
 __author__ = "Myron Walker"
-__copyright__ = "Copyright 2023, Myron W Walker"
+__copyright__ = "Copyright 2025, Automation Mojo LLC"
 __credits__ = []
 
 
@@ -15,8 +15,8 @@ from typing import Any, Dict, List, Tuple, TYPE_CHECKING
 
 from automojo.landscaping.coupling.coordinatorcoupling import CoordinatorCoupling
 
-from automojo.interop.protocols.integrationclasses import INTEGRATION_CLASS_NETWORK_SSH
-from automojo.interop.protocols.ssh.sshcoordinator import SshCoordinator
+from automojo.landscaping.coordinators.integrationclasses import INTEGRATION_CLASS_NETWORK_SSH
+from automojo.landscaping.coordinators.ssh.sshcoordinator import SshCoordinator
 
 from automojo.landscaping.constants import StartupLevel
 

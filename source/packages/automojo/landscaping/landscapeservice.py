@@ -8,7 +8,7 @@
 """
 
 __author__ = "Myron Walker"
-__copyright__ = "Copyright 2023, Myron W Walker"
+__copyright__ = "Copyright 2025, Automation Mojo LLC"
 __credits__ = []
 
 
@@ -27,9 +27,11 @@ from automojo.errors.exceptions import SemanticError
 from automojo.credentials.basecredential import BaseCredential
 from automojo.credentials.sshcredential import SshCredential
 from automojo.landscaping.friendlyidentifier import FriendlyIdentifier
-from automojo.landscaping.protocolextension import ProtocolExtension
-from automojo.xmods.xfeature import FeatureAttachedObject
-from automojo.xmods.xthreading.lockscopes import LockedScope, UnLockedScope
+from automojo.landscaping.protocolextensions.protocolextension import ProtocolExtension
+from automojo.foundation.xthreading.lockscopes import LockedScope, UnLockedScope
+
+from automojo.testbase.features import FeatureAttachedObject
+
 
 if TYPE_CHECKING:
     from automojo.landscaping.landscape import Landscape

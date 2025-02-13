@@ -7,7 +7,7 @@
 """
 
 __author__ = "Myron Walker"
-__copyright__ = "Copyright 2023, Myron W Walker"
+__copyright__ = "Copyright 2025, Automation Mojo LLC"
 __credits__ = []
 
 
@@ -16,8 +16,8 @@ from typing import TYPE_CHECKING
 
 from automojo.landscaping.clients.clientcoordinatorcouplingbase import ClientCoordinatorCouplingBase
 
-from automojo.interop.clients.constants import INTEGRATION_CLASS_FOR_OSX_CLIENT
-from automojo.interop.clients.osx.osxclientcoordinator import OsxClientCoordinator
+from automojo.landscaping.clients.constants import INTEGRATION_CLASS_FOR_OSX_CLIENT
+from automojo.landscaping.clients.osx.osxclientcoordinator import OsxClientCoordinator
 
 
 class OsxClientCoordinatorCoupling(ClientCoordinatorCouplingBase):

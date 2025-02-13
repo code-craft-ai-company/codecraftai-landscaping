@@ -7,7 +7,7 @@
 """
 
 __author__ = "Myron Walker"
-__copyright__ = "Copyright 2023, Myron W Walker"
+__copyright__ = "Copyright 2025, Automation Mojo LLC"
 __credits__ = []
 
 
@@ -15,14 +15,14 @@ from typing import List, TYPE_CHECKING
 
 from  http import HTTPStatus
 
-from automojo.interop.services.vmware.datastructures.vcenter import (
+from automojo.landscaping.services.vmware.datastructures.vcenter import (
     DatacenterSummary
 )
 
-from automojo.interop.services.vmware.vsphere.ext.baseext import BaseExt
+from automojo.landscaping.services.vmware.vsphere.ext.baseext import BaseExt
 
 if TYPE_CHECKING:
-    from automojo.interop.services.vmware.vsphere.vsphereagent import VSphereAgent
+    from automojo.landscaping.services.vmware.vsphere.vsphereagent import VSphereAgent
 
 class DataCenterExt(BaseExt):
 

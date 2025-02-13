@@ -7,7 +7,7 @@
 """
 
 __author__ = "Myron Walker"
-__copyright__ = "Copyright 2023, Myron W Walker"
+__copyright__ = "Copyright 2025, Automation Mojo LLC"
 __credits__ = []
 
 
@@ -15,7 +15,7 @@ from typing import Optional
 
 from dataclasses import dataclass
 
-from automojo.interop.services.vmware.metasphere.vmhardware import (
+from automojo.landscaping.services.vmware.metasphere.vmhardware import (
     VmHardwareBootNetworkProtocol,
     VmHardwareBootType,
     VmHardwareDiskBackingType,

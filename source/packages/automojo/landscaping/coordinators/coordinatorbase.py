@@ -9,7 +9,7 @@
 """
 
 __author__ = "Myron Walker"
-__copyright__ = "Copyright 2023, Myron W Walker"
+__copyright__ = "Copyright 2025, Automation Mojo LLC"
 __credits__ = []
 
 
@@ -21,7 +21,7 @@ import weakref
 
 from automojo.errors.exceptions import NotOverloadedError
 
-from automojo.xmods.xthreading.lockscopes import LockedScope, UnLockedScope
+from automojo.foundation.xthreading.lockscopes import LockedScope, UnLockedScope
 
 from automojo.landscaping.landscapeparameters import LandscapeActivationParams
 from automojo.landscaping.landscapedevice import LandscapeDevice

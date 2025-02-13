@@ -7,7 +7,7 @@
 """
 
 __author__ = "Myron Walker"
-__copyright__ = "Copyright 2023, Myron W Walker"
+__copyright__ = "Copyright 2025, Automation Mojo LLC"
 __credits__ = []
 
 
@@ -17,17 +17,17 @@ from  http import HTTPStatus
 
 from automojo.errors.exceptions import SemanticError
 
-from automojo.interop.services.vmware.metasphere.vmguestos import VmGuestOS
-from automojo.interop.services.vmware.metasphere.vmhardware import VmHardwareVersion
-from automojo.interop.services.vmware.datastructures.model.vm import VmInfo
+from automojo.landscaping.services.vmware.metasphere.vmguestos import VmGuestOS
+from automojo.landscaping.services.vmware.metasphere.vmhardware import VmHardwareVersion
+from automojo.landscaping.services.vmware.datastructures.model.vm import VmInfo
 
-from automojo.interop.services.vmware.datastructures.model.summary import (
+from automojo.landscaping.services.vmware.datastructures.model.summary import (
     DatacenterSummary, FolderSummary, VmSummary
 )
 
-from automojo.interop.services.vmware.datastructures.specs.vmcreate import VmCreateSpec
-from automojo.interop.services.vmware.datastructures.specs.vmplacement import VmPlacementSpec
-from automojo.interop.services.vmware.datastructures.specs.vmhardware import (
+from automojo.landscaping.services.vmware.datastructures.specs.vmcreate import VmCreateSpec
+from automojo.landscaping.services.vmware.datastructures.specs.vmplacement import VmPlacementSpec
+from automojo.landscaping.services.vmware.datastructures.specs.vmhardware import (
     VmHardwareBootCreateSpec,
     VmHardwareCpuUpdateSpec,
     VmHardwareDiskCreateSpec,
@@ -42,14 +42,14 @@ from automojo.interop.services.vmware.datastructures.specs.vmhardware import (
     VmHardwareAdapterScsiCreateSpec,
     VmHardwareSerialCreateSpec
 )
-from automojo.interop.services.vmware.datastructures.specs.vmstorage import VmStoragePolicySpec
+from automojo.landscaping.services.vmware.datastructures.specs.vmstorage import VmStoragePolicySpec
 
 
-from automojo.interop.services.vmware.vsphere.ext.baseext import BaseExt
+from automojo.landscaping.services.vmware.vsphere.ext.baseext import BaseExt
 
 
 if TYPE_CHECKING:
-    from automojo.interop.services.vmware.vsphere.vsphereagent import VSphereAgent
+    from automojo.landscaping.services.vmware.vsphere.vsphereagent import VSphereAgent
 
 
 class VmExt(BaseExt):

@@ -1,6 +1,6 @@
 
 __author__ = "Myron Walker"
-__copyright__ = "Copyright 2023, Myron W Walker"
+__copyright__ = "Copyright 2025, Automation Mojo LLC"
 __credits__ = []
 
 
@@ -14,16 +14,16 @@ import weakref
 from automojo.errors.exceptions import CommandError
 
 from automojo.credentials.sshcredential import SshCredential
-from automojo.interfaces.isystemcontext import ISystemContext
+from automojo.interop.interfaces.isystemcontext import ISystemContext
 from automojo.xmods.xformatting import format_command_result
 
-from automojo.interop.clients.clientsourcepackager import ClientSourcePackager
+from automojo.landscaping.clients.clientsourcepackager import ClientSourcePackager
 from automojo.interop.protocols.ssh.sshsession import SshSession
 
 import mojo.interop.protocols.tasker.taskerservice as tasker_service
 
 if TYPE_CHECKING:
-    from automojo.interop.clients.linux.linuxclient import LinuxClient
+    from automojo.landscaping.clients.linux.linuxclient import LinuxClient
 
 
 TEMPLATE_FILE_SUDO_CONFIG = "/etc/sudoers.d/77-automation-{username}"

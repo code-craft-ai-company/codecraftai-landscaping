@@ -8,7 +8,7 @@
 """
 
 __author__ = "Myron Walker"
-__copyright__ = "Copyright 2023, Myron W Walker"
+__copyright__ = "Copyright 2025, Automation Mojo LLC"
 __credits__ = []
 
 
@@ -18,12 +18,12 @@ from typing import Any, Dict, Optional, TYPE_CHECKING
 from automojo.credentials.basecredential import BaseCredential
 from automojo.landscaping.clusters.nodecoordinatorbase import NodeCoordinatorBase
 
-from automojo.interop.clusters.constants import INTEGRATION_CLASS_FOR_RASPBERRYPI_NODE
-from automojo.interop.clusters.raspberrypi.pinode import PiNode
-from automojo.interop.clusters.raspberrypi.picluster import PiCluster
+from automojo.landscaping.clusters.constants import INTEGRATION_CLASS_FOR_RASPBERRYPI_NODE
+from automojo.landscaping.clusters.raspberrypi.pinode import PiNode
+from automojo.landscaping.clusters.raspberrypi.picluster import PiCluster
 
 from automojo.interop.protocols.ssh.sshagent import SshAgent
-from automojo.interop.protocols.ssh.sshcoordinator import INTEGRATION_CLASS_NETWORK_SSH
+from automojo.landscaping.coordinators.ssh.sshcoordinator import INTEGRATION_CLASS_NETWORK_SSH
 
 if TYPE_CHECKING:
     from automojo.landscaping.landscape import Landscape

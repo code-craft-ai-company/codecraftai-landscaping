@@ -8,7 +8,7 @@
 """
 
 __author__ = "Myron Walker"
-__copyright__ = "Copyright 2023, Myron W Walker"
+__copyright__ = "Copyright 2025, Automation Mojo LLC"
 __credits__ = []
 
 
@@ -45,8 +45,8 @@ from automojo.landscaping.friendlyidentifier import FriendlyIdentifier
 
 from automojo.testbase.coupling.integrationcoupling import IntegrationCoupling
 
-from automojo.xmods.xthreading.lockscopes import LockedScope, UnLockedScope
-from automojo.xmods.xinspect import get_caller_function_name
+from automojo.foundation.xthreading.lockscopes import LockedScope, UnLockedScope
+
 
 class Landscape:
     """

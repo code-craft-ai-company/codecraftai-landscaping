@@ -7,18 +7,18 @@
 """
 
 __author__ = "Myron Walker"
-__copyright__ = "Copyright 2023, Myron W Walker"
+__copyright__ = "Copyright 2025, Automation Mojo LLC"
 __credits__ = []
 
 
 from typing import TYPE_CHECKING
 
-from automojo.interfaces.isystemcontext import ISystemContext
+from automojo.interop.interfaces.isystemcontext import ISystemContext
 from automojo.landscaping.friendlyidentifier import FriendlyIdentifier
 from automojo.landscaping.clients.clientbase import ClientBase
 
-from automojo.interop.clients.linux.ext.commandsext import CommandsExt
-from automojo.interop.clients.linux.ext.configureext import ConfigureExt
+from automojo.landscaping.clients.linux.ext.commandsext import CommandsExt
+from automojo.landscaping.clients.linux.ext.configureext import ConfigureExt
 
 from automojo.interop.protocols.ssh.sshagent import SshAgent
 

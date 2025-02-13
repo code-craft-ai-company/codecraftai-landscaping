@@ -7,7 +7,7 @@
 """
 
 __author__ = "Myron Walker"
-__copyright__ = "Copyright 2023, Myron W Walker"
+__copyright__ = "Copyright 2025, Automation Mojo LLC"
 __credits__ = []
 
 
@@ -17,11 +17,11 @@ from typing import Any, Dict, Optional, TYPE_CHECKING
 from automojo.credentials.basecredential import BaseCredential
 from automojo.landscaping.clients.clientcoordinatorbase import ClientCoordinatorBase
 
-from automojo.interop.clients.constants import INTEGRATION_CLASS_FOR_WINDOWS_CLIENT
-from automojo.interop.clients.windows.windowsclient import WindowsClient
+from automojo.landscaping.clients.constants import INTEGRATION_CLASS_FOR_WINDOWS_CLIENT
+from automojo.landscaping.clients.windows.windowsclient import WindowsClient
 
 from automojo.interop.protocols.ssh.sshagent import SshAgent
-from automojo.interop.protocols.integrationclasses import INTEGRATION_CLASS_NETWORK_SSH
+from automojo.landscaping.coordinators.integrationclasses import INTEGRATION_CLASS_NETWORK_SSH
 
 if TYPE_CHECKING:
     from automojo.landscaping.landscape import Landscape
