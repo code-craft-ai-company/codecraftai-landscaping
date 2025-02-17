@@ -74,7 +74,7 @@ pyyaml = "^6.0.2"
 type = "git"
 url = "git@github.com:automationmojo/automojo-foundation.git"
 reference = "main"
-resolved_reference = "35259c1b87e7ded536eb43d63a603d9fd942b199"
+resolved_reference = "450cca05eccaa32129a1b1d7abfaaca4c161d5cd"
 
 [[package]]
 name = "automojo-interfaces"
@@ -115,7 +115,7 @@ rpyc = "^6.0.1"
 type = "git"
 url = "git@github.com:automationmojo/automojo-interop.git"
 reference = "main"
-resolved_reference = "63291783befae103d45a51897b2157ee4878f650"
+resolved_reference = "82fd8a8650d1c700ced4947e54ad90da8104c0f8"
 
 [[package]]
 name = "automojo-networking"
