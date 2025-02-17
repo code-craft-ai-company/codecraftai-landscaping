@@ -1,7 +1,7 @@
 
 from automojo.landscaping.services.servicecoordinatorcouplingbase import ServiceCoordinatorCouplingBase
 
-from automojo.interop.services.common import INTEGRATIION_CLASS_FOR_VSPHERE_VCENTER_SERVICE
+from automojo.landscaping.services.common import INTEGRATIION_CLASS_FOR_VSPHERE_VCENTER_SERVICE
 from automojo.landscaping.services.vmware.vsphere.vspherecoordinator import VSphereCoordinator
 
 class VSphereCoordinatorCoupling(ServiceCoordinatorCouplingBase):

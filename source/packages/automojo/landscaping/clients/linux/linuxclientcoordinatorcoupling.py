@@ -13,7 +13,7 @@ __credits__ = []
 
 from typing import TYPE_CHECKING, Generator
 
-from mojo import testplus
+from automojo import testbase
 
 from automojo.landscaping.clients.clientcoordinatorcouplingbase import ClientCoordinatorCouplingBase
 
@@ -39,7 +39,7 @@ class LinuxClientCoordinatorCoupling(ClientCoordinatorCouplingBase):
         super().__init__(*args, **kwargs)
         return
 
-@testplus.integration()
+@testbase.integration()
 def create_linux_client_coordinator_coupling() -> Generator[LinuxClientCoordinatorCoupling, None, None]:
     lc_coupling = LinuxClientCoordinatorCoupling()
     yield lc_coupling

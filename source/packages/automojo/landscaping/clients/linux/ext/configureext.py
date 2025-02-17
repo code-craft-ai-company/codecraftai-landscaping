@@ -15,12 +15,12 @@ from automojo.errors.exceptions import CommandError
 
 from automojo.credentials.sshcredential import SshCredential
 from automojo.interop.interfaces.isystemcontext import ISystemContext
-from automojo.xmods.xformatting import format_command_result
+from automojo.foundation.xformatting import format_command_result
 
 from automojo.landscaping.clients.clientsourcepackager import ClientSourcePackager
 from automojo.interop.protocols.ssh.sshsession import SshSession
 
-import mojo.interop.protocols.tasker.taskerservice as tasker_service
+import automojo.interop.protocols.tasker.taskerservice as tasker_service
 
 if TYPE_CHECKING:
     from automojo.landscaping.clients.linux.linuxclient import LinuxClient
