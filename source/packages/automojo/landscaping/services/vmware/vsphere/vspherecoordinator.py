@@ -4,7 +4,7 @@ from automojo.landscaping.landscape import Landscape
 
 from automojo.landscaping.services.servicecoordinatorbase import ServiceCoordinatorBase
 
-from automojo.interop.services.common import INTEGRATIION_CLASS_FOR_VSPHERE_VCENTER_SERVICE
+from automojo.landscaping.services.common import INTEGRATIION_CLASS_FOR_VSPHERE_VCENTER_SERVICE
 from automojo.landscaping.services.vmware.vsphere.vsphereservice import VSphereService
 
 if TYPE_CHECKING:
