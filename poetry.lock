@@ -115,7 +115,7 @@ rpyc = "^6.0.1"
 type = "git"
 url = "git@github.com:automationmojo/automojo-interop.git"
 reference = "main"
-resolved_reference = "63424c22ec5f18adcd1c9e1ec550f5d152061724"
+resolved_reference = "63291783befae103d45a51897b2157ee4878f650"
 
 [[package]]
 name = "automojo-networking"
