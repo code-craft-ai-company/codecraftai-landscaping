@@ -39,7 +39,7 @@ class LinuxClientCoordinatorCoupling(ClientCoordinatorCouplingBase):
         super().__init__(*args, **kwargs)
         return
 
-@testbase.integration()
+@testbase.factory.integration()
 def create_linux_client_coordinator_coupling() -> Generator[LinuxClientCoordinatorCoupling, None, None]:
     lc_coupling = LinuxClientCoordinatorCoupling()
     yield lc_coupling
