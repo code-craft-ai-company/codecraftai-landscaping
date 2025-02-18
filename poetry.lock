@@ -115,7 +115,7 @@ rpyc = "^6.0.1"
 type = "git"
 url = "git@github.com:automationmojo/automojo-interop.git"
 reference = "main"
-resolved_reference = "c9fb97a6bd51faae8ce37ac5e8e35c8afdfb49fb"
+resolved_reference = "de99f85993d770da2e631b946b32bccd9bbde64b"
 
 [[package]]
 name = "automojo-networking"
@@ -155,7 +155,7 @@ click = "^8.1.8"
 type = "git"
 url = "git@github.com:automationmojo/automojo-testbase.git"
 reference = "main"
-resolved_reference = "715e1f74faa6809a354f0924b15c46794cb2149f"
+resolved_reference = "9180963187d8db780cfd2517fba6841ab9d66c1e"
 
 [[package]]
 name = "automojo-waiting"
