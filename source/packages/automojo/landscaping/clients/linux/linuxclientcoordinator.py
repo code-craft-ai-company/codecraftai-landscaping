@@ -13,7 +13,7 @@ __credits__ = []
 
 from typing import Any, Dict, Optional, TYPE_CHECKING
 
-from automojo.errors.exceptions import NotOverloadedError
+from automojo.errors.exceptions import AbstractMethodError
 
 from automojo.credentials.basecredential import BaseCredential
 from automojo.landscaping.clients.clientcoordinatorbase import ClientCoordinatorBase

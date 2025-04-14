@@ -19,7 +19,7 @@ from typing import List, Optional, TYPE_CHECKING
 import threading
 import weakref
 
-from automojo.errors.exceptions import NotOverloadedError
+from automojo.errors.exceptions import AbstractMethodError
 
 from automojo.foundation.xthreading.lockscopes import LockedScope, UnLockedScope
 
@@ -69,7 +69,7 @@ class CoordinatorBase:
             Called by the :class:`LandscapeOperationalLayer` in order for the coordinator to be able to
             potentially enhanced devices.
         """
-        raise NotOverloadedError("activate: must be overloaded by derived coordinator classes")
+        raise AbstractMethodError("activate: must be overloaded by derived coordinator classes")
 
 
     def begin_locked_coordinator_scope(self) -> LockedScope:
@@ -91,7 +91,7 @@ class CoordinatorBase:
             Called by the :class:`LandscapeOperationalLayer` in order for the coordinator to be able to
             verify connectivity with devices.
         """
-        raise NotOverloadedError("activate: must be overloaded by derived coordinator classes")
+        raise AbstractMethodError("activate: must be overloaded by derived coordinator classes")
 
     @property
     def children(self) -> List[LandscapeDevice]:
@@ -188,4 +188,4 @@ class CoordinatorBase:
             :returns: A list of errors encountered when verifying connectivity with the devices managed or watched by the coordinator.
         """
         # pylint: disable=no-self-use
-        raise NotOverloadedError("verify_connectivity: must be overloaded by derived coordinator classes")
+        raise AbstractMethodError("verify_connectivity: must be overloaded by derived coordinator classes")

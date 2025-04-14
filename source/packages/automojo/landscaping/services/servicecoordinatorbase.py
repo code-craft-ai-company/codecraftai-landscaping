@@ -19,7 +19,7 @@ from typing import Any, Dict, List, Optional, Tuple, Union, TYPE_CHECKING
 import os
 import pprint
 
-from automojo.errors.exceptions import ConfigurationError, NotOverloadedError
+from automojo.errors.exceptions import ConfigurationError, AbstractMethodError
 
 from automojo.credentials.basecredential import BaseCredential
 from automojo.landscaping.friendlyidentifier import FriendlyIdentifier
@@ -147,7 +147,7 @@ class ServiceCoordinatorBase(CoordinatorBase):
         
         if self.MUST_INCLUDE_SSH:
             err_mgs = "if 'MUST_INCLUDE_SSH' is 'True' then 'create_ssh_agent' must be overloaded."
-            raise NotOverloadedError(err_mgs)
+            raise AbstractMethodError(err_mgs)
 
         return
 

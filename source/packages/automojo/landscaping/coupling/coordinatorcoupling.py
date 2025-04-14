@@ -16,7 +16,7 @@ __credits__ = []
 
 from typing import TYPE_CHECKING
 
-from automojo.errors.exceptions import NotOverloadedError
+from automojo.errors.exceptions import AbstractMethodError
 
 from automojo.testbase.coupling.integrationcoupling import IntegrationCoupling
 
@@ -37,5 +37,5 @@ class CoordinatorCoupling(IntegrationCoupling):
             This API is called so that the landscape can create a coordinator for a given coordinator
             integration role.
         """
-        raise NotOverloadedError("This method must be overridden by derived coordinator classes.")
+        raise AbstractMethodError("This method must be overridden by derived coordinator classes.")
 

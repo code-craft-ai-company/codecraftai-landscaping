@@ -23,7 +23,7 @@ import weakref
 
 from datetime import datetime
 
-from automojo.errors.exceptions import NotOverloadedError, SemanticError
+from automojo.errors.exceptions import AbstractMethodError, SemanticError
 
 from automojo.credentials.basecredential import BaseCredential
 from automojo.credentials.sshcredential import SshCredential
@@ -338,7 +338,7 @@ class LandscapeDevice(FeatureAttachedObject):
             Called to get an ISystemContext instance that is a default system type.
         """
         type_name = type(self).__name__
-        raise NotOverloadedError(f"get_default_system_context: not overloaded for type='{type_name}'")
+        raise AbstractMethodError(f"get_default_system_context: not overloaded for type='{type_name}'")
 
     def has_extension_type(self, ext_type: str) -> bool:
         """
