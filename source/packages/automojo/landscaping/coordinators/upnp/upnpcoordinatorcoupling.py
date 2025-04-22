@@ -25,6 +25,16 @@ from automojo.landscaping.coordinators.upnp.upnpcoordinator import UpnpCoordinat
 if TYPE_CHECKING:
     from automojo.landscaping.landscape import Landscape
 
+
+def is_upnp_device_config(device_info):
+    is_upnp_dev = False
+
+    dev_type = device_info["deviceType"]
+    if dev_type == INTEGRATION_CLASS_NETWORK_UPNP:
+        is_upnp_dev = True
+
+    return is_upnp_dev
+
 class UpnpCoordinatorIntegration(CoordinatorCoupling):
     """
         The UpnpCoordinatorIntegration handle the requirement registration for the UPNP coordinator.
@@ -59,16 +69,24 @@ class UpnpCoordinatorIntegration(CoordinatorCoupling):
 
         return
 
-    @classmethod
-    def attach_to_framework(cls, landscape: "Landscape"):
+    def attach_to_environment(cls, landscape: "Landscape"):
         """
-            This API is called so that the IntegrationCoupling can attach to the test framework and participate with
-            registration processes.  This allows the framework to ignore the bringing-up of couplings that are not being
-            included by a test.
+            This API is called so that the IntegrationCoupling can process configuration information.  The :class:`IntegrationCoupling`
+            will verify that it has a valid environment and configuration to run in.
+
+            :raises :class:`mojo.xmods.exceptions.AKitMissingConfigError`, :class:`mojo.xmods.exceptions.ConfigurationError`:
         """
-        super(UpnpCoordinatorIntegration, cls).attach_to_framework(landscape)
-        cls.landscape.register_integration_point("coordinator/upnp", cls)
-        return
+
+        cls.landscape = landscape
+        layer_config = landscape.layer_configuration
+
+        device_list = layer_config.get_device_configs()
+        if len(device_list) > 0:
+            upnp_device_list = [dev for dev in filter(is_upnp_device_config, device_list)]
+
+            if len(upnp_device_list) > 0:
+                layer_integ = landscape.layer_integration
+                layer_integ.register_integration_dependency(cls)
 
     @classmethod
     def collect_resources(cls):
