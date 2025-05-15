@@ -42,6 +42,17 @@ class OsxClientCoordinator(ClientCoordinatorBase):
         super().__init__(lscape, *args, **kwargs)
         return
 
+
+    def configure_devices(self, landscape: "Landscape") -> list:
+        """
+            Called by configuration tools running in the "Infrastructure Orchestration" layer to configure
+            a coordinator devices.
+        """
+        results = []
+
+        return results
+
+
     def create_ssh_agent(self, device: OsxClient, device_info: Dict[str, Any], host: str, cred: BaseCredential,
                          users: Optional[dict] = None, port: int = 22, pty_params: Optional[dict] = None):
         

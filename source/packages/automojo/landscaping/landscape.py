@@ -394,6 +394,12 @@ class Landscape:
         selected_services = self.layer_integration.get_services(include_filters=include_filters, exclude_filters=exclude_filters)
         return selected_services
 
+    def orchestrate_configure_devices(self):
+        """
+            Called during orchestration operations in order to establish the initial configuration of devices.
+        """
+        return
+
     def _initialize_state(self):
         """
             Initialize the overrideable state of the Landscape object

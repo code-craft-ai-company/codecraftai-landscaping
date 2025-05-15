@@ -64,35 +64,6 @@ class CoordinatorBase:
 
         return
 
-    def activate(self, activation_params: LandscapeActivationParams):
-        """
-            Called by the :class:`LandscapeOperationalLayer` in order for the coordinator to be able to
-            potentially enhanced devices.
-        """
-        raise AbstractMethodError("activate: must be overloaded by derived coordinator classes")
-
-
-    def begin_locked_coordinator_scope(self) -> LockedScope:
-        """
-            Method that creates a locked scope for this device.
-        """
-        lkd_scope = LockedScope(self._coord_lock)
-        return lkd_scope
-
-    def begin_unlocked_coordinator_scope(self) -> UnLockedScope:
-        """
-            Method that creates an unlocked scope for this device.
-        """
-        unlkd_scope = UnLockedScope(self._coord_lock)
-        return unlkd_scope
-
-    def establish_connectivity(self, activation_params: LandscapeActivationParams):
-        """
-            Called by the :class:`LandscapeOperationalLayer` in order for the coordinator to be able to
-            verify connectivity with devices.
-        """
-        raise AbstractMethodError("activate: must be overloaded by derived coordinator classes")
-
     @property
     def children(self) -> List[LandscapeDevice]:
         """
@@ -151,6 +122,42 @@ class CoordinatorBase:
             The devices that the coordinator found to be missing during startup.
         """
         return self._missing_devices
+
+    def activate(self, activation_params: LandscapeActivationParams):
+        """
+            Called by the :class:`LandscapeOperationalLayer` in order for the coordinator to be able to
+            potentially enhanced devices.
+        """
+        raise AbstractMethodError("activate: must be overloaded by derived coordinator classes")
+
+
+    def begin_locked_coordinator_scope(self) -> LockedScope:
+        """
+            Method that creates a locked scope for this device.
+        """
+        lkd_scope = LockedScope(self._coord_lock)
+        return lkd_scope
+
+    def begin_unlocked_coordinator_scope(self) -> UnLockedScope:
+        """
+            Method that creates an unlocked scope for this device.
+        """
+        unlkd_scope = UnLockedScope(self._coord_lock)
+        return unlkd_scope
+
+    def configure_devices(self, landscape: "Landscape"):
+        """
+            Called by configuration tools running in the "Infrastructure Orchestration" layer to configure
+            a coordinator devices.
+        """
+        raise AbstractMethodError("configure_devices: must be overloaded by derived coordinator classes")
+
+    def establish_connectivity(self, activation_params: LandscapeActivationParams):
+        """
+            Called by the :class:`LandscapeOperationalLayer` in order for the coordinator to be able to
+            verify connectivity with devices.
+        """
+        raise AbstractMethodError("establish_connectivity: must be overloaded by derived coordinator classes")
 
     def establish_presence(self):
         """

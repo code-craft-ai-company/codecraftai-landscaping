@@ -11,7 +11,7 @@ __copyright__ = "Copyright 2025, Automation Mojo LLC"
 __credits__ = []
 
 
-from typing import Union, TYPE_CHECKING
+from typing import Any, Dict, Union, TYPE_CHECKING
 
 from automojo.landscaping.coordinators.coordinatorbase import CoordinatorBase
 from automojo.landscaping.landscapeparameters import LandscapeActivationParams
@@ -28,15 +28,19 @@ class DliPowerCoordinator(CoordinatorBase):
     """
     # pylint: disable=attribute-defined-outside-init
 
-    def __init__(self, lscape: "Landscape", *args, **kwargs):
-        super().__init__(lscape, *args, **kwargs)
-        return
-
     def activate(self, activation_params: LandscapeActivationParams):
         """
             Called by the :class:`LandscapeOperationalLayer` in order for the coordinator to be able to
             potentially enhanced devices.
         """
+        self._power_config = {}
+
+        for pcfg in self._coord_config:
+            cfgname = pcfg["name"]
+            self._power_config[cfgname] = pcfg
+
+        self._power_interfaces = {}
+
         return
 
     def establish_connectivity(self, activation_params: LandscapeActivationParams):

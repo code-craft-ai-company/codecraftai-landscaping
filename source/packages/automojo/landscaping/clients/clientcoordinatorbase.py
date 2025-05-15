@@ -128,6 +128,14 @@ class ClientCoordinatorBase(CoordinatorBase):
 
         return
 
+    def configure_devices(self, landscape: "Landscape"):
+        """
+            Called by configuration tools running in the "Infrastructure Orchestration" layer to configure
+            a coordinator devices.
+        """
+        raise AbstractMethodError("configure_devices: must be overloaded by specific coordinator classes that match the client platform.")
+
+
     def create_landscape_device(self, landscape: "Landscape", device_info: Dict[str, Any]) -> Tuple[FriendlyIdentifier, ClientBase]:
         """
             Called to declare a declared landscape device for a given coordinator.
