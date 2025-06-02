@@ -8,7 +8,7 @@ from automojo.landscaping.protocolextensions.protocolextension import ProtocolEx
 from automojo.interop.protocols.upnp.upnpagent import UpnpAgent
 
 
-class SshProtocolExtension(UpnpAgent, ProtocolExtension):
+class UpnpProtocolExtension(UpnpAgent, ProtocolExtension):
 
     def __init__(self, manufacturer: str, modelNumber: str, modelDescription):
         UpnpAgent.__init__(self, manufacturer, modelNumber, modelDescription)

@@ -109,7 +109,7 @@ class UpnpCoordinator(CoordinatorBase):
 
         return
 
-    def _initialize(self, *_args, control_point=None, workers: int = 5, **_kwargs):
+    def _initialize(self, *_args, presence=None, workers: int = 5, **_kwargs):
         """
             Called by the CoordinatorBase constructor to perform the one time initialization of the coordinator Singleton
             of a given type.
@@ -123,7 +123,8 @@ class UpnpCoordinator(CoordinatorBase):
         # These variables are fixed at the start of the UpnpCoordinator and because
         # they are fixed, we don't protect them with the all.
 
-        self._control_point = control_point
+        self._presence = presence
+
         self._worker_count = workers
 
         self._factory = UpnpFactory()

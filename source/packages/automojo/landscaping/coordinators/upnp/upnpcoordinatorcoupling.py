@@ -13,17 +13,27 @@ __credits__ = []
 
 from typing import Dict, List, Tuple, TYPE_CHECKING
 
+from functools import partial
+
+from automojo.foundation.collections.wellknown import ContextSingleton
 from automojo.foundation.collections.contextpaths import ContextPaths
 from automojo.errors.exceptions import SemanticError
+
+from automojo.networking.protocols.upnp.upnppresence import UpnpPresence
+from automojo.networking.protocols.upnp.upnpdevicehint import UpnpDeviceHint
+from automojo.networking.protocols.upnp.upnpsearchwindow import UpnpSearchWindow
 
 from automojo.landscaping.coupling.coordinatorcoupling import CoordinatorCoupling
 
 from automojo.landscaping.coordinators.integrationclasses import INTEGRATION_CLASS_NETWORK_UPNP
 from automojo.landscaping.coordinators.upnp.upnpcoordinator import UpnpCoordinator
+from automojo.landscaping.friendlyidentifier import FriendlyIdentifier
+
 
 # Types imported only for type checking purposes
 if TYPE_CHECKING:
     from automojo.landscaping.landscape import Landscape
+    from automojo.landscaping.landscapedevice import LandscapeDevice
 
 
 def is_upnp_device_config(device_info):
@@ -35,17 +45,24 @@ def is_upnp_device_config(device_info):
 
     return is_upnp_dev
 
+
 class UpnpCoordinatorIntegration(CoordinatorCoupling):
     """
         The UpnpCoordinatorIntegration handle the requirement registration for the UPNP coordinator.
     """
 
-    pathbase = "/upnp"
+    COORDINATOR_TYPE = UpnpCoordinator
 
     integration_root: str = "apod"
     integration_section: str = "devices"
     integration_leaf: str = "deviceType"
     integration_class: str = INTEGRATION_CLASS_NETWORK_UPNP
+
+    lookup_upnp_device_config = {}
+    lookup_upnp_device = {}
+
+    upnp_presence = UpnpPresence()
+
 
     def __init__(self, *args, **kwargs):
         """
@@ -55,7 +72,7 @@ class UpnpCoordinatorIntegration(CoordinatorCoupling):
         return
 
     @classmethod
-    def attach_to_environment(cls, constraints: Dict={}):
+    def attach_to_environment(cls, landscape: "Landscape"):
         """
             This API is called so that the IntegrationCoupling can process configuration information.  The :class:`IntegrationCoupling`
             will verify that it has a valid environment and configuration to run in.
@@ -63,30 +80,24 @@ class UpnpCoordinatorIntegration(CoordinatorCoupling):
             :raises :class:`akit.exceptions.AKitMissingConfigError`, :class:`akit.exceptions.AKitInvalidConfigError`:
         """
 
-        upnp_device_hints = cls.landscape.get_upnp_device_config_lookup_table()
-        if len(upnp_device_hints) > 0:
-            cls.landscape.activate_integration_point("coordinator/upnp", cls.create_coordinator)
-
-        return
-
-    def attach_to_environment(cls, landscape: "Landscape"):
-        """
-            This API is called so that the IntegrationCoupling can process configuration information.  The :class:`IntegrationCoupling`
-            will verify that it has a valid environment and configuration to run in.
-
-            :raises :class:`mojo.xmods.exceptions.AKitMissingConfigError`, :class:`mojo.xmods.exceptions.ConfigurationError`:
-        """
-
         cls.landscape = landscape
         layer_config = landscape.layer_configuration
 
-        device_list = layer_config.get_device_configs()
-        if len(device_list) > 0:
-            upnp_device_list = [dev for dev in filter(is_upnp_device_config, device_list)]
+        device_config_list = layer_config.get_device_configs()
+        if len(device_config_list) > 0:
+            for dev_config in device_config_list:
+                if is_upnp_device_config(dev_config):
+                    identifier = dev_config.get("hint", "")
+                    if len(identifier) == 0:
+                        identifier = dev_config["USN"]
 
-            if len(upnp_device_list) > 0:
+                    cls.lookup_upnp_device_config[identifier] = dev_config
+
+            if len(cls.lookup_upnp_device_config) > 0:
                 layer_integ = landscape.layer_integration
                 layer_integ.register_integration_dependency(cls)
+    
+        return
 
     @classmethod
     def collect_resources(cls):
@@ -149,32 +160,58 @@ class UpnpCoordinatorIntegration(CoordinatorCoupling):
 
         exclude_interfaces = ["lo"]
 
-        runtime_exclude_interfaces = cls.context.lookup(ContextPaths.UPNP_EXCLUDE_INTERFACES)
+        context = ContextSingleton()
+        runtime_exclude_interfaces = context.lookup(ContextPaths.UPNP_EXCLUDE_INTERFACES)
         if runtime_exclude_interfaces is not None:
             exclude_interfaces = runtime_exclude_interfaces
 
-        upnp_hint_table = lscape.get_upnp_device_config_lookup_table()
+        lscape = cls.landscape
+        layer_integ = lscape.layer_integration
         
-        if len(upnp_hint_table) == 0:
-            raise SemanticError("we should not have been called if the upnp device config had 0 devices.") from None
+        # Create a list of device configs
+        device_list: List["LandscapeDevice"] = layer_integ.get_devices()
 
-        required_devices = None
-        if not allow_missing_devices:
-            required_devices = [usn for usn in upnp_hint_table.keys()]
+        if len(device_list) > 0:
+            
+            for dev in device_list:
+                dev_config = dev.device_config
+                if is_upnp_device_config(dev_config):
+                    identifier = dev_config.get("hint", "")
+                    if len(identifier) == 0:
+                        identifier = dev_config["USN"]
 
-        found_device_results, matching_device_results, missing_device_results = cls.coordinator.startup_scan(
-            upnp_hint_table, watchlist=upnp_hint_table, required_devices=required_devices, exclude_interfaces=exclude_interfaces,
-            upnp_recording=upnp_recording, allow_unknown_devices=allow_unknown_devices)
+                    cls.lookup_upnp_device[identifier] = dev
 
-        conn_results = {
-            "upnp": {
-                "found": found_device_results,
-                "matching": matching_device_results,
-                "missing": missing_device_results
+            
+            if len(cls.lookup_upnp_device_config) == 0:
+                raise SemanticError("we should not have been called if the upnp device config had 0 devices.") from None
+
+            required_devices = None
+            if not allow_missing_devices:
+                required_devices = [UpnpDeviceHint(identifier) for identifier in cls.lookup_upnp_device_config.keys()]
+
+            cls.upnp_presence.start(exclude_interfaces=exclude_interfaces)
+
+            disco_window: UpnpSearchWindow = cls.upnp_presence.discover_devices(limit_to=required_devices)
+            disco_window.wait()
+
+            found_devices = disco_window.devices_found
+            matching_devices = disco_window.matching_devices
+
+            missing_devices = []
+            for identifier in cls.lookup_upnp_device_config.keys():
+                if identifier not in matching_devices:
+                    missing_devices.append(identifier)
+
+            conn_results = {
+                "upnp": {
+                    "found": found_devices,
+                    "matching": matching_devices,
+                    "missing": missing_devices
+                }
             }
-        }
 
-        conn_errors = []
+            conn_errors = []
 
         return (conn_errors, conn_results)
 
