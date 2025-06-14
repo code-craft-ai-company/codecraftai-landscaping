@@ -23,6 +23,9 @@ if TYPE_CHECKING:
 
 
 class LandscapingLayerBase:
+    """
+        Base class providing common functionality for landscape layers.
+    """
 
     logger = logging.getLogger()
 

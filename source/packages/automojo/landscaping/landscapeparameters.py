@@ -17,6 +17,10 @@ __credits__ = []
 from types import SimpleNamespace
 
 class LandscapeActivationParams(SimpleNamespace):
+    """
+        Parameter set used to control landscape activation behavior.
+    """
+
     disable_device_activation: bool=False
     disable_service_activation: bool=False
     allow_missing_devices: bool=False
