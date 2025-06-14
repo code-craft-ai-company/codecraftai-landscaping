@@ -70,7 +70,11 @@ class OrchestrationJob(ContextUser):
 
 
     def begin(self):
+        """
+            Initializes job related state prior to execution.
 
+            :returns: ``None``
+        """
         self._starttime = AM_RUNTIME_VARIABLES.AM_STARTTIME
 
         self._orch_results_dir = get_path_for_output()
@@ -80,7 +84,12 @@ class OrchestrationJob(ContextUser):
         return
 
     def execute(self) -> int:
+        """
+            Executes the orchestration job.
 
+            :returns: The execution result code.
+            :rtype: int
+        """
         result_code = 0
 
         self._logger.section("Discovery")

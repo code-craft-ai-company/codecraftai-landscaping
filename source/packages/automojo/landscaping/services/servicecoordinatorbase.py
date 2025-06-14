@@ -157,7 +157,19 @@ class ServiceCoordinatorBase(CoordinatorBase):
 
     def create_ssh_agent(self, service: LandscapeService, service_info: Dict[str, Any], host: str, cred: BaseCredential,
                          users: Optional[dict] = None, port: int = 22, pty_params: Optional[dict] = None):
-        
+        """
+            Creates an SSH agent instance for a service.
+
+            :param service: Service object the agent is for.
+            :param service_info: Dictionary of service configuration information.
+            :param host: Hostname or IP address for the service.
+            :param cred: Credential to use for SSH authentication.
+            :param users: Optional dictionary of user mappings.
+            :param port: SSH port number.
+            :param pty_params: Optional pseudo terminal parameters.
+
+            :returns: ``None`` or raises :class:`AbstractMethodError` when required.
+        """
         if self.MUST_INCLUDE_SSH:
             err_mgs = "if 'MUST_INCLUDE_SSH' is 'True' then 'create_ssh_agent' must be overloaded."
             raise AbstractMethodError(err_mgs)

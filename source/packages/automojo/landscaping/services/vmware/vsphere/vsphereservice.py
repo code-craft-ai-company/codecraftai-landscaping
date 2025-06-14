@@ -25,8 +25,17 @@ if TYPE_CHECKING:
 
 class VSphereService(ServiceBase):
 
-    def __init__(self, lscape: Landscape, coordinator: CoordinatorBase, friendly_id: 
+    def __init__(self, lscape: Landscape, coordinator: CoordinatorBase, friendly_id:
                  FriendlyIdentifier, service_type: str, service_config: dict):
+        """
+            Initializes a :class:`VSphereService` instance.
+
+            :param lscape: Owning landscape instance.
+            :param coordinator: Coordinator that created the service.
+            :param friendly_id: Friendly identifier for the service.
+            :param service_type: String indicating the service type.
+            :param service_config: Configuration dictionary for the service.
+        """
         super().__init__(lscape, coordinator, friendly_id, service_type, service_config)
         
         credmgr = lscape.credential_manager
@@ -47,4 +56,9 @@ class VSphereService(ServiceBase):
     
     @property
     def vsagent(self):
+        """
+            Returns the :class:`VSphereAgent` associated with this service.
+
+            :returns: VSphereAgent instance.
+        """
         return self._vsagent

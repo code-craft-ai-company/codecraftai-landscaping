@@ -23,11 +23,20 @@ if TYPE_CHECKING:
 class HostExt(BaseExt):
 
     def __init__(self, agent: "VSphereAgent"):
+        """
+            Initializes the Host extension for a vSphere agent.
+
+            :param agent: Owning :class:`VSphereAgent` instance.
+        """
         super().__init__(agent)
         return
     
     def connect(self, host: str):
+        """
+            Connects a host to vCenter.
 
+            :param host: Identifier of the host to connect.
+        """
         agent = self.agent
 
         req_url = agent.build_api_url(f"/vcenter/host/{host}")
@@ -39,7 +48,11 @@ class HostExt(BaseExt):
         return
 
     def delete(self, host: str):
+        """
+            Deletes a host from vCenter inventory.
 
+            :param host: Identifier of the host to delete.
+        """
         agent = self.agent
 
         req_url = agent.build_api_url(f"/vcenter/host/{host}")
@@ -51,7 +64,11 @@ class HostExt(BaseExt):
         return
 
     def disconnect(self, host: str):
+        """
+            Disconnects a host from vCenter.
 
+            :param host: Identifier of the host to disconnect.
+        """
         agent = self.agent
 
         req_url = agent.build_api_url(f"/vcenter/host/{host}")
@@ -63,6 +80,11 @@ class HostExt(BaseExt):
         return
 
     def list(self):
+        """
+            Lists hosts known to vCenter.
+
+            :returns: List of host records.
+        """
         host_list = None
 
         agent = self.agent

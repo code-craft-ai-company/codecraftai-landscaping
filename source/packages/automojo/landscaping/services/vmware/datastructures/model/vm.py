@@ -53,6 +53,12 @@ class VmHardwareSerialBackingInfo:
 
     @classmethod
     def from_dict(cls, info: dict) -> "VmHardwareSerialBackingInfo":
+        """
+            Creates an instance from a dictionary of attributes.
+
+            :param info: Dictionary representing the object.
+            :returns: Instantiated :class:`VmHardwareSerialBackingInfo`.
+        """
         obj = VmHardwareSerialBackingInfo(**info)
         return obj
     
@@ -68,6 +74,12 @@ class VmHardwareSerialInfo:
 
     @classmethod
     def from_dict(cls, info: dict) -> "VmHardwareSerialInfo":
+        """
+            Creates an instance from a dictionary of attributes.
+
+            :param info: Dictionary representing the object.
+            :returns: Instantiated :class:`VmHardwareSerialInfo`.
+        """
         info["backing"] = VmHardwareSerialBackingInfo.from_dict(info["backing"])
         obj = VmHardwareSerialInfo(**info)
         return obj
@@ -80,6 +92,12 @@ class VmHardwareBootDeviceEntry:
 
     @classmethod
     def from_dict(cls, info: dict) -> "VmHardwareBootDeviceEntry":
+        """
+            Creates an instance from a dictionary of attributes.
+
+            :param info: Dictionary representing the object.
+            :returns: Instantiated :class:`VmHardwareBootDeviceEntry`.
+        """
         obj = VmHardwareBootDeviceEntry(**info)
         return obj
 
@@ -93,6 +111,12 @@ class VmHardwareCdromBackingInfo:
 
     @classmethod
     def from_dict(cls, info: dict) -> "VmHardwareCdromBackingInfo":
+        """
+            Creates an instance from a dictionary of attributes.
+
+            :param info: Dictionary representing the object.
+            :returns: Instantiated :class:`VmHardwareCdromBackingInfo`.
+        """
         obj = VmHardwareCdromBackingInfo(**info)
         return obj
 
@@ -103,6 +127,12 @@ class VmHardwareIdeAddressInfo:
 
     @classmethod
     def from_dict(cls, info: dict) -> "VmHardwareIdeAddressInfo":
+        """
+            Creates an instance from a dictionary of attributes.
+
+            :param info: Dictionary representing the object.
+            :returns: Instantiated :class:`VmHardwareIdeAddressInfo`.
+        """
         obj = VmHardwareIdeAddressInfo(**info)
         return obj
 
@@ -113,6 +143,12 @@ class VmHardwareNvmeAddressInfo:
 
     @classmethod
     def from_dict(cls, info: dict) -> "VmHardwareNvmeAddressInfo":
+        """
+            Creates an instance from a dictionary of attributes.
+
+            :param info: Dictionary representing the object.
+            :returns: Instantiated :class:`VmHardwareNvmeAddressInfo`.
+        """
         obj = VmHardwareNvmeAddressInfo(**info)
         return obj
 
@@ -124,6 +160,12 @@ class VmHardwareSataAddressInfo:
 
     @classmethod
     def from_dict(cls, info: dict) -> "VmHardwareSataAddressInfo":
+        """
+            Creates an instance from a dictionary of attributes.
+
+            :param info: Dictionary representing the object.
+            :returns: Instantiated :class:`VmHardwareSataAddressInfo`.
+        """
         obj = VmHardwareSataAddressInfo(**info)
         return obj
 
@@ -134,6 +176,12 @@ class VmHardwareScsiAddressInfo:
 
     @classmethod
     def from_dict(cls, info: dict) -> "VmHardwareScsiAddressInfo":
+        """
+            Creates an instance from a dictionary of attributes.
+
+            :param info: Dictionary representing the object.
+            :returns: Instantiated :class:`VmHardwareScsiAddressInfo`.
+        """
         obj = VmHardwareScsiAddressInfo(**info)
         return obj
 
@@ -150,6 +198,12 @@ class VmHardwareCdromInfo:
 
     @classmethod
     def from_dict(cls, info: dict) -> "VmHardwareCdromInfo":
+        """
+            Creates an instance from a dictionary of attributes.
+
+            :param info: Dictionary representing the object.
+            :returns: Instantiated :class:`VmHardwareCdromInfo`.
+        """
         info["backing"] = VmHardwareCdromBackingInfo.from_dict(info["backing"])
         if "ide" in info:
             info["ide"] = VmHardwareIdeAddressInfo.from_dict(info["ide"])
@@ -167,6 +221,12 @@ class VmHardwareCpuInfo:
 
     @classmethod
     def from_dict(cls, info: dict) -> "VmHardwareCpuInfo":
+        """
+            Creates an instance from a dictionary of attributes.
+
+            :param info: Dictionary representing the object.
+            :returns: Instantiated :class:`VmHardwareCpuInfo`.
+        """
         obj = VmHardwareCpuInfo(**info)
         return obj
 
@@ -177,6 +237,12 @@ class VmHardwareDiskBackingInfo:
 
     @classmethod
     def from_dict(cls, info: dict) -> "VmHardwareDiskBackingInfo":
+        """
+            Creates an instance from a dictionary of attributes.
+
+            :param info: Dictionary representing the object.
+            :returns: Instantiated :class:`VmHardwareDiskBackingInfo`.
+        """
         obj = VmHardwareDiskBackingInfo(**info)
         return obj
 
@@ -193,6 +259,12 @@ class VmHardwareDiskInfo:
 
     @classmethod
     def from_dict(cls, info: dict) -> "VmHardwareCdromInfo":
+        """
+            Creates an instance from a dictionary of attributes.
+
+            :param info: Dictionary representing the object.
+            :returns: Instantiated :class:`VmHardwareCdromInfo`.
+        """
         info["backing"] = VmHardwareDiskBackingInfo.from_dict(info["backing"])
         if "ide" in info:
             info["ide"] = VmHardwareIdeAddressInfo.from_dict(info["ide"])
@@ -214,6 +286,12 @@ class VmHardwareFloppyBackingInfo:
 
     @classmethod
     def from_dict(cls, info: dict) -> "VmHardwareFloppyBackingInfo":
+        """
+            Creates an instance from a dictionary of attributes.
+
+            :param info: Dictionary representing the object.
+            :returns: Instantiated :class:`VmHardwareFloppyBackingInfo`.
+        """
         obj = VmHardwareFloppyBackingInfo(**info)
         return obj
 
@@ -227,6 +305,12 @@ class VmHardwareFloppyInfo:
 
     @classmethod
     def from_dict(cls, info: dict) -> "VmHardwareFloppyInfo":
+        """
+            Creates an instance from a dictionary of attributes.
+
+            :param info: Dictionary representing the object.
+            :returns: Instantiated :class:`VmHardwareFloppyInfo`.
+        """
         info["backing"] = VmHardwareFloppyBackingInfo.from_dict(info["backing"])
         obj = VmHardwareFloppyInfo(**info)
         return obj
@@ -242,6 +326,12 @@ class VmHardwareInfo:
 
     @classmethod
     def from_dict(cls, info: dict) -> "VmHardwareInfo":
+        """
+            Creates an instance from a dictionary of attributes.
+
+            :param info: Dictionary representing the object.
+            :returns: Instantiated :class:`VmHardwareInfo`.
+        """
         obj = VmHardwareInfo(**info)
         return obj
 
@@ -255,6 +345,12 @@ class VmHardwareAdapterScsiInfo:
 
     @classmethod
     def from_dict(cls, info: dict) -> "VmHardwareAdapterScsiInfo":
+        """
+            Creates an instance from a dictionary of attributes.
+
+            :param info: Dictionary representing the object.
+            :returns: Instantiated :class:`VmHardwareAdapterScsiInfo`.
+        """
         info["scsi"] = VmHardwareScsiAddressInfo.from_dict(info["scsi"])
         obj = VmHardwareAdapterScsiInfo(**info)
         return obj
@@ -271,6 +367,12 @@ class VmHardwareBootInfo:
 
     @classmethod
     def from_dict(cls, info: dict) -> "VmHardwareBootInfo":
+        """
+            Creates an instance from a dictionary of attributes.
+
+            :param info: Dictionary representing the object.
+            :returns: Instantiated :class:`VmHardwareBootInfo`.
+        """
         obj = VmHardwareBootInfo(**info)
         return obj
 
@@ -283,6 +385,12 @@ class VmHardwareMemoryInfo:
 
     @classmethod
     def from_dict(cls, info: dict) -> "VmHardwareMemoryInfo":
+        """
+            Creates an instance from a dictionary of attributes.
+
+            :param info: Dictionary representing the object.
+            :returns: Instantiated :class:`VmHardwareMemoryInfo`.
+        """
         obj = VmHardwareMemoryInfo(**info)
         return obj
 
@@ -301,6 +409,12 @@ class VmHardwareEthernetBackingInfo:
 
     @classmethod
     def from_dict(cls, info: dict) -> "VmHardwareEthernetBackingInfo":
+        """
+            Creates an instance from a dictionary of attributes.
+
+            :param info: Dictionary representing the object.
+            :returns: Instantiated :class:`VmHardwareEthernetBackingInfo`.
+        """
         obj = VmHardwareEthernetBackingInfo(**info)
         return obj
 
@@ -320,6 +434,12 @@ class VmHardwareEthernetInfo:
 
     @classmethod
     def from_dict(cls, info: dict) -> "VmHardwareEthernetInfo":
+        """
+            Creates an instance from a dictionary of attributes.
+
+            :param info: Dictionary representing the object.
+            :returns: Instantiated :class:`VmHardwareEthernetInfo`.
+        """
         info["backing"] = VmHardwareEthernetBackingInfo.from_dict(info["backing"])
         obj = VmHardwareEthernetInfo(**info)
         return obj
@@ -333,6 +453,12 @@ class VmHardwareAdapterSataInfo:
 
     @classmethod
     def from_dict(cls, info: dict) -> "VmHardwareAdapterSataInfo":
+        """
+            Creates an instance from a dictionary of attributes.
+
+            :param info: Dictionary representing the object.
+            :returns: Instantiated :class:`VmHardwareAdapterSataInfo`.
+        """
         obj = VmHardwareAdapterSataInfo(**info)
         return obj
 
@@ -345,6 +471,12 @@ class VmHardwareParallelBackingInfo:
 
     @classmethod
     def from_dict(cls, info: dict) -> "VmHardwareParallelBackingInfo":
+        """
+            Creates an instance from a dictionary of attributes.
+
+            :param info: Dictionary representing the object.
+            :returns: Instantiated :class:`VmHardwareParallelBackingInfo`.
+        """
         obj = VmHardwareParallelBackingInfo(**info)
         return obj
 
@@ -358,6 +490,12 @@ class VmHardwareParallelInfo:
 
     @classmethod
     def from_dict(cls, info: dict) -> "VmHardwareParallelInfo":
+        """
+            Creates an instance from a dictionary of attributes.
+
+            :param info: Dictionary representing the object.
+            :returns: Instantiated :class:`VmHardwareParallelInfo`.
+        """
         info["backing"] = VmHardwareParallelBackingInfo.from_dict(info["backing"])
         obj = VmHardwareParallelInfo(**info)
         return obj
@@ -370,6 +508,12 @@ class VmHardwareAdapterNvmeInfo:
 
     @classmethod
     def from_dict(cls, info: dict) -> "VmHardwareAdapterNvmeInfo":
+        """
+            Creates an instance from a dictionary of attributes.
+
+            :param info: Dictionary representing the object.
+            :returns: Instantiated :class:`VmHardwareAdapterNvmeInfo`.
+        """
         obj = VmHardwareAdapterNvmeInfo(**info)
         return obj
 
@@ -381,6 +525,12 @@ class VmIdentityInfo:
 
     @classmethod
     def from_dict(cls, info: dict) -> "VmIdentityInfo":
+        """
+            Creates an instance from a dictionary of attributes.
+
+            :param info: Dictionary representing the object.
+            :returns: Instantiated :class:`VmIdentityInfo`.
+        """
         obj = VmIdentityInfo(**info)
         return obj
 
@@ -408,6 +558,12 @@ class VmInfo:
 
     @classmethod
     def from_dict(cls, info: dict) -> "VmHardwareAdapterNvmeInfo":
+        """
+            Creates an instance from a dictionary of attributes.
+
+            :param info: Dictionary representing the object.
+            :returns: Instantiated :class:`VmHardwareAdapterNvmeInfo`.
+        """
 
         info["serial_ports"] = [VmHardwareSerialInfo.from_dict(item) for item in info["serial_ports"]]
         info["boot_devices"] = [VmHardwareBootDeviceEntry.from_dict(item) for item in info["boot_devices"]]

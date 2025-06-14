@@ -23,10 +23,23 @@ if TYPE_CHECKING:
 class IsoExt(BaseExt):
 
     def __init__(self, agent: "VSphereAgent"):
+        """
+            Initializes the ISO extension for a vSphere agent.
+
+            :param agent: Owning :class:`VSphereAgent` instance.
+        """
         super().__init__(agent)
         return
     
     def mount(self, vm: str, library_item: str):
+        """
+            Mounts an ISO image to a virtual machine.
+
+            :param vm: Identifier of the VM.
+            :param library_item: Content library item representing the ISO.
+
+            :returns: Result dictionary from the mount operation.
+        """
         result = None
 
         agent = self.agent
@@ -47,6 +60,14 @@ class IsoExt(BaseExt):
         return result
     
     def unmount(self, vm: str, cdrom: str):
+        """
+            Unmounts an ISO image from a virtual machine.
+
+            :param vm: Identifier of the VM.
+            :param cdrom: Identifier of the CD-ROM device.
+
+            :returns: Result dictionary from the unmount operation.
+        """
         result = None
 
         agent = self.agent

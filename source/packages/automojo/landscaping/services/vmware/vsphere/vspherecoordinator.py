@@ -31,5 +31,10 @@ class VSphereCoordinator(ServiceCoordinatorBase):
     # pylint: disable=attribute-defined-outside-init
 
     def __init__(self, lscape: Landscape, *args, **kwargs):
+        """
+            Initializes the coordinator for a vSphere landscape.
+
+            :param lscape: Owning :class:`Landscape` instance.
+        """
         super().__init__(lscape, *args, **kwargs)
         return

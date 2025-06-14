@@ -22,5 +22,8 @@ class VSphereCoordinatorCoupling(ServiceCoordinatorCouplingBase):
     COORDINATOR_TYPE = VSphereCoordinator
 
     def __init__(self, *args, **kwargs):
+        """
+            Initializes the vSphere coordinator coupling.
+        """
         super().__init__(*args, **kwargs)
         return
