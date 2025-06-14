@@ -1,9 +1,9 @@
 """
-.. module:: baseext
+    .. module:: baseext
     :platform: Darwin, Linux, Unix, Windows
     :synopsis: Contains the BaseExt object used share common functionality between vshere agent extensions.
 
-.. moduleauthor:: Myron Walker <myron.walker@gmail.com>
+    .. moduleauthor:: Myron Walker <myron.walker@gmail.com>
 """
 
 __author__ = "Myron Walker"

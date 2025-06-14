@@ -1,9 +1,9 @@
 """
-.. module:: landscapeoperationallayer
-   :platform: Darwin, Linux, Unix, Windows
-   :synopsis: Module containing the landscapeoperationallayer functionality.
+    .. module:: landscapeoperationallayer
+    :platform: Darwin, Linux, Unix, Windows
+    :synopsis: Module containing the landscapeoperationallayer functionality.
 
-.. moduleauthor:: Myron Walker <myron.walker@gmail.com>
+    .. moduleauthor:: Myron Walker <myron.walker@gmail.com>
 """
 
 __author__ = "Myron Walker"

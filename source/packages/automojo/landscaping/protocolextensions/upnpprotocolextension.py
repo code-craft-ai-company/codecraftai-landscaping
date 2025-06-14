@@ -1,9 +1,9 @@
 """
-.. module:: upnpprotocolextension
-   :platform: Darwin, Linux, Unix, Windows
-   :synopsis: Module containing the upnpprotocolextension functionality.
+    .. module:: upnpprotocolextension
+    :platform: Darwin, Linux, Unix, Windows
+    :synopsis: Module containing the upnpprotocolextension functionality.
 
-.. moduleauthor:: Myron Walker <myron.walker@gmail.com>
+    .. moduleauthor:: Myron Walker <myron.walker@gmail.com>
 """
 __author__ = "Myron Walker"
 __copyright__ = "Copyright 2025, Automation Mojo LLC"

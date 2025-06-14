@@ -1,9 +1,9 @@
 """
-.. module:: windowsclientcoordinator
+    .. module:: windowsclientcoordinator
     :platform: Darwin, Linux, Unix, Windows
     :synopsis: Contains the WindowsPoolCoordinator which is used for managing connectivity with pools of Windows capable devices
 
-.. moduleauthor:: Myron Walker <myron.walker@gmail.com>
+    .. moduleauthor:: Myron Walker <myron.walker@gmail.com>
 """
 
 __author__ = "Myron Walker"

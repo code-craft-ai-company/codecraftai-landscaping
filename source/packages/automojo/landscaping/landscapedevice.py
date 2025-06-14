@@ -1,9 +1,9 @@
 """
-.. module:: landscapedevice
+    .. module:: landscapedevice
     :platform: Darwin, Linux, Unix, Windows
     :synopsis: Module containing the :class:`LandscapeDevice` class.
 
-.. moduleauthor:: Myron Walker <myron.walker@gmail.com>
+    .. moduleauthor:: Myron Walker <myron.walker@gmail.com>
 
 """
 

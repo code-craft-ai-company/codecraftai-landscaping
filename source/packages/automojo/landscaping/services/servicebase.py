@@ -1,11 +1,11 @@
 """
-.. module:: servicebase
+    .. module:: servicebase
     :platform: Darwin, Linux, Unix, Windows
     :synopsis: Module contains the :class:`BaseService` object which is a base
-               class for objects that inter-operate with a computer service
-               operating system.
+    class for objects that inter-operate with a computer service
+    operating system.
 
-.. moduleauthor:: Myron Walker <myron.walker@gmail.com>
+    .. moduleauthor:: Myron Walker <myron.walker@gmail.com>
 
 """
 

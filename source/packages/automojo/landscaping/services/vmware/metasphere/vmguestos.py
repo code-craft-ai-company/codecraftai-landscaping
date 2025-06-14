@@ -1,9 +1,9 @@
 """
-.. module:: vmguestos
+    .. module:: vmguestos
     :platform: Darwin, Linux, Unix, Windows
     :synopsis: Contains the VmGuestOS constants used when working with VM guest OS(s).
 
-.. moduleauthor:: Myron Walker <myron.walker@gmail.com>
+    .. moduleauthor:: Myron Walker <myron.walker@gmail.com>
 """
 
 __author__ = "Myron Walker"

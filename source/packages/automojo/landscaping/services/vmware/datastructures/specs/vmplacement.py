@@ -1,9 +1,9 @@
 """
-.. module:: vmplacementspec
+    .. module:: vmplacementspec
     :platform: Darwin, Linux, Unix, Windows
     :synopsis: Contains the VmPlacementSpec object used to indicate the placement of a newly created VM.
 
-.. moduleauthor:: Myron Walker <myron.walker@gmail.com>
+    .. moduleauthor:: Myron Walker <myron.walker@gmail.com>
 """
 
 __author__ = "Myron Walker"

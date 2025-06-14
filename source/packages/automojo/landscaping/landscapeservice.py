@@ -1,9 +1,9 @@
 """
-.. module:: landscapeservice
+    .. module:: landscapeservice
     :platform: Darwin, Linux, Unix, Windows
     :synopsis: Module containing the :class:`LandscapeService` class.
 
-.. moduleauthor:: Myron Walker <myron.walker@gmail.com>
+    .. moduleauthor:: Myron Walker <myron.walker@gmail.com>
 
 """
 

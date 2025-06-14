@@ -1,9 +1,9 @@
 """
-.. module:: tcpserialcoordinator
+    .. module:: tcpserialcoordinator
     :platform: Darwin, Linux, Unix, Windows
     :synopsis: Contains the TcpSerialCoordinator which is used for managing connectivity with pools of tcp serial devices
 
-.. moduleauthor:: Myron Walker <myron.walker@gmail.com>
+    .. moduleauthor:: Myron Walker <myron.walker@gmail.com>
 """
 
 __author__ = "Myron Walker"

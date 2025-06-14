@@ -1,11 +1,11 @@
 """
-.. module:: friendlyidentifier
+    .. module:: friendlyidentifier
     :platform: Darwin, Linux, Unix, Windows
     :synopsis: Module containing the :class:`FriendlyIdentifier` class which can
-               be used to reference devices by a short name while allowing the landscaping
-               modules to link or associate a full identifier with the short name.
+    be used to reference devices by a short name while allowing the landscaping
+    modules to link or associate a full identifier with the short name.
 
-.. moduleauthor:: Myron Walker <myron.walker@gmail.com>
+    .. moduleauthor:: Myron Walker <myron.walker@gmail.com>
 
 """
 

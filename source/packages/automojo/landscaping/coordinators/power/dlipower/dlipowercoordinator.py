@@ -1,9 +1,9 @@
 """
-.. module:: dlipowercoordinator
+    .. module:: dlipowercoordinator
     :platform: Darwin, Linux, Unix, Windows
     :synopsis: Contains the DliPowerCoordinator which is used for managing connectivity with pools of ssh capable devices
 
-.. moduleauthor:: Myron Walker <myron.walker@gmail.com>
+    .. moduleauthor:: Myron Walker <myron.walker@gmail.com>
 """
 
 __author__ = "Myron Walker"

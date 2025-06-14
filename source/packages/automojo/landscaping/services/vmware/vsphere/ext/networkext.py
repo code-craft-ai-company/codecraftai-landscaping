@@ -1,9 +1,9 @@
 """
-.. module:: networkext
+    .. module:: networkext
     :platform: Darwin, Linux, Unix, Windows
     :synopsis: Contains the NetworkExt object.
 
-.. moduleauthor:: Myron Walker <myron.walker@gmail.com>
+    .. moduleauthor:: Myron Walker <myron.walker@gmail.com>
 """
 
 __author__ = "Myron Walker"

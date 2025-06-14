@@ -1,9 +1,9 @@
 """
-.. module:: linuxclient
+    .. module:: linuxclient
     :platform: Darwin, Linux, Unix, Windows
     :synopsis: Contains the LinuxClient object.
 
-.. moduleauthor:: Myron Walker <myron.walker@gmail.com>
+    .. moduleauthor:: Myron Walker <myron.walker@gmail.com>
 """
 
 __author__ = "Myron Walker"

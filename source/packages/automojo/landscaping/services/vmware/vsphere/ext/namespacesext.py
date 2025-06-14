@@ -1,9 +1,9 @@
 """
-.. module:: namespacesext
+    .. module:: namespacesext
     :platform: Darwin, Linux, Unix, Windows
     :synopsis: Contains the NamespacesExt object.
 
-.. moduleauthor:: Myron Walker <myron.walker@gmail.com>
+    .. moduleauthor:: Myron Walker <myron.walker@gmail.com>
 """
 
 __author__ = "Myron Walker"

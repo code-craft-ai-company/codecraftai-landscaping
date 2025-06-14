@@ -1,9 +1,9 @@
 """
-.. module:: sshcoordinatorcoupling
+    .. module:: sshcoordinatorcoupling
     :platform: Darwin, Linux, Unix, Windows
     :synopsis: Contains a SshCoordinatorCoupling object to use for working with the computer nodes via SSH
 
-.. moduleauthor:: Myron Walker <myron.walker@gmail.com>
+    .. moduleauthor:: Myron Walker <myron.walker@gmail.com>
 """
 
 __author__ = "Myron Walker"

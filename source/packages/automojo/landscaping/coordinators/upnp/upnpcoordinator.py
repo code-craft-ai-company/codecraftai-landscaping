@@ -1,9 +1,9 @@
 """
-.. module:: upnpcoordinator
+    .. module:: upnpcoordinator
     :platform: Darwin, Linux, Unix, Windows
     :synopsis: Contains the UpnpCoordinator which is used for managing connectivity upnp devices visible in the automation landscape.
 
-.. moduleauthor:: Myron Walker <myron.walker@gmail.com>
+    .. moduleauthor:: Myron Walker <myron.walker@gmail.com>
 """
 
 __author__ = "Myron Walker"

@@ -1,11 +1,11 @@
 """
-.. module:: landscapeprotocolextension
+    .. module:: landscapeprotocolextension
     :platform: Darwin, Linux, Unix, Windows
     :synopsis: Module containing the :class:`ProtocolExtension` class which is used
-               to attached protocol agents and interop capability to a :class:`LandscapeDevice`
-               or :class:`LandscapeService`.
+    to attached protocol agents and interop capability to a :class:`LandscapeDevice`
+    or :class:`LandscapeService`.
 
-.. moduleauthor:: Myron Walker <myron.walker@gmail.com>
+    .. moduleauthor:: Myron Walker <myron.walker@gmail.com>
 
 """
 

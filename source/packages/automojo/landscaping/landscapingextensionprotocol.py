@@ -1,10 +1,10 @@
 """
-.. module:: extensionpoints
+    .. module:: extensionpoints
     :platform: Darwin, Linux, Unix, Windows
     :synopsis: Module containing functions and classes that help create and work with
-               configuration based extension objects.
+    configuration based extension objects.
 
-.. moduleauthor:: Myron Walker <myron.walker@gmail.com>
+    .. moduleauthor:: Myron Walker <myron.walker@gmail.com>
 """
 
 __author__ = "Myron Walker"

@@ -1,9 +1,9 @@
 """
-.. module:: vspherecoordinator
-   :platform: Darwin, Linux, Unix, Windows
-   :synopsis: Module containing the vspherecoordinator functionality.
+    .. module:: vspherecoordinator
+    :platform: Darwin, Linux, Unix, Windows
+    :synopsis: Module containing the vspherecoordinator functionality.
 
-.. moduleauthor:: Myron Walker <myron.walker@gmail.com>
+    .. moduleauthor:: Myron Walker <myron.walker@gmail.com>
 """
 __author__ = "Myron Walker"
 __copyright__ = "Copyright 2025, Automation Mojo LLC"

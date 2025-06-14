@@ -1,11 +1,11 @@
 """
-.. module:: landscapeconfigurationlayer
+    .. module:: landscapeconfigurationlayer
     :platform: Darwin, Linux, Unix, Windows
     :synopsis: Module containing the :class:`LandscapeConfigurationLayer` class which is used
-               to load the various configuration files and to provide methods for working with
-               configuration information.
+    to load the various configuration files and to provide methods for working with
+    configuration information.
 
-.. moduleauthor:: Myron Walker <myron.walker@gmail.com>
+    .. moduleauthor:: Myron Walker <myron.walker@gmail.com>
 
 """
 

@@ -1,10 +1,10 @@
 """
-.. module:: pinodecoordinator
+    .. module:: pinodecoordinator
     :platform: Darwin, Linux, Unix, Windows
     :synopsis: Contains the PiNodeCoordinator which is used for managing connectivity with raspberry
-               pi computer nodes in a raspberry pi cluster.
+    pi computer nodes in a raspberry pi cluster.
 
-.. moduleauthor:: Myron Walker <myron.walker@gmail.com>
+    .. moduleauthor:: Myron Walker <myron.walker@gmail.com>
 """
 
 __author__ = "Myron Walker"

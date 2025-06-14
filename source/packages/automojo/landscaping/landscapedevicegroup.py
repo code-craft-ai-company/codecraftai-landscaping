@@ -1,11 +1,11 @@
 """
-.. module:: landscapedevicegroup
+    .. module:: landscapedevicegroup
     :platform: Darwin, Linux, Unix, Windows
     :synopsis: Module contains the :class:`LandscapeDeviceGroup` object which is a
-               container object which groups :class:`Landscapedevice` object with
-               thier group name.
+    container object which groups :class:`Landscapedevice` object with
+    thier group name.
 
-.. moduleauthor:: Myron Walker <myron.walker@gmail.com>
+    .. moduleauthor:: Myron Walker <myron.walker@gmail.com>
 
 """
 
