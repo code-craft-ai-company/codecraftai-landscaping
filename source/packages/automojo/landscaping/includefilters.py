@@ -38,6 +38,11 @@ class IncludeServiceBase(IIncludeFilter):
 class IncludeDeviceByDeviceType(IncludeDeviceBase):
 
     def __init__(self, device_type: str) -> None:
+        """
+            Initializes a filter that matches devices by type.
+
+            :param device_type: The device type to include.
+        """
         super().__init__()
         self._device_type = device_type
         return
@@ -61,6 +66,12 @@ class IncludeDeviceByDeviceType(IncludeDeviceBase):
 class IncludeDeviceByDeviceTypeAndRole(IncludeDeviceBase):
 
     def __init__(self, device_type: str, role: str) -> None:
+        """
+            Initializes a filter that matches devices by type and role.
+
+            :param device_type: The device type to include.
+            :param role: The role the device must match.
+        """
         super().__init__()
         self._device_type = device_type
         self._role = role
@@ -85,6 +96,11 @@ class IncludeDeviceByDeviceTypeAndRole(IncludeDeviceBase):
 class IncludeDeviceByGroup(IncludeDeviceBase):
 
     def __init__(self, group: str) -> None:
+        """
+            Initializes a filter that matches devices by group name.
+
+            :param group: The device group label to include.
+        """
         super().__init__()
         self._group = group
         return
@@ -108,6 +124,11 @@ class IncludeDeviceByGroup(IncludeDeviceBase):
 class IncludeDeviceByName(IncludeDeviceBase):
 
     def __init__(self, name: str) -> None:
+        """
+            Initializes a filter that matches devices by name.
+
+            :param name: The device name to include.
+        """
         super().__init__()
         self._name = name
         return
@@ -131,6 +152,11 @@ class IncludeDeviceByName(IncludeDeviceBase):
 class IncludeDeviceByRole(IncludeDeviceBase):
 
     def __init__(self, role: str) -> None:
+        """
+            Initializes a filter that matches devices by role.
+
+            :param role: The role value to include.
+        """
         super().__init__()
         self._role = role
         return
@@ -154,6 +180,11 @@ class IncludeDeviceByRole(IncludeDeviceBase):
 class IncludeDeviceConfigByDeviceType(IncludeDeviceConfigBase):
 
     def __init__(self, device_type: str) -> None:
+        """
+            Initializes a filter that matches device configuration entries by type.
+
+            :param device_type: The device type to include.
+        """
         super().__init__()
         self._device_type = device_type
         return
@@ -176,6 +207,11 @@ class IncludeDeviceConfigByDeviceType(IncludeDeviceConfigBase):
 class IncludeServiceByName(IncludeServiceBase):
 
     def __init__(self, name: str) -> None:
+        """
+            Initializes a filter that matches services by name.
+
+            :param name: The service name to include.
+        """
         super().__init__()
         self._name = name
         return

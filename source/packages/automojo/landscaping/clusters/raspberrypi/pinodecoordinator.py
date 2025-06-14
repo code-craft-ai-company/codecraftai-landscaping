@@ -42,6 +42,11 @@ class PiNodeCoordinator(NodeCoordinatorBase):
     # pylint: disable=attribute-defined-outside-init
 
     def __init__(self, lscape: "Landscape", *args, **kwargs):
+        """
+            Creates a new :class:`PiNodeCoordinator`.
+
+            :param lscape: The :class:`Landscape` this coordinator manages.
+        """
         super().__init__(lscape, *args, **kwargs)
         return
 

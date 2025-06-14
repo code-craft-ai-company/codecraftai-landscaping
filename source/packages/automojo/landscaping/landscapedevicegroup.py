@@ -28,6 +28,12 @@ class LandscapeDeviceGroup:
     """
 
     def __init__(self, label: str, items: List[LandscapeDevice]) -> None:
+        """
+            Constructs a :class:`LandscapeDeviceGroup`.
+
+            :param label: The name assigned to the group.
+            :param items: The list of devices that belong to the group.
+        """
         self._label = label
         self._items = items
         

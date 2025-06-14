@@ -22,6 +22,13 @@ from automojo.interop.protocols.upnp.upnpagent import UpnpAgent
 class UpnpProtocolExtension(UpnpAgent, ProtocolExtension):
 
     def __init__(self, manufacturer: str, modelNumber: str, modelDescription):
+        """
+            Constructs an :class:`UpnpProtocolExtension` instance.
+
+            :param manufacturer: The manufacturer string.
+            :param modelNumber: The model number identifier.
+            :param modelDescription: Human readable model description.
+        """
         UpnpAgent.__init__(self, manufacturer, modelNumber, modelDescription)
         ProtocolExtension.__init__(self)
         return

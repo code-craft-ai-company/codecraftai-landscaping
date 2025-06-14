@@ -52,8 +52,17 @@ class LandscapeDevice(FeatureAttachedObject):
 
     logger = logging.getLogger()
 
-    def __init__(self, lscape: "Landscape", coordinator: "CoordinatorBase", friendly_id: 
+    def __init__(self, lscape: "Landscape", coordinator: "CoordinatorBase", friendly_id:
                  FriendlyIdentifier, device_type: str, device_config: dict):
+        """
+            Constructs a new :class:`LandscapeDevice` instance.
+
+            :param lscape: The :class:`Landscape` this device belongs to.
+            :param coordinator: Coordinator responsible for the device.
+            :param friendly_id: A :class:`FriendlyIdentifier` for the device.
+            :param device_type: The declared device type.
+            :param device_config: Configuration dictionary for the device.
+        """
         super().__init__()
 
         # These data items live for the life of the device, so they are not guarded

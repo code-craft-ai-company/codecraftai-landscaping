@@ -51,8 +51,17 @@ class LandscapeService(FeatureAttachedObject):
 
     logger = logging.getLogger()
 
-    def __init__(self, lscape: "Landscape", coordinator: "CoordinatorBase", friendly_id: 
+    def __init__(self, lscape: "Landscape", coordinator: "CoordinatorBase", friendly_id:
                  FriendlyIdentifier, service_type: str, service_config: dict):
+        """
+            Constructs a new :class:`LandscapeService` instance.
+
+            :param lscape: The :class:`Landscape` this service belongs to.
+            :param coordinator: Coordinator managing this service.
+            :param friendly_id: A :class:`FriendlyIdentifier` for the service.
+            :param service_type: The declared service type.
+            :param service_config: Configuration dictionary for the service.
+        """
         super().__init__()
 
         # These data items live for the life of the device, so they are not guarded

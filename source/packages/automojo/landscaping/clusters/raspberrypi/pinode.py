@@ -28,6 +28,15 @@ class PiNode(NodeBase):
 
     def __init__(self, lscape: "Landscape", coordinator: "CoordinatorBase",
                  friendly_id:FriendlyIdentifier, device_type: str, device_config: dict):
+        """
+            Constructs a :class:`PiNode` instance.
+
+            :param lscape: The :class:`Landscape` this node belongs to.
+            :param coordinator: Coordinator managing the node.
+            :param friendly_id: Friendly identifier for the node.
+            :param device_type: Device type of the node.
+            :param device_config: Configuration dictionary for the node.
+        """
         super().__init__(lscape, coordinator, friendly_id, device_type, device_config)
         return
     

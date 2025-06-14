@@ -24,9 +24,22 @@ from automojo.interop.protocols.ssh.sshconst import SshJumpParams
 
 class SshProtocolExtension(SshAgent, ProtocolExtension):
 
-    def __init__(self, host: str, primary_credential: SshCredential, users: Optional[dict] = None, port: int = 22, 
+    def __init__(self, host: str, primary_credential: SshCredential, users: Optional[dict] = None, port: int = 22,
                  jump: Union[str, SshJumpParams, None] = None, pty_params: Optional[dict] = None, called_id: Optional[str]=None,
                  look_for_keys: bool = False, aspects: AspectsCmd = DEFAULT_CMD_ASPECTS):
+        """
+            Constructs an :class:`SshProtocolExtension` instance.
+
+            :param host: Host name or IP address for the SSH connection.
+            :param primary_credential: Primary credential used for authentication.
+            :param users: Optional dictionary of additional users.
+            :param port: SSH port to connect to.
+            :param jump: Jump host or parameters.
+            :param pty_params: Optional PTY parameters.
+            :param called_id: Identifier used when logging sessions.
+            :param look_for_keys: Indicates if agent keys should be used.
+            :param aspects: Command aspects controlling execution behavior.
+        """
         SshAgent.__init__(self, host, primary_credential, users=users, port=port, jump=jump, pty_params=pty_params,
                           called_id=called_id, look_for_keys=look_for_keys, aspects=aspects)
         ProtocolExtension.__init__(self)
