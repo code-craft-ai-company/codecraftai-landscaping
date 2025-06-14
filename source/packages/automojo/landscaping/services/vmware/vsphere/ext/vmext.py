@@ -55,6 +55,11 @@ if TYPE_CHECKING:
 class VmExt(BaseExt):
 
     def __init__(self, agent: "VSphereAgent"):
+        """
+            Creates a VM management extension for a vSphere agent.
+
+            :param agent: Owning :class:`VSphereAgent` instance.
+        """
         super().__init__(agent)
         return
 
@@ -76,6 +81,32 @@ class VmExt(BaseExt):
                serial_ports: Optional[List[VmHardwareSerialCreateSpec]],
                storage_policy: Optional[VmStoragePolicySpec]
                ):
+
+        """
+            Creates a new virtual machine.
+
+            :param guestos: Guest OS identifier.
+            :param placement: Placement specification for the VM.
+            :param name: Optional name for the VM.
+            :param boot: Optional boot configuration.
+            :param cpu: Optional CPU configuration.
+            :param memory: Optional memory configuration.
+            :param disks: Optional list of disk specifications.
+            :param nics: Optional list of network interface specifications.
+            :param hardware_version: Optional hardware version.
+            :param floppies: Optional floppy device specifications.
+            :param cdroms: Optional CD-ROM device specifications.
+            :param nvme_adapters: Optional NVMe adapter specifications.
+            :param parallel_ports: Optional parallel port specifications.
+            :param boot_devices: Optional boot device list.
+            :param sata_adapters: Optional SATA adapter specifications.
+            :param scsi_adapters: Optional SCSI adapter specifications.
+            :param serial_ports: Optional serial port specifications.
+            :param storage_policy: Optional storage policy specification.
+
+            :returns: :class:`VmInfo` describing the created VM.
+            :rtype: VmInfo
+        """
 
         agent = self.agent
 
@@ -110,6 +141,19 @@ class VmExt(BaseExt):
     def clone(self, source: str, name: str, power_on: bool=False, customizations: Optional[dict]=None,
               parentfolder: Optional[FolderSummary] = None) -> str:
 
+        """
+            Clones an existing virtual machine.
+
+            :param source: Identifier of the source VM.
+            :param name: Name for the new VM.
+            :param power_on: ``True`` to power on after clone.
+            :param customizations: Optional customization spec.
+            :param parentfolder: Optional target folder for the clone.
+
+            :returns: Identifier of the cloned VM.
+            :rtype: str
+        """
+
         vm_id = None
 
         agent = self.agent
@@ -142,6 +186,11 @@ class VmExt(BaseExt):
         return vm_id
 
     def delete(self, id: str):
+        """
+            Deletes a VM from vCenter inventory.
+
+            :param id: Identifier of the VM to delete.
+        """
 
         agent = self.agent
 
@@ -154,6 +203,14 @@ class VmExt(BaseExt):
         return
 
     def get(self, id: str) -> VmInfo:
+        """
+            Retrieves information about a VM.
+
+            :param id: Identifier of the VM to retrieve.
+
+            :returns: :class:`VmInfo` for the VM.
+            :rtype: VmInfo
+        """
 
         vminfo = None
 
@@ -172,7 +229,15 @@ class VmExt(BaseExt):
         return vminfo
 
     def get_summary_by_name(self, name: str) -> VmSummary:
-        
+        """
+            Retrieves a VM summary by name.
+
+            :param name: Name of the VM to search for.
+
+            :returns: Matching :class:`VmSummary` or ``None``.
+            :rtype: VmSummary
+        """
+
         vm_summary = None
 
         vm_list = self.list()
@@ -184,6 +249,15 @@ class VmExt(BaseExt):
         return vm_summary
 
     def list(self, *, datacenters: Optional[List[DatacenterSummary]]=None, parentfolders: Optional[List[FolderSummary]]=None) -> List[VmSummary]:
+        """
+            Lists virtual machines with optional filters.
+
+            :param datacenters: Optional datacenter filter list.
+            :param parentfolders: Optional parent folder filter list.
+
+            :returns: List of VM summaries.
+            :rtype: List[VmSummary]
+        """
 
         vm_list = None
 
@@ -217,7 +291,16 @@ class VmExt(BaseExt):
         return vm_list
 
     def register(self, name: str, storage: dict, placement: Optional[dict]=None):
-        
+        """
+            Registers an existing VM with vCenter.
+
+            :param name: Name of the VM to register.
+            :param storage: Dictionary describing the VM storage.
+            :param placement: Optional placement specification.
+
+            :returns: Result dictionary from the register operation.
+        """
+
         vminfo = None
 
         agent = self.agent
@@ -241,7 +324,16 @@ class VmExt(BaseExt):
         return vminfo
     
     def relocate(self, path: str, disks: Optional[dict]=None, placement: Optional[dict]=None):
-        
+        """
+            Relocates a VM's configuration or disks.
+
+            :param path: New datastore path for the VM.
+            :param disks: Optional disk relocation specification.
+            :param placement: Optional placement specification.
+
+            :returns: Result dictionary from the relocate operation.
+        """
+
         vminfo = None
 
         agent = self.agent
@@ -267,7 +359,12 @@ class VmExt(BaseExt):
         return vminfo
 
     def unregister(self, vmid: str):
-        
+        """
+            Unregisters a VM from vCenter.
+
+            :param vmid: Identifier of the VM to unregister.
+        """
+
         agent = self.agent
 
         req_url = agent.build_api_url(f"/vcenter/vm")

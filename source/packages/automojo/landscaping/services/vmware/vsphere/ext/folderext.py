@@ -27,10 +27,23 @@ if TYPE_CHECKING:
 class FolderExt(BaseExt):
 
     def __init__(self, agent: "VSphereAgent"):
+        """
+            Creates the folder extension for a vSphere agent.
+
+            :param agent: Owning :class:`VSphereAgent` instance.
+        """
         super().__init__(agent)
         return
     
     def find_descendant(self, folder_leaf_names: List[str]):
+        """
+            Traverses descendant folders to find a specific folder.
+
+            :param folder_leaf_names: Ordered list of folder leaf names.
+
+            :returns: Folder summary if found.
+            :rtype: FolderSummary
+        """
 
         agent = self.agent
 
@@ -60,6 +73,15 @@ class FolderExt(BaseExt):
         return found
 
     def list(self, *, datacenters: Optional[List[DatacenterSummary]]=None, parentfolders: Optional[List[FolderSummary]]=None) -> List[FolderSummary]:
+        """
+            Retrieves a list of folders based on optional filters.
+
+            :param datacenters: Optional list of datacenters to filter on.
+            :param parentfolders: Optional list of parent folders to filter on.
+
+            :returns: Collection of folder summaries.
+            :rtype: List[FolderSummary]
+        """
         folder_list = None
 
         agent = self.agent

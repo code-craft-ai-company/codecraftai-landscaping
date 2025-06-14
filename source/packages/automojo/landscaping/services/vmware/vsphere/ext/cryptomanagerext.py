@@ -23,5 +23,10 @@ if TYPE_CHECKING:
 class CryptoManagerExt(BaseExt):
 
     def __init__(self, agent: "VSphereAgent"):
+        """
+            Initializes the crypto manager extension.
+
+            :param agent: Owning :class:`VSphereAgent` instance.
+        """
         super().__init__(agent)
         return

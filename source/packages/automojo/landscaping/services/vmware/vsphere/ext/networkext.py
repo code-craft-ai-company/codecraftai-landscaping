@@ -23,10 +23,20 @@ if TYPE_CHECKING:
 class NetworkExt(BaseExt):
 
     def __init__(self, agent: "VSphereAgent"):
+        """
+            Initializes the network extension for a vSphere agent.
+
+            :param agent: Owning :class:`VSphereAgent` instance.
+        """
         super().__init__(agent)
         return
     
     def list(self):
+        """
+            Retrieves a list of networks from vCenter.
+
+            :returns: List of network records.
+        """
         network_list = None
 
         agent = self.agent

@@ -27,10 +27,20 @@ if TYPE_CHECKING:
 class DataCenterExt(BaseExt):
 
     def __init__(self, agent: "VSphereAgent"):
+        """
+            Creates a datacenter extension for a vSphere agent.
+
+            :param agent: Owning :class:`VSphereAgent` instance.
+        """
         super().__init__(agent)
         return
 
     def delete(self, id: str):
+        """
+            Deletes a datacenter from vCenter inventory.
+
+            :param id: Identifier of the datacenter to delete.
+        """
 
         agent = self.agent
 
@@ -43,6 +53,14 @@ class DataCenterExt(BaseExt):
         return
 
     def get(self, id: str) -> DatacenterSummary:
+        """
+            Retrieves a datacenter summary by identifier.
+
+            :param id: Identifier of the datacenter to retrieve.
+
+            :returns: Datacenter summary instance.
+            :rtype: DatacenterSummary
+        """
 
         datacenter = None
 
@@ -60,6 +78,14 @@ class DataCenterExt(BaseExt):
         return datacenter
 
     def get_by_name(self, name: str) -> DatacenterSummary:
+        """
+            Retrieves a datacenter summary by name.
+
+            :param name: Name of the datacenter to find.
+
+            :returns: Matching datacenter summary or ``None``.
+            :rtype: DatacenterSummary
+        """
 
         agent = self.agent
         
@@ -74,6 +100,12 @@ class DataCenterExt(BaseExt):
         return dc_summary
 
     def list(self) -> List[DatacenterSummary]:
+        """
+            Lists the datacenters available on the vSphere server.
+
+            :returns: Collection of datacenter summaries.
+            :rtype: List[DatacenterSummary]
+        """
         datacenter_list = None
 
         agent = self.agent
