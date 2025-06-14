@@ -37,6 +37,9 @@ if TYPE_CHECKING:
 
 
 class LandscapeOperationalLayer(LandscapingLayerBase):
+    """
+        Layer that manages operational state for landscape devices.
+    """
 
     def __init__(self, lscape: "Landscape"):
         """

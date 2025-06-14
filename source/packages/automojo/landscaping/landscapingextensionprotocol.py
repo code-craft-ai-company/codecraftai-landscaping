@@ -18,6 +18,9 @@ from typing import List, Protocol, Type
 from automojo.testbase.coupling.integrationcoupling import IntegrationCoupling
 
 class LandscapingExtensionProtocol(Protocol):
+    """
+        Protocol defining extension points for landscaping integrations.
+    """
 
     ext_protocol_name = "mojo-landscaping-extension-protocol"
 
