@@ -1,3 +1,14 @@
+"""
+.. module:: vsphereservice
+   :platform: Darwin, Linux, Unix, Windows
+   :synopsis: Module containing the vsphereservice functionality.
+
+.. moduleauthor:: Myron Walker <myron.walker@gmail.com>
+"""
+__author__ = "Myron Walker"
+__copyright__ = "Copyright 2025, Automation Mojo LLC"
+__credits__ = []
+
 from typing import TYPE_CHECKING
 
 from automojo.credentials.basecredential import BaseCredential
