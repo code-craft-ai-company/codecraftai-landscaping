@@ -39,6 +39,11 @@ if TYPE_CHECKING:
 class LandscapeOperationalLayer(LandscapingLayerBase):
 
     def __init__(self, lscape: "Landscape"):
+        """
+            Creates a :class:`LandscapeOperationalLayer` instance.
+
+            :param lscape: The owning :class:`Landscape` object.
+        """
         super().__init__(lscape)
 
         self._operational_clusters: Dict[str, LandscapeDeviceCluster] = {}
@@ -53,6 +58,9 @@ class LandscapeOperationalLayer(LandscapingLayerBase):
 
     @property
     def available_clusters(self) -> Dict[str, LandscapeDeviceCluster]:
+        """
+            Provides a thread safe copy of clusters available for checkout.
+        """
         cluster_table = {}
 
         lscape = self.landscape
@@ -63,6 +71,9 @@ class LandscapeOperationalLayer(LandscapingLayerBase):
 
     @property
     def available_devices(self) -> Dict[str, LandscapeDevice]:
+        """
+            Provides a thread safe copy of devices available for checkout.
+        """
         device_table = {}
 
         lscape = self.landscape
@@ -73,6 +84,9 @@ class LandscapeOperationalLayer(LandscapingLayerBase):
 
     @property
     def operational_clusters(self) -> Dict[str, LandscapeDeviceCluster]:
+        """
+            Provides a thread safe copy of the operational clusters table.
+        """
         cluster_table = {}
 
         lscape = self.landscape

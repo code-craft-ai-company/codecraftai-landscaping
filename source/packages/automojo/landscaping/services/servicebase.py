@@ -45,6 +45,9 @@ class ServiceBase(LandscapeService):
 
     @property
     def host(self) -> str:
+        """
+            Returns the host name associated with this service.
+        """
         return self._host
 
     def enhance(self):

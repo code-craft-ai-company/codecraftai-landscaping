@@ -66,6 +66,11 @@ class ServiceCoordinatorBase(CoordinatorBase):
     MUST_INCLUDE_SSH = False
 
     def __init__(self, lscape: "Landscape", *args, **kwargs):
+        """
+            Initializes the :class:`ServiceCoordinatorBase` instance.
+
+            :param lscape: The owning :class:`Landscape` object.
+        """
         super().__init__(lscape, *args, **kwargs)
 
         self._cl_upnp_hint_to_ip_lookup: Dict[str, str] = {}
@@ -87,6 +92,14 @@ class ServiceCoordinatorBase(CoordinatorBase):
         return
 
     def attach_extension_for_ssh(self, landscape: "Landscape", service_info: Dict[str, Any], service: LandscapeService):
+        """
+            Attaches an SSH agent extension to a service when host information
+            and credentials are provided.
+
+            :param landscape: The owning :class:`Landscape` instance.
+            :param service_info: Configuration dictionary for the service.
+            :param service: The :class:`LandscapeService` being extended.
+        """
 
         credentials = service.credentials
 

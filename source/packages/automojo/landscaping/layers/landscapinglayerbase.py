@@ -27,10 +27,18 @@ class LandscapingLayerBase:
     logger = logging.getLogger()
 
     def __init__(self, lscape: "Landscape"):
+        """
+            Initializes a :class:`LandscapingLayerBase` instance.
+
+            :param lscape: The owning :class:`Landscape` object.
+        """
         self._lscape_ref = weakref.ref(lscape)
         return
-    
+
     @property
     def landscape(self):
+        """
+            Returns a strong reference to the :class:`Landscape` instance.
+        """
         lscape = self._lscape_ref()
         return lscape

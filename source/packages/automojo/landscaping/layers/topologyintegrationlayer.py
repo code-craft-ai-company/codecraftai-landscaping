@@ -27,5 +27,10 @@ if TYPE_CHECKING:
 class TopologyIntegrationLayer(LandscapingLayerBase):
 
     def __init__(self, lscape: "Landscape"):
+        """
+            Creates a :class:`TopologyIntegrationLayer` instance.
+
+            :param lscape: The owning :class:`Landscape` object.
+        """
         super().__init__(lscape)
         return

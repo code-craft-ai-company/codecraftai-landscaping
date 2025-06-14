@@ -57,6 +57,11 @@ class LandscapeConfigurationLayer(LandscapingLayerBase):
     """
 
     def __init__(self, lscape: "Landscape"):
+        """
+            Creates a :class:`LandscapeConfigurationLayer` instance.
+
+            :param lscape: The owning :class:`Landscape` object.
+        """
         super().__init__(lscape)
 
         self._credential_manager: CredentialManager = None
@@ -74,25 +79,48 @@ class LandscapeConfigurationLayer(LandscapingLayerBase):
 
     @property
     def credential_manager(self) -> CredentialManager:
+        """
+            Returns the :class:`CredentialManager` in use for this layer.
+        """
         return self._credential_manager
     
     @property
     def landscape_files(self) -> List[str]:
+        """
+            Returns the list of loaded landscape configuration files.
+        """
         return self._landscape_files
     
     @property
     def landscape_info(self) -> Union[MergeMap, None]:
+        """
+            Gets the landscape information loaded from configuration files.
+        """
         return self._landscape_info
 
     @property
     def topology_files(self) -> List[str]:
+        """
+            Returns the list of loaded topology configuration files.
+        """
         return self._topology_files
     
     @property
     def topology_info(self) -> Union[MergeMap, None]:
+        """
+            Gets the topology information loaded from configuration files.
+        """
         return self._topology_info
 
     def get_device_configs(self, include_filters: Optional[List[IIncludeFilter]]=None, exclude_filters: Optional[List[IExcludeFilter]]=None) -> List[dict]:
+        """
+            Returns device configuration dictionaries from the landscape.
+
+            :param include_filters: Optional list of include filters to apply.
+            :param exclude_filters: Optional list of exclude filters to apply.
+
+            :returns: A list of device configuration dictionaries.
+        """
         lscape = self.landscape
 
         candidate_configs = []
@@ -126,6 +154,9 @@ class LandscapeConfigurationLayer(LandscapingLayerBase):
         return selected_configs
 
     def get_power_configs(self) -> List[dict]:
+        """
+            Returns power configuration dictionaries from the landscape.
+        """
         lscape = self.landscape
 
         power_configs = []
@@ -136,6 +167,9 @@ class LandscapeConfigurationLayer(LandscapingLayerBase):
         return power_configs
 
     def get_serial_configs(self) -> List[dict]:
+        """
+            Returns serial configuration dictionaries from the landscape.
+        """
         lscape = self.landscape
 
         serial_configs = []
@@ -146,6 +180,14 @@ class LandscapeConfigurationLayer(LandscapingLayerBase):
         return serial_configs
 
     def get_service_configs(self, include_filters: Optional[List[IIncludeFilter]]=None, exclude_filters: Optional[List[IExcludeFilter]]=None) -> List[dict]:
+        """
+            Returns service configuration dictionaries from the landscape.
+
+            :param include_filters: Optional list of include filters to apply.
+            :param exclude_filters: Optional list of exclude filters to apply.
+
+            :returns: A list of service configuration dictionaries.
+        """
         lscape = self.landscape
 
         service_configs = []
@@ -157,6 +199,10 @@ class LandscapeConfigurationLayer(LandscapingLayerBase):
 
 
     def attach_to_environment(self):
+        """
+            Provides installed coordinator couplings an opportunity to inspect
+            the landscape configuration and perform any custom initialization.
+        """
 
         lscape = self.landscape
 
