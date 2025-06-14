@@ -462,14 +462,30 @@ class LandscapeConfigurationLayer(LandscapingLayerBase):
 
 
     def validate_landscape_integration_section(self, section: str, section_items: List[Dict[str, Any]]) -> Tuple[List[str], List[str]]:
+        """
+            Validates a landscape integration configuration section.
 
+            :param section: Name of the configuration section being validated.
+            :param section_items: List of items from the section.
+
+            :returns: Tuple of error and warning lists discovered.
+            :rtype: Tuple[List[str], List[str]]
+        """
         errors = []
         warnings = []
 
         return errors, warnings
 
     def validate_landscape_pod_section(self, section: str, section_items: List[Dict[str, Any]]) -> Tuple[List[str], List[str]]:
+        """
+            Validates a landscape pod configuration section.
 
+            :param section: Name of the pod section being validated.
+            :param section_items: List of items from the section.
+
+            :returns: Tuple of error and warning lists discovered.
+            :rtype: Tuple[List[str], List[str]]
+        """
         errors = []
         warnings = []
 

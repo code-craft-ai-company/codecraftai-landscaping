@@ -58,16 +58,31 @@ from automojo.landscaping.services.vmware.vsphere.ext.vmext import VmExt
 class VSphereFilterState:
 
     def __init__(self) -> None:
+        """
+            Initializes a :class:`VSphereFilterState` instance.
+        """
         self._working_datacenter = None
         self._working_folder = None
         return
     
     @property
     def working_datacenter(self) -> DatacenterSummary:
+        """
+            Returns the current working datacenter filter.
+
+            :returns: Working datacenter summary.
+            :rtype: DatacenterSummary
+        """
         return self._working_datacenter
 
     @property
     def working_placement(self) -> VmPlacementSpec:
+        """
+            Creates a placement specification based on working filters.
+
+            :returns: Placement specification populated from filters.
+            :rtype: VmPlacementSpec
+        """
         datastore = self._working_datacenter.datacenter
         folder = self._working_folder.folder
         placement = VmPlacementSpec(datastore=datastore, folder=folder)
@@ -75,25 +90,59 @@ class VSphereFilterState:
 
     @property
     def working_folder(self) -> FolderSummary:
+        """
+            Returns the current working folder filter.
+
+            :returns: Folder summary instance.
+            :rtype: FolderSummary
+        """
         return self._working_folder
 
     def has_working_datacenter_filter(self):
+        """
+            Indicates if a working datacenter filter has been set.
+
+            :returns: ``True`` if a datacenter filter exists.
+            :rtype: bool
+        """
         rtnval = self._working_datacenter is not None
         return rtnval
     
     def has_working_placement(self):
+        """
+            Indicates if both datacenter and folder filters have been set.
+
+            :returns: ``True`` if a full placement is specified.
+            :rtype: bool
+        """
         rtnval = self._working_datacenter is not None and self._working_folder is not None
         return rtnval
 
     def has_working_folder_filter(self):
+        """
+            Indicates if a working folder filter has been set.
+
+            :returns: ``True`` if a folder filter exists.
+            :rtype: bool
+        """
         rtnval = self._working_folder is not None
         return rtnval
 
     def set_working_datacenter(self, datacenter_summary: DatacenterSummary):
+        """
+            Sets the working datacenter filter.
+
+            :param datacenter_summary: Datacenter summary to set.
+        """
         self._working_datacenter = datacenter_summary
         return
     
     def set_working_folder(self, folder_summary: FolderSummary):
+        """
+            Sets the working folder filter.
+
+            :param folder_summary: Folder summary to set.
+        """
         self._working_folder = folder_summary
         return
 
@@ -101,7 +150,13 @@ class VSphereFilterState:
 class VSphereAgent:
 
     def __init__(self, host: str, credential: BasicCredential, verify_certificates: bool=False):
-        
+        """
+            Creates a :class:`VSphereAgent` used to communicate with vSphere.
+
+            :param host: Hostname or IP address of the vSphere server.
+            :param credential: Credential used for authentication.
+            :param verify_certificates: ``True`` to verify SSL certificates.
+        """
         self._session = requests.session()
         self._session.verify = verify_certificates
 
@@ -149,6 +204,11 @@ class VSphereAgent:
     
     @property
     def filter_state(self) -> VSphereFilterState:
+        """
+            Returns the filter state used when building requests.
+
+            :returns: Current :class:`VSphereFilterState` instance.
+        """
         return self._filter_state
 
     @property
@@ -264,7 +324,11 @@ class VSphereAgent:
         return self._ext_vm
 
     def apply_working_folder_filter(self, container_path: str):
+        """
+            Applies a working folder filter using a container path.
 
+            :param container_path: Datacenter and folder path in 'dc:/path' form.
+        """
         dcrecord = None
         folderspec = None
 
@@ -282,13 +346,21 @@ class VSphereAgent:
         return
 
     def build_api_url(self, leaf: str) -> str:
+        """
+            Builds a REST API URL for the given endpoint leaf.
 
+            :param leaf: API leaf path to append.
+            :returns: Full API URL string.
+            :rtype: str
+        """
         url = self._api_root + leaf
         
         return url
 
     def renew_session(self):
-        
+        """
+            Renews the session authentication token using the stored credentials.
+        """
         req_url = f"{self._rest_root}/com/vmware/cis/session"
 
         resp = self._session.post(req_url, auth=(self._credential.username, self._credential.password), verify=False)
@@ -302,25 +374,53 @@ class VSphereAgent:
         return
     
     def session_delete(self, url: str, **kwargs) -> requests.Response:
+        """
+            Issues a DELETE request using the current session.
 
+            :param url: Request URL.
+            :returns: Response object from the request.
+            :rtype: requests.Response
+        """
         resp = self._session.delete(url, **kwargs)
 
         return resp
 
     def session_get(self, url: str, **kwargs) -> requests.Response:
+        """
+            Issues a GET request using the current session.
 
+            :param url: Request URL.
+            :returns: Response object from the request.
+            :rtype: requests.Response
+        """
         resp = self._session.get(url, **kwargs)
 
         return resp
 
     def session_post(self, url: str, data=None, json=None, **kwargs) -> requests.Response:
+        """
+            Issues a POST request using the current session.
 
+            :param url: Request URL.
+            :param data: Optional form data to send.
+            :param json: Optional JSON body to send.
+            :returns: Response object from the request.
+            :rtype: requests.Response
+        """
         resp = self._session.post(url, data=data, json=json, **kwargs)
 
         return resp
     
     def session_put(self, url: str, data=None, json=None, **kwargs) -> requests.Response:
+        """
+            Issues a PUT request using the current session.
 
+            :param url: Request URL.
+            :param data: Optional form data to send.
+            :param json: Optional JSON body to send.
+            :returns: Response object from the request.
+            :rtype: requests.Response
+        """
         resp = self._session.put(url, data=data, json=json, **kwargs)
 
         return resp

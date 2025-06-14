@@ -31,6 +31,15 @@ if TYPE_CHECKING:
 SUPPORTED_INTEGRATION_CLASS = "network/service-base"
 
 def is_matching_service_config(integ_class, service_info):
+    """
+        Determines if a service configuration matches the integration class.
+
+        :param integ_class: Integration class string to match against.
+        :param service_info: Service configuration dictionary.
+
+        :returns: ``True`` if the service configuration matches.
+        :rtype: bool
+    """
     is_matching_service = False
 
     svc_type = service_info["serviceType"]

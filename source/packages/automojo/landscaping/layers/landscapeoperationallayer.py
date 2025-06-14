@@ -270,7 +270,11 @@ class LandscapeOperationalLayer(LandscapingLayerBase):
         return
 
     def establish_connectivity(self, activation_params: LandscapeActivationParams):
-        
+        """
+            Establishes connectivity for all device coordinators.
+
+            :param activation_params: Activation parameters used during initialization.
+        """
         lscape = self.landscape
 
         layer_integ = lscape.layer_integration
@@ -282,7 +286,14 @@ class LandscapeOperationalLayer(LandscapingLayerBase):
         return
     
     def get_cluster_by_name(self, cluster_name: str) -> Union[LandscapeDeviceCluster, None]:
+        """
+            Retrieves a cluster by name from the operational layer.
 
+            :param cluster_name: Name of the cluster to find.
+
+            :returns: The matching cluster or ``None`` if not found.
+            :rtype: Union[LandscapeDeviceCluster, None]
+        """
         cluster = None
 
         lscape = self.landscape
@@ -330,7 +341,11 @@ class LandscapeOperationalLayer(LandscapingLayerBase):
         return selected_clusters
 
     def overlay_toplogy(self, activation_params: LandscapeActivationParams):
+        """
+            Applies topology overlay information to the operational layer.
 
+            :param activation_params: Activation parameters for the overlay.
+        """
         lscape = self.landscape
 
         topology_info = lscape.layer_configuration.topology_info
@@ -345,21 +360,34 @@ class LandscapeOperationalLayer(LandscapingLayerBase):
         return
 
     def validate_features(self, activation_params: LandscapeActivationParams):
+        """
+            Validates device feature availability if requested.
 
+            :param activation_params: Activation parameters controlling validation.
+        """
         if activation_params.validate_features:
             pass
 
         return
     
     def validate_topology(self, activation_params: LandscapeActivationParams):
+        """
+            Validates topology information if requested.
 
+            :param activation_params: Activation parameters controlling validation.
+        """
         if activation_params.validate_topology:
             pass
 
         return
 
     def _create_clusters(self, integ_layer: LandscapeIntegrationLayer, topology_info: Dict[str, Any]):
+        """
+            Creates operational clusters from topology configuration.
 
+            :param integ_layer: Integration layer providing device groups.
+            :param topology_info: Topology configuration dictionary.
+        """
         table_of_device_groups = integ_layer.integrated_device_groups
 
         # ================= EXAMPLE ===================

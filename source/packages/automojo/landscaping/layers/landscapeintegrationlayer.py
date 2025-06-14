@@ -264,7 +264,11 @@ class LandscapeIntegrationLayer(LandscapingLayerBase):
         return selected_services
 
     def initialize_landscape(self, activation_params: LandscapeActivationParams):
+        """
+            Initializes landscape devices and services for integration.
 
+            :param activation_params: Activation parameters controlling initialization.
+        """
         lscape = self.landscape
 
         devices = None
@@ -350,12 +354,20 @@ class LandscapeIntegrationLayer(LandscapingLayerBase):
         return
 
     def topology_overlay(self) -> None:
+        """
+            Performs any topology overlay operations required after integration.
 
+            :returns: ``None``
+        """
         return
     
 
     def _initialize_landscape_device_groups(self):
+        """
+            Creates groups for devices that share a common group name.
 
+            :returns: ``None``
+        """
         dev_group_table = {}
 
         for dev_obj in self._integrated_devices.values():
@@ -377,7 +389,14 @@ class LandscapeIntegrationLayer(LandscapingLayerBase):
     
 
     def _initialize_landscape_devices(self, layer_config: LandscapeConfigurationLayer) -> Dict[FriendlyIdentifier, LandscapeDevice]:
+        """
+            Creates landscape device objects from configuration.
 
+            :param layer_config: The configuration layer containing device info.
+
+            :returns: Mapping of device identity to landscape device instance.
+            :rtype: Dict[FriendlyIdentifier, LandscapeDevice]
+        """
         unrecognized_device_configs = []
 
         devices: Dict[FriendlyIdentifier: LandscapeDevice] = {}
@@ -422,7 +441,11 @@ class LandscapeIntegrationLayer(LandscapingLayerBase):
 
 
     def _initialize_landscape_power(self, layer_config: LandscapeConfigurationLayer):
+        """
+            Initializes landscape power management interfaces.
 
+            :param layer_config: Configuration layer providing power information.
+        """
         power_configs = layer_config.get_power_configs()
 
         if len(power_configs) > 0:
@@ -436,7 +459,11 @@ class LandscapeIntegrationLayer(LandscapingLayerBase):
 
 
     def _initialize_landscape_serial(self, layer_config: LandscapeConfigurationLayer):
+        """
+            Initializes serial connectivity interfaces for landscape devices.
 
+            :param layer_config: Configuration layer providing serial information.
+        """
         serial_configs = layer_config.get_serial_configs()
 
         if len(serial_configs) > 0:
@@ -449,7 +476,14 @@ class LandscapeIntegrationLayer(LandscapingLayerBase):
         return
 
     def _initialize_landscape_services(self, layer_config: LandscapeConfigurationLayer) -> Dict[FriendlyIdentifier, LandscapeService]:
+        """
+            Creates landscape service objects from configuration.
 
+            :param layer_config: Configuration layer providing service information.
+
+            :returns: Mapping of service identity to service instances.
+            :rtype: Dict[FriendlyIdentifier, LandscapeService]
+        """
         unrecognized_service_configs = []
 
         services: Dict[FriendlyIdentifier: LandscapeService] = {}

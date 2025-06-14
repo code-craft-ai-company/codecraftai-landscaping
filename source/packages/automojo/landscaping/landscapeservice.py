@@ -117,6 +117,12 @@ class LandscapeService(FeatureAttachedObject):
 
     @property
     def configured_ipaddr(self) -> Union[str, None]:
+        """
+            Returns the IP address configured for this service if provided.
+
+            :returns: Configured IP address or ``None`` if not set.
+            :rtype: Union[str, None]
+        """
         return self._configured_ip
 
     @property
@@ -135,10 +141,22 @@ class LandscapeService(FeatureAttachedObject):
 
     @property
     def coordinator(self) -> "CoordinatorBase":
+        """
+            Returns the coordinator associated with this service.
+
+            :returns: Owning coordinator instance.
+            :rtype: CoordinatorBase
+        """
         return self._coord_ref()
 
     @property
     def credentials(self) -> Dict[str, BaseCredential]:
+        """
+            Returns a dictionary of credentials registered with this service.
+
+            :returns: Mapping of credential names to credential objects.
+            :rtype: Dict[str, BaseCredential]
+        """
         return self._credentials
 
     @property
@@ -171,6 +189,12 @@ class LandscapeService(FeatureAttachedObject):
 
     @property
     def extensions(self) -> Dict[str, ProtocolExtension]:
+        """
+            Returns a copy of the protocol extensions registered for this service.
+
+            :returns: Dictionary of protocol extensions.
+            :rtype: Dict[str, ProtocolExtension]
+        """
         extdict = self._extensions.copy()
         return extdict
 
@@ -265,6 +289,12 @@ class LandscapeService(FeatureAttachedObject):
 
     @property
     def ssh_credential(self) -> Union[SshCredential, None]:
+        """
+            Returns the SSH credential associated with this service if available.
+
+            :returns: SSH credential or ``None`` if not set.
+            :rtype: Union[SshCredential, None]
+        """
         return self._ssh_credential
 
     def attach_extension(self, ext_type: str, extension: ProtocolExtension) -> None:
@@ -414,7 +444,12 @@ class LandscapeService(FeatureAttachedObject):
         return
 
     def _resolve_ipaddress(self) -> str:
+        """
+            Resolves the IP address for this service.
 
+            :returns: Resolved IP address.
+            :rtype: str
+        """
         ipaddr = None
 
         if self._configured_ipaddr is not None:
@@ -426,6 +461,12 @@ class LandscapeService(FeatureAttachedObject):
         return ipaddr
 
     def _repr_html_(self) -> str:
+        """
+            Returns an HTML representation of the service for rich display environments.
+
+            :returns: HTML fragment.
+            :rtype: str
+        """
         html_repr_lines = [
             "<h1>LandscapeService</h1>",
             "<h2>     type: {}</h2>".format(self._service_type),
@@ -438,7 +479,12 @@ class LandscapeService(FeatureAttachedObject):
         return html_repr
 
     def __repr__(self) -> str:
+        """
+            Returns a programmer friendly representation string.
 
+            :returns: Representation string.
+            :rtype: str
+        """
         thisType = type(self)
 
         ipaddr = "unknown"
@@ -456,5 +502,11 @@ class LandscapeService(FeatureAttachedObject):
         return devstr
 
     def __str__(self) -> str:
+        """
+            Returns a user friendly representation string.
+
+            :returns: Representation string.
+            :rtype: str
+        """
         devstr = repr(self)
         return devstr
