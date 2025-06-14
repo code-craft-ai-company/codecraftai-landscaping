@@ -1,10 +1,10 @@
 """
-.. module:: servicecoordinatorcouplingbase
+    .. module:: servicecoordinatorcouplingbase
     :platform: Darwin, Linux, Unix, Windows
     :synopsis: Contains a :class:`ServiceCoordinatorCouplingBase` object to use for working with the
-               computer services.
+    computer services.
 
-.. moduleauthor:: Myron Walker <myron.walker@gmail.com>
+    .. moduleauthor:: Myron Walker <myron.walker@gmail.com>
 """
 
 __author__ = "Myron Walker"

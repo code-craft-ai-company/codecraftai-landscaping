@@ -1,9 +1,9 @@
 """
-.. module:: linuxclientcoordinator
+    .. module:: linuxclientcoordinator
     :platform: Darwin, Linux, Unix, Windows
     :synopsis: Contains the LinuxPoolCoordinator which is used for managing connectivity with pools of LINUX capable devices
 
-.. moduleauthor:: Myron Walker <myron.walker@gmail.com>
+    .. moduleauthor:: Myron Walker <myron.walker@gmail.com>
 """
 
 __author__ = "Myron Walker"

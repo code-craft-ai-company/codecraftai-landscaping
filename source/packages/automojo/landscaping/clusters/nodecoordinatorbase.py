@@ -1,10 +1,10 @@
 """
-.. module:: nodecoordinatorbase
+    .. module:: nodecoordinatorbase
     :platform: Darwin, Linux, Unix, Windows
     :synopsis: Module contains the :class:`NodeCoordinatorBase` object which is a base
-               class for objects create and manage cluster node objects.
+    class for objects create and manage cluster node objects.
 
-.. moduleauthor:: Myron Walker <myron.walker@gmail.com>
+    .. moduleauthor:: Myron Walker <myron.walker@gmail.com>
 
 """
 

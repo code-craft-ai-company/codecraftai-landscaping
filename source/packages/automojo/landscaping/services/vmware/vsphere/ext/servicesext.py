@@ -1,9 +1,9 @@
 """
-.. module:: servicesext
+    .. module:: servicesext
     :platform: Darwin, Linux, Unix, Windows
     :synopsis: Contains the ServicesExt object.
 
-.. moduleauthor:: Myron Walker <myron.walker@gmail.com>
+    .. moduleauthor:: Myron Walker <myron.walker@gmail.com>
 """
 
 __author__ = "Myron Walker"

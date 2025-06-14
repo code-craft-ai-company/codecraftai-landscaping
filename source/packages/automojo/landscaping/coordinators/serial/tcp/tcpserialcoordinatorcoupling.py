@@ -1,10 +1,10 @@
 """
-.. module:: serialcoordinatorcoupling
+    .. module:: serialcoordinatorcoupling
     :platform: Darwin, Linux, Unix, Windows
     :synopsis: Contains a TcpSerialCoordinatorCoupling object to use for working with standard
-               serial agent types.
+    serial agent types.
 
-.. moduleauthor:: Myron Walker <myron.walker@gmail.com>
+    .. moduleauthor:: Myron Walker <myron.walker@gmail.com>
 """
 
 __author__ = "Myron Walker"

@@ -1,11 +1,11 @@
 """
-.. module:: landscapedevicecluster
+    .. module:: landscapedevicecluster
     :platform: Darwin, Linux, Unix, Windows
     :synopsis: Module contains the :class:`LandscapeDeviceCluster` object which 
-               represents a cluster of devices that are compute nodes in a
-               computer or storage cluster.
+    represents a cluster of devices that are compute nodes in a
+    computer or storage cluster.
 
-.. moduleauthor:: Myron Walker <myron.walker@gmail.com>
+    .. moduleauthor:: Myron Walker <myron.walker@gmail.com>
 
 """
 

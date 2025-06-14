@@ -1,9 +1,9 @@
 """
-.. module:: powercoordinatorbase
+    .. module:: powercoordinatorbase
     :platform: Darwin, Linux, Unix, Windows
     :synopsis: Contains the PowerCoordinatorBase which is used for managing connectivity with pools of power devices
 
-.. moduleauthor:: Myron Walker <myron.walker@gmail.com>
+    .. moduleauthor:: Myron Walker <myron.walker@gmail.com>
 """
 
 __author__ = "Myron Walker"

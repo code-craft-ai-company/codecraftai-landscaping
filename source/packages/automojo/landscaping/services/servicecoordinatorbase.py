@@ -1,10 +1,10 @@
 """
-.. module:: servicecoordinatorbase
+    .. module:: servicecoordinatorbase
     :platform: Darwin, Linux, Unix, Windows
     :synopsis: Module contains the :class:`ServiceCoordinatorBase` object which is a base
-               class for objects create and manage service objects.
+    class for objects create and manage service objects.
 
-.. moduleauthor:: Myron Walker <myron.walker@gmail.com>
+    .. moduleauthor:: Myron Walker <myron.walker@gmail.com>
 
 """
 

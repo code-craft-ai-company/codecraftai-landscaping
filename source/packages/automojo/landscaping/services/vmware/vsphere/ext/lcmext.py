@@ -1,9 +1,9 @@
 """
-.. module:: lcmext
+    .. module:: lcmext
     :platform: Darwin, Linux, Unix, Windows
     :synopsis: Contains the LcmExt object.
 
-.. moduleauthor:: Myron Walker <myron.walker@gmail.com>
+    .. moduleauthor:: Myron Walker <myron.walker@gmail.com>
 """
 
 __author__ = "Myron Walker"

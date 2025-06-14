@@ -1,9 +1,9 @@
 """
-.. module:: common
-   :platform: Darwin, Linux, Unix, Windows
-   :synopsis: Module containing the common functionality.
+    .. module:: common
+    :platform: Darwin, Linux, Unix, Windows
+    :synopsis: Module containing the common functionality.
 
-.. moduleauthor:: Myron Walker <myron.walker@gmail.com>
+    .. moduleauthor:: Myron Walker <myron.walker@gmail.com>
 """
 
 __author__ = "Myron Walker"

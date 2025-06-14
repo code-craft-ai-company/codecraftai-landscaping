@@ -1,9 +1,9 @@
 """
-.. module:: deploymentext
+    .. module:: deploymentext
     :platform: Darwin, Linux, Unix, Windows
     :synopsis: Contains the DeploymentExt object.
 
-.. moduleauthor:: Myron Walker <myron.walker@gmail.com>
+    .. moduleauthor:: Myron Walker <myron.walker@gmail.com>
 """
 
 __author__ = "Myron Walker"

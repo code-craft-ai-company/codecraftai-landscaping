@@ -1,9 +1,9 @@
 """
-.. module:: vsphereagent
+    .. module:: vsphereagent
     :platform: Darwin, Linux, Unix, Windows
     :synopsis: Contains the VSphereAgent object used to inter-operate with a VSphere server.
 
-.. moduleauthor:: Myron Walker <myron.walker@gmail.com>
+    .. moduleauthor:: Myron Walker <myron.walker@gmail.com>
 """
 
 __author__ = "Myron Walker"

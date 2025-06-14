@@ -1,10 +1,10 @@
 """
-.. module:: clientcoordinatorcouplingbase
+    .. module:: clientcoordinatorcouplingbase
     :platform: Darwin, Linux, Unix, Windows
     :synopsis: Contains a :class:`ClientCoordinatorCouplingBase` object to use for working with the
-               computer clients.
+    computer clients.
 
-.. moduleauthor:: Myron Walker <myron.walker@gmail.com>
+    .. moduleauthor:: Myron Walker <myron.walker@gmail.com>
 """
 
 __author__ = "Myron Walker"

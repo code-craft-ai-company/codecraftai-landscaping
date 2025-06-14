@@ -1,9 +1,9 @@
 """
-.. module:: constants
+    .. module:: constants
     :platform: Darwin, Linux, Unix, Windows
     :synopsis: Module containing the constants associated with automation landscaping.
 
-.. moduleauthor:: Myron Walker <myron.walker@gmail.com>
+    .. moduleauthor:: Myron Walker <myron.walker@gmail.com>
 
 """
 

@@ -1,9 +1,9 @@
 """
-.. module:: vmworkstationagent
+    .. module:: vmworkstationagent
     :platform: Darwin, Linux, Unix, Windows
     :synopsis: Contains the VmWorkstationAgen object used to interoperate with VMWare Workstation.
 
-.. moduleauthor:: Myron Walker <myron.walker@gmail.com>
+    .. moduleauthor:: Myron Walker <myron.walker@gmail.com>
 """
 
 __author__ = "Myron Walker"

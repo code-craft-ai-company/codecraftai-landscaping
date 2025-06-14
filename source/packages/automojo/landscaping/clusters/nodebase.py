@@ -1,11 +1,11 @@
 """
-.. module:: nodebase
+    .. module:: nodebase
     :platform: Darwin, Linux, Unix, Windows
     :synopsis: Module contains the :class:`BaseNode` object which is a base
-               class for objects that inter-operate with a compute cluster
-               node.
+    class for objects that inter-operate with a compute cluster
+    node.
 
-.. moduleauthor:: Myron Walker <myron.walker@gmail.com>
+    .. moduleauthor:: Myron Walker <myron.walker@gmail.com>
 
 """
 

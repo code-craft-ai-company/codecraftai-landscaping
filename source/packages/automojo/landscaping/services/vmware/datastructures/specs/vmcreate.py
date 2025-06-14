@@ -1,9 +1,9 @@
 """
-.. module:: vmcreatespec
+    .. module:: vmcreatespec
     :platform: Darwin, Linux, Unix, Windows
     :synopsis: Contains various VmCreateSpec related objects used in the creation of VM(s).
 
-.. moduleauthor:: Myron Walker <myron.walker@gmail.com>
+    .. moduleauthor:: Myron Walker <myron.walker@gmail.com>
 """
 
 __author__ = "Myron Walker"

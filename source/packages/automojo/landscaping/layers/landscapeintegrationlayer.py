@@ -1,11 +1,11 @@
 """
-.. module:: landscapeintegrationlayer
+    .. module:: landscapeintegrationlayer
     :platform: Darwin, Linux, Unix, Windows
     :synopsis: Module containing the :class:`LandscapeItegrationLayer` class which is used
-               to load initialize the test landscape and integrate with all the available
-               landscape resources.
+    to load initialize the test landscape and integrate with all the available
+    landscape resources.
 
-.. moduleauthor:: Myron Walker <myron.walker@gmail.com>
+    .. moduleauthor:: Myron Walker <myron.walker@gmail.com>
 
 """
 

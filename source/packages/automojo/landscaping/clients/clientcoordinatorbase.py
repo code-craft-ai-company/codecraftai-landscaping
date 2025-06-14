@@ -1,10 +1,10 @@
 """
-.. module:: clientcoordinatorbase
+    .. module:: clientcoordinatorbase
     :platform: Darwin, Linux, Unix, Windows
     :synopsis: Module contains the :class:`ClientCoordinatorBase` object which is a base
-               class for objects create and manage client objects.
+    class for objects create and manage client objects.
 
-.. moduleauthor:: Myron Walker <myron.walker@gmail.com>
+    .. moduleauthor:: Myron Walker <myron.walker@gmail.com>
 
 """
 

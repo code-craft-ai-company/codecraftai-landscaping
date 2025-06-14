@@ -1,10 +1,10 @@
 """
-.. module:: landscapeintegrationlayer
+    .. module:: landscapeintegrationlayer
     :platform: Darwin, Linux, Unix, Windows
     :synopsis: Module containing the :class:`LandscapeLayerBase` class which is used
-               to provide common functionality to the different landscape layers.
+    to provide common functionality to the different landscape layers.
 
-.. moduleauthor:: Myron Walker <myron.walker@gmail.com>
+    .. moduleauthor:: Myron Walker <myron.walker@gmail.com>
 
 """
 

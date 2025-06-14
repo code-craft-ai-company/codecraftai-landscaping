@@ -1,9 +1,9 @@
 """
-.. module:: includefilters
+    .. module:: includefilters
     :platform: Darwin, Linux, Unix, Windows
     :synopsis: Module containing various device include filters.
 
-.. moduleauthor:: Myron Walker <myron.walker@gmail.com>
+    .. moduleauthor:: Myron Walker <myron.walker@gmail.com>
 
 """
 

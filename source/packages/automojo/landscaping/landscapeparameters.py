@@ -1,11 +1,11 @@
 """
-.. module:: landscapeparameters
+    .. module:: landscapeparameters
     :platform: Darwin, Linux, Unix, Windows
     :synopsis: Module containing the :class:`LandscapeActivationParams` class which provides an
-               overloadable and function signature friendly way to provide customizable parameters
-               to the landscape startup functions.
+    overloadable and function signature friendly way to provide customizable parameters
+    to the landscape startup functions.
 
-.. moduleauthor:: Myron Walker <myron.walker@gmail.com>
+    .. moduleauthor:: Myron Walker <myron.walker@gmail.com>
 
 """
 

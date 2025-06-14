@@ -1,11 +1,11 @@
 """
-.. module:: clientbase
+    .. module:: clientbase
     :platform: Darwin, Linux, Unix, Windows
     :synopsis: Module contains the :class:`BaseClient` object which is a base
-               class for objects that inter-operate with a computer client
-               operating system.
+    class for objects that inter-operate with a computer client
+    operating system.
 
-.. moduleauthor:: Myron Walker <myron.walker@gmail.com>
+    .. moduleauthor:: Myron Walker <myron.walker@gmail.com>
 
 """
 

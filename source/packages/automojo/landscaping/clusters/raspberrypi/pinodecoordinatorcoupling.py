@@ -1,10 +1,10 @@
 """
-.. module:: pinodecoordinatorcoupling
+    .. module:: pinodecoordinatorcoupling
     :platform: Darwin, Linux, Unix, Windows
     :synopsis: Contains a PiNodeCoordinatorCoupling object to use for working with the raspberry
-               pi 'PiNode' cluster nodes.
+    pi 'PiNode' cluster nodes.
 
-.. moduleauthor:: Myron Walker <myron.walker@gmail.com>
+    .. moduleauthor:: Myron Walker <myron.walker@gmail.com>
 """
 
 __author__ = "Myron Walker"

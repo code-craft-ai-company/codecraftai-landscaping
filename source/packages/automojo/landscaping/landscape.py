@@ -1,9 +1,9 @@
 """
-.. module:: landscape
+    .. module:: landscape
     :platform: Darwin, Linux, Unix, Windows
     :synopsis: Module containing the :class:`Landscape` class which is used to work with automation resources.
 
-.. moduleauthor:: Myron Walker <myron.walker@gmail.com>
+    .. moduleauthor:: Myron Walker <myron.walker@gmail.com>
 
 """
 
