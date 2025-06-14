@@ -29,6 +29,14 @@ class LandscapeDeviceCluster:
 
     def __init__(self, name: str, nodes: Dict[str, NodeBase], spares: Dict[str, NodeBase],
                  group: LandscapeDeviceGroup) -> None:
+        """
+            Initializes a :class:`LandscapeDeviceCluster` instance.
+
+            :param name: Name of the cluster.
+            :param nodes: Mapping of node names to node objects.
+            :param spares: Mapping of spare node names to node objects.
+            :param group: Device group associated with the cluster.
+        """
         self._name = name
         self._nodes = nodes
         self._spares = spares

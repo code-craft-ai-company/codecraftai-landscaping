@@ -21,10 +21,22 @@ from automojo.landscaping.clients.linux.linuxclientcoordinatorcoupling import Li
 
 @testbase.register.resource_factory()
 def create_landscape(constraints={}) -> Generator[Landscape, None, None]:
+    """
+        Creates the global :class:`Landscape` instance.
+
+        :param constraints: Optional dictionary of constraints used while constructing the Landscape.
+
+        :returns: A generator yielding the Landscape object.
+    """
     lscape = LandscapeSingleton()
     yield lscape
 
 @testbase.register.integration_factory()
 def create_linux_client_coordinator_coupling() -> Generator[LinuxClientCoordinatorCoupling, None, None]:
+    """
+        Creates a :class:`LinuxClientCoordinatorCoupling` instance.
+
+        :returns: A generator yielding the coupling instance.
+    """
     lc_coupling = LinuxClientCoordinatorCoupling()
     yield lc_coupling

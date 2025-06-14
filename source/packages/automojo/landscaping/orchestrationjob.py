@@ -33,6 +33,11 @@ class OrchestrationJob(ContextUser):
     requires_credentials = False
 
     def __init__(self, logger):
+        """
+            Initializes an :class:`OrchestrationJob` instance.
+
+            :param logger: Logger used to record job status and progress.
+        """
         self._logger = logger
 
         self._starttime = None

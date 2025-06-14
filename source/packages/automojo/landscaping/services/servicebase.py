@@ -29,6 +29,15 @@ class ServiceBase(LandscapeService):
 
     def __init__(self, lscape: "Landscape", coordinator: "CoordinatorBase",
                  friendly_id:FriendlyIdentifier, service_type: str, service_config: dict):
+        """
+            Initializes a :class:`ServiceBase` instance.
+
+            :param lscape: The :class:`Landscape` this service belongs to.
+            :param coordinator: Coordinator managing the service.
+            :param friendly_id: A :class:`FriendlyIdentifier` for the service.
+            :param service_type: The type of service.
+            :param service_config: Configuration dictionary for the service.
+        """
         super().__init__(lscape, coordinator, friendly_id, service_type, service_config)
 
         self._host = service_config["host"]

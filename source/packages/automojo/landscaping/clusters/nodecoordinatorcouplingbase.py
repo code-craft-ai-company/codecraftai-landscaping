@@ -32,6 +32,14 @@ if TYPE_CHECKING:
 SUPPORTED_INTEGRATION_CLASS = "network/node-base"
 
 def is_matching_client_config(integ_class, device_info):
+    """
+        Determines if a device configuration matches the integration class.
+
+        :param integ_class: The integration class string to match.
+        :param device_info: Dictionary describing the device.
+
+        :returns: ``True`` if the device configuration matches the class.
+    """
     is_matching_client = False
 
     dev_type = device_info["deviceType"]

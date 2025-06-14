@@ -27,6 +27,10 @@ class ConfigurationExtractor:
 
     def __init__(self):
 
+        """
+            Initializes the :class:`ConfigurationExtractor`.
+        """
+
         self._landscape = LandscapeSingleton()
         
         self._description = {

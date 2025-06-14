@@ -140,6 +140,9 @@ class Landscape:
     
     @property
     def credential_manager(self):
+        """
+            Returns the credential manager in use by the Landscape.
+        """
         return self._layer_configuration.credential_manager
 
     @property

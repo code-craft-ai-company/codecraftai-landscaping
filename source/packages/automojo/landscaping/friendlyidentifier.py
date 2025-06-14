@@ -24,6 +24,13 @@ from automojo.errors.exceptions import SemanticError
 class FriendlyIdentifier:
 
     def __init__(self, full_identifier: str, hint: str, identity_match: Optional[Union[re.Pattern, str]]=None):
+        """
+            Constructs a :class:`FriendlyIdentifier` instance.
+
+            :param full_identifier: The full identifier string.
+            :param hint: A short name used for quick reference.
+            :param identity_match: Optional regular expression used to extract an identity value.
+        """
         self._full_identifier = full_identifier
         self._hint = hint
 

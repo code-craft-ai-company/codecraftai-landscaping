@@ -23,6 +23,9 @@ class AutomationPod(ConfigurationCoupling):
     """
 
     def __init__(self):
+        """
+            Creates a new :class:`AutomationPod` instance.
+        """
         self._lscape = LandscapeSingleton()
         return
     

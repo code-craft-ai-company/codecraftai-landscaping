@@ -28,6 +28,15 @@ class NodeBase(LandscapeDevice):
 
     def __init__(self, lscape: "Landscape", coordinator: "CoordinatorBase",
                  friendly_id:FriendlyIdentifier, device_type: str, device_config: dict):
+        """
+            Constructs a :class:`NodeBase` instance.
+
+            :param lscape: The :class:`Landscape` this node belongs to.
+            :param coordinator: Coordinator managing the node.
+            :param friendly_id: Friendly identifier for the node.
+            :param device_type: The device type of the node.
+            :param device_config: Configuration dictionary for the node.
+        """
         super().__init__(lscape, coordinator, friendly_id, device_type, device_config)
 
         self._name = device_config["name"]
