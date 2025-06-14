@@ -48,11 +48,24 @@ class ClientSourcePackager:
     ]
 
     def __init__(self, source_root: str, cache_dir: str):
+        """
+            Creates a :class:`ClientSourcePackager` used to package and deploy client source trees.
+
+            :param source_root: The root directory of the source tree.
+            :param cache_dir: Directory used to store cached package archives.
+        """
         self._source_root = os.path.abspath(os.path.expandvars(os.path.expanduser(source_root)))
         self._cache_dir = os.path.abspath(os.path.expandvars(os.path.expanduser(cache_dir)))
         return
     
     def create_zip_package(self, package_name: str, compresslevel: int=7, skip_if_exists=True):
+        """
+            Creates a zip archive of the source tree.
+
+            :param package_name: Name of the package to create.
+            :param compresslevel: Compression level to use.
+            :param skip_if_exists: Skip creation if the package already exists.
+        """
 
         package_name = package_name.strip()
         if not package_name.endswith(".zip"):
@@ -117,6 +130,15 @@ class ClientSourcePackager:
     
     def deploy_zip_package_via_ssh(self, session: ISystemContext, package_name: str, package_env: Dict[str, str], destination: str,
                                    force_update: bool = False):
+        """
+            Deploys a previously created zip package over an SSH session and prepares the remote environment.
+
+            :param session: System context used for remote execution.
+            :param package_name: Name of the package archive to deploy.
+            :param package_env: Environment variables to write into the remote environment file.
+            :param destination: Destination directory on the remote host.
+            :param force_update: Force overwrite of any existing deployment.
+        """
 
         package_name = package_name.strip()
         if not package_name.endswith(".zip"):

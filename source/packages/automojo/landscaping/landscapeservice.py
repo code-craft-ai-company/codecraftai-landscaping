@@ -215,11 +215,21 @@ class LandscapeService(FeatureAttachedObject):
 
     @property
     def is_configured_for_power(self):
+        """
+            Indicates if this service has power control configured.
+
+            :returns: ``True`` if power control is available.
+        """
         rtnval = True if "power" in self._features else False
         return rtnval
     
     @property
     def is_configured_for_serial(self):
+        """
+            Indicates if this service has serial connectivity configured.
+
+            :returns: ``True`` if serial connectivity is available.
+        """
         rtnval = True if "serial" in self._features else False
         return rtnval
 

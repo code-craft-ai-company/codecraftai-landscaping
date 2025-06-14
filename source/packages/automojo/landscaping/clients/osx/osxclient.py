@@ -28,11 +28,23 @@ class OsxClient(ClientBase):
 
     def __init__(self, lscape: "Landscape", coordinator: "CoordinatorBase",
                  friendly_id:FriendlyIdentifier, device_type: str, device_config: dict):
+        """
+            Initializes an :class:`OsxClient` instance.
+
+            :param lscape: The landscape this client belongs to.
+            :param coordinator: The coordinator managing this client.
+            :param friendly_id: Identifier associated with the client.
+            :param device_type: The declared device type.
+            :param device_config: Configuration dictionary for the client.
+        """
         super().__init__(lscape, coordinator, friendly_id, device_type, device_config)
         return
 
     @property
     def ssh(self) -> SshAgent:
+        """
+            Returns the SSH agent extension for this client.
+        """
         sshagent = self._extensions["network/ssh"]
         return sshagent
     

@@ -66,6 +66,11 @@ class ClientCoordinatorBase(CoordinatorBase):
     MUST_INCLUDE_SSH = False
 
     def __init__(self, lscape: "Landscape", *args, **kwargs):
+        """
+            Initializes the coordinator base object.
+
+            :param lscape: Landscape instance this coordinator belongs to.
+        """
         super().__init__(lscape, *args, **kwargs)
 
         self._cl_upnp_hint_to_ip_lookup: Dict[str, str] = {}

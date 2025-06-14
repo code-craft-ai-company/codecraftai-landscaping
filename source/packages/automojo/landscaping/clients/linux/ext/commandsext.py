@@ -29,16 +29,34 @@ if TYPE_CHECKING:
 class CommandsExt:
 
     def __init__(self, client: "LinuxClient"):
+        """
+            Creates a :class:`CommandsExt` instance bound to a client.
+
+            :param client: The :class:`LinuxClient` this extension operates on.
+        """
         self._client_ref = weakref.ref(client)
         return
 
     @property
     def client(self) -> "LinuxClient":
+        """
+            Returns the owning :class:`LinuxClient` instance.
+        """
         return self._client_ref()
 
     def cifs_mount(self, share: str, mpoint: str, username: Optional[str]=None,
                    password: Optional[str]=None, domain: Optional[str]=None,
                    basis_session: Optional[ISystemContext]=None):
+        """
+            Mounts a CIFS share on the remote client.
+
+            :param share: UNC share to mount.
+            :param mpoint: Remote mount point.
+            :param username: Optional user name for the share.
+            :param password: Optional password for the share.
+            :param domain: Optional domain for the share.
+            :param basis_session: Optional session to base operations on.
+        """
 
         status, stdout, stderr = None, None, None
 
@@ -87,6 +105,14 @@ class CommandsExt:
         return
     
     def nfs_mount(self, host:str, export: str, mpoint: str, basis_session: Optional[ISystemContext]=None):
+        """
+            Mounts an NFS export on the remote client.
+
+            :param host: Host providing the export.
+            :param export: Path to the export on the host.
+            :param mpoint: Mount point on the remote machine.
+            :param basis_session: Optional session to base operations on.
+        """
         status, stdout, stderr = None, None, None
 
         sysctx = self.client.get_default_system_context()
@@ -117,6 +143,12 @@ class CommandsExt:
         return
 
     def system_logger(self, msg: str, basis_session: Optional[ISystemContext]=None):
+        """
+            Writes a message to the system log on the remote host.
+
+            :param msg: Message text to log.
+            :param basis_session: Optional session to base operations on.
+        """
         
         status, stdout, stderr = None, None, None
 
@@ -135,6 +167,13 @@ class CommandsExt:
         return
 
     def umount(self, mpoint: str, flags:str="", basis_session: Optional[ISystemContext]=None):
+        """
+            Unmounts a filesystem from the specified mount point.
+
+            :param mpoint: Mount point to unmount.
+            :param flags: Optional flags passed to the unmount command.
+            :param basis_session: Optional session to base operations on.
+        """
         status, stdout, stderr = None, None, None
 
         sysctx = self.client.get_default_system_context()

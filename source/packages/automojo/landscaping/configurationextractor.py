@@ -45,6 +45,12 @@ class ConfigurationExtractor:
         return
 
     def extract_clusters(self, include_filters: Optional[List[IIncludeFilter]]=None, exclude_filters: Optional[List[IExcludeFilter]]=None):
+        """
+            Extracts cluster device configurations from the landscape.
+
+            :param include_filters: Optional include filters for selecting clusters.
+            :param exclude_filters: Optional exclude filters for removing clusters.
+        """
 
         devices_list = self._description["apod"]["devices"]
 
@@ -57,6 +63,12 @@ class ConfigurationExtractor:
         return
     
     def extract_devices(self, include_filters: Optional[List[IIncludeFilter]]=None, exclude_filters: Optional[List[IExcludeFilter]]=None):
+        """
+            Extracts device configurations from the landscape.
+
+            :param include_filters: Optional include filters for selecting devices.
+            :param exclude_filters: Optional exclude filters for removing devices.
+        """
 
         devices_list = self._description["apod"]["devices"]
 
@@ -68,6 +80,12 @@ class ConfigurationExtractor:
         return
     
     def extract_services(self, include_filters: Optional[List[IIncludeFilter]]=None, exclude_filters: Optional[List[IExcludeFilter]]=None):
+        """
+            Extracts service configurations from the landscape.
+
+            :param include_filters: Optional include filters for selecting services.
+            :param exclude_filters: Optional exclude filters for removing services.
+        """
 
         services_list = self._description["infrastructure"]["services"]
 

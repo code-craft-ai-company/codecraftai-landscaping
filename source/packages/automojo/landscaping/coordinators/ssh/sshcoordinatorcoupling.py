@@ -26,6 +26,13 @@ if TYPE_CHECKING:
 
 
 def is_ssh_device_config(device_info):
+    """
+        Determines if the provided device configuration represents an SSH device.
+
+        :param device_info: Configuration dictionary for a device.
+
+        :returns: ``True`` if the device type matches the SSH integration class.
+    """
     is_ssh_dev = False
 
     dev_type = device_info["deviceType"]

@@ -42,12 +42,21 @@ class LandscapeDeviceGroup:
     
     @property
     def coordinator(self):
+        """
+            Returns the coordinator responsible for devices in this group.
+        """
         return self._coord_ref()
 
     @property
     def items(self):
+        """
+            Returns the list of devices in the group.
+        """
         return self._items
 
     @property
     def label(self):
+        """
+            Returns the group label for this collection of devices.
+        """
         return self._label

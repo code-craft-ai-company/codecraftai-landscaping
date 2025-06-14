@@ -63,6 +63,11 @@ class FriendlyIdentifier:
 
     @property
     def identity(self):
+        """
+            Provides a short identifier for this instance.
+
+            :returns: The resolved identity string for the identifier.
+        """
         id = None
 
         if self._identity_match is not None:
@@ -85,14 +90,32 @@ class FriendlyIdentifier:
         return result
 
     def relationship(self) -> str:
+        """
+            Returns a string that describes the relationship between the hint and
+            the full identifier.
+
+            :returns: The formatted relationship string.
+        """
         rel = self._hint + " -> " + self._full_identifier
         return rel
 
     def update_full_identifier(self, full_identifer: str):
+        """
+            Updates the stored full identifier with a new value.
+
+            :param full_identifer: The new full identifier string.
+        """
         self._full_identifier = full_identifer
         return
 
     def __eq__(self, other):
+        """
+            Compares two identifiers for equivalence.
+
+            :param other: Another `FriendlyIdentifier` or string to compare.
+
+            :returns: ``True`` if the identifiers match, otherwise ``False``.
+        """
         result = False
 
         if isinstance(other, FriendlyIdentifier):
@@ -102,8 +125,13 @@ class FriendlyIdentifier:
         else:
             errmsg = "Unable to compare FriendlyIdentifier with type '{}'".format(type(other))
             raise SemanticError(errmsg)
-            
+
         return result
 
     def __str__(self):
+        """
+            Returns a string representation for this identifier.
+
+            :returns: The identity string.
+        """
         return self.identity
