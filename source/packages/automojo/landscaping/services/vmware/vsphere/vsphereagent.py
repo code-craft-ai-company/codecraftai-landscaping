@@ -547,6 +547,7 @@ class VSphereAgent:
             Issues a DELETE request using the current session.
 
             :param url: Request URL.
+
             :returns: Response object from the request.
             :rtype: requests.Response
         """
@@ -559,6 +560,7 @@ class VSphereAgent:
             Issues a GET request using the current session.
 
             :param url: Request URL.
+
             :returns: Response object from the request.
             :rtype: requests.Response
         """
@@ -573,6 +575,7 @@ class VSphereAgent:
             :param url: Request URL.
             :param data: Optional form data to send.
             :param json: Optional JSON body to send.
+
             :returns: Response object from the request.
             :rtype: requests.Response
         """
@@ -587,6 +590,7 @@ class VSphereAgent:
             :param url: Request URL.
             :param data: Optional form data to send.
             :param json: Optional JSON body to send.
+
             :returns: Response object from the request.
             :rtype: requests.Response
         """

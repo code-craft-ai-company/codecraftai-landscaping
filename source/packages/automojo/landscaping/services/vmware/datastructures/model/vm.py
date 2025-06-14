@@ -57,6 +57,7 @@ class VmHardwareSerialBackingInfo:
             Creates an instance from a dictionary of attributes.
 
             :param info: Dictionary representing the object.
+
             :returns: Instantiated :class:`VmHardwareSerialBackingInfo`.
         """
         obj = VmHardwareSerialBackingInfo(**info)
@@ -78,6 +79,7 @@ class VmHardwareSerialInfo:
             Creates an instance from a dictionary of attributes.
 
             :param info: Dictionary representing the object.
+
             :returns: Instantiated :class:`VmHardwareSerialInfo`.
         """
         info["backing"] = VmHardwareSerialBackingInfo.from_dict(info["backing"])
@@ -96,6 +98,7 @@ class VmHardwareBootDeviceEntry:
             Creates an instance from a dictionary of attributes.
 
             :param info: Dictionary representing the object.
+
             :returns: Instantiated :class:`VmHardwareBootDeviceEntry`.
         """
         obj = VmHardwareBootDeviceEntry(**info)
@@ -115,6 +118,7 @@ class VmHardwareCdromBackingInfo:
             Creates an instance from a dictionary of attributes.
 
             :param info: Dictionary representing the object.
+
             :returns: Instantiated :class:`VmHardwareCdromBackingInfo`.
         """
         obj = VmHardwareCdromBackingInfo(**info)
@@ -131,6 +135,7 @@ class VmHardwareIdeAddressInfo:
             Creates an instance from a dictionary of attributes.
 
             :param info: Dictionary representing the object.
+
             :returns: Instantiated :class:`VmHardwareIdeAddressInfo`.
         """
         obj = VmHardwareIdeAddressInfo(**info)
@@ -147,6 +152,7 @@ class VmHardwareNvmeAddressInfo:
             Creates an instance from a dictionary of attributes.
 
             :param info: Dictionary representing the object.
+
             :returns: Instantiated :class:`VmHardwareNvmeAddressInfo`.
         """
         obj = VmHardwareNvmeAddressInfo(**info)
@@ -164,6 +170,7 @@ class VmHardwareSataAddressInfo:
             Creates an instance from a dictionary of attributes.
 
             :param info: Dictionary representing the object.
+
             :returns: Instantiated :class:`VmHardwareSataAddressInfo`.
         """
         obj = VmHardwareSataAddressInfo(**info)
@@ -180,6 +187,7 @@ class VmHardwareScsiAddressInfo:
             Creates an instance from a dictionary of attributes.
 
             :param info: Dictionary representing the object.
+
             :returns: Instantiated :class:`VmHardwareScsiAddressInfo`.
         """
         obj = VmHardwareScsiAddressInfo(**info)
@@ -202,6 +210,7 @@ class VmHardwareCdromInfo:
             Creates an instance from a dictionary of attributes.
 
             :param info: Dictionary representing the object.
+
             :returns: Instantiated :class:`VmHardwareCdromInfo`.
         """
         info["backing"] = VmHardwareCdromBackingInfo.from_dict(info["backing"])
@@ -225,6 +234,7 @@ class VmHardwareCpuInfo:
             Creates an instance from a dictionary of attributes.
 
             :param info: Dictionary representing the object.
+
             :returns: Instantiated :class:`VmHardwareCpuInfo`.
         """
         obj = VmHardwareCpuInfo(**info)
@@ -241,6 +251,7 @@ class VmHardwareDiskBackingInfo:
             Creates an instance from a dictionary of attributes.
 
             :param info: Dictionary representing the object.
+
             :returns: Instantiated :class:`VmHardwareDiskBackingInfo`.
         """
         obj = VmHardwareDiskBackingInfo(**info)
@@ -263,6 +274,7 @@ class VmHardwareDiskInfo:
             Creates an instance from a dictionary of attributes.
 
             :param info: Dictionary representing the object.
+
             :returns: Instantiated :class:`VmHardwareCdromInfo`.
         """
         info["backing"] = VmHardwareDiskBackingInfo.from_dict(info["backing"])
@@ -290,6 +302,7 @@ class VmHardwareFloppyBackingInfo:
             Creates an instance from a dictionary of attributes.
 
             :param info: Dictionary representing the object.
+
             :returns: Instantiated :class:`VmHardwareFloppyBackingInfo`.
         """
         obj = VmHardwareFloppyBackingInfo(**info)
@@ -309,6 +322,7 @@ class VmHardwareFloppyInfo:
             Creates an instance from a dictionary of attributes.
 
             :param info: Dictionary representing the object.
+
             :returns: Instantiated :class:`VmHardwareFloppyInfo`.
         """
         info["backing"] = VmHardwareFloppyBackingInfo.from_dict(info["backing"])
@@ -330,6 +344,7 @@ class VmHardwareInfo:
             Creates an instance from a dictionary of attributes.
 
             :param info: Dictionary representing the object.
+
             :returns: Instantiated :class:`VmHardwareInfo`.
         """
         obj = VmHardwareInfo(**info)
@@ -349,6 +364,7 @@ class VmHardwareAdapterScsiInfo:
             Creates an instance from a dictionary of attributes.
 
             :param info: Dictionary representing the object.
+
             :returns: Instantiated :class:`VmHardwareAdapterScsiInfo`.
         """
         info["scsi"] = VmHardwareScsiAddressInfo.from_dict(info["scsi"])
@@ -371,6 +387,7 @@ class VmHardwareBootInfo:
             Creates an instance from a dictionary of attributes.
 
             :param info: Dictionary representing the object.
+
             :returns: Instantiated :class:`VmHardwareBootInfo`.
         """
         obj = VmHardwareBootInfo(**info)
@@ -389,6 +406,7 @@ class VmHardwareMemoryInfo:
             Creates an instance from a dictionary of attributes.
 
             :param info: Dictionary representing the object.
+
             :returns: Instantiated :class:`VmHardwareMemoryInfo`.
         """
         obj = VmHardwareMemoryInfo(**info)
@@ -413,6 +431,7 @@ class VmHardwareEthernetBackingInfo:
             Creates an instance from a dictionary of attributes.
 
             :param info: Dictionary representing the object.
+
             :returns: Instantiated :class:`VmHardwareEthernetBackingInfo`.
         """
         obj = VmHardwareEthernetBackingInfo(**info)
@@ -438,6 +457,7 @@ class VmHardwareEthernetInfo:
             Creates an instance from a dictionary of attributes.
 
             :param info: Dictionary representing the object.
+
             :returns: Instantiated :class:`VmHardwareEthernetInfo`.
         """
         info["backing"] = VmHardwareEthernetBackingInfo.from_dict(info["backing"])
@@ -457,6 +477,7 @@ class VmHardwareAdapterSataInfo:
             Creates an instance from a dictionary of attributes.
 
             :param info: Dictionary representing the object.
+
             :returns: Instantiated :class:`VmHardwareAdapterSataInfo`.
         """
         obj = VmHardwareAdapterSataInfo(**info)
@@ -475,6 +496,7 @@ class VmHardwareParallelBackingInfo:
             Creates an instance from a dictionary of attributes.
 
             :param info: Dictionary representing the object.
+
             :returns: Instantiated :class:`VmHardwareParallelBackingInfo`.
         """
         obj = VmHardwareParallelBackingInfo(**info)
@@ -494,6 +516,7 @@ class VmHardwareParallelInfo:
             Creates an instance from a dictionary of attributes.
 
             :param info: Dictionary representing the object.
+
             :returns: Instantiated :class:`VmHardwareParallelInfo`.
         """
         info["backing"] = VmHardwareParallelBackingInfo.from_dict(info["backing"])
@@ -512,6 +535,7 @@ class VmHardwareAdapterNvmeInfo:
             Creates an instance from a dictionary of attributes.
 
             :param info: Dictionary representing the object.
+
             :returns: Instantiated :class:`VmHardwareAdapterNvmeInfo`.
         """
         obj = VmHardwareAdapterNvmeInfo(**info)
@@ -529,6 +553,7 @@ class VmIdentityInfo:
             Creates an instance from a dictionary of attributes.
 
             :param info: Dictionary representing the object.
+
             :returns: Instantiated :class:`VmIdentityInfo`.
         """
         obj = VmIdentityInfo(**info)
@@ -562,6 +587,7 @@ class VmInfo:
             Creates an instance from a dictionary of attributes.
 
             :param info: Dictionary representing the object.
+
             :returns: Instantiated :class:`VmHardwareAdapterNvmeInfo`.
         """
 
