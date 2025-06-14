@@ -474,7 +474,12 @@ class ConfigureExt:
 
 
     def system_packages_update(self, basis_session: Optional[SshSession] = None):
-        
+        """
+            Updates the system package index on the remote client using apt.
+
+            :param basis_session: Optional existing SSH session to reuse.
+        """
+
         client = self.client
 
         with client.ssh.open_session(basis_session=basis_session) as session:

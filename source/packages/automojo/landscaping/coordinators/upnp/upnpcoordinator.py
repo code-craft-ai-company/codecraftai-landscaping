@@ -77,6 +77,15 @@ UPNP_SUBSCRIPTION_NOTIFY_RESPONSE_OK = HTTP1_1_LINESEP.join([
 ])
 
 def http_parse_header(header_content):
+    """
+        Parses an HTTP header block and returns the request line and
+        dictionary of header values.
+
+        :param header_content: Raw bytes of the HTTP header.
+
+        :returns: Tuple of the request line and a dictionary of headers.
+    """
+
     headers = {}
     header_lines = header_content.splitlines(False)
 
@@ -101,6 +110,13 @@ class UpnpCoordinator(CoordinatorBase):
     # pylint: disable=attribute-defined-outside-init
 
     def __init__(self, lscape: "Landscape", control_point=None, workers: int = 5):
+        """
+            Initializes the :class:`UpnpCoordinator` instance.
+
+            :param lscape: Landscape this coordinator is associated with.
+            :param control_point: Optional UPNP control point object.
+            :param workers: Number of worker threads to create.
+        """
         super(UpnpCoordinator, self).__init__(lscape, control_point=control_point, workers=workers)
 
         context = Context()
@@ -214,7 +230,14 @@ class UpnpCoordinator(CoordinatorBase):
         return wlist
 
     def create_callback_traffic_capture_context(self, fromip: str):
-        
+        """
+            Creates a :class:`TrafficCaptureContext` for capturing callback
+            traffic from the specified IP address.
+
+            :param fromip: Source IP address of the callback traffic.
+
+            :returns: The created :class:`TrafficCaptureContext` instance.
+        """
         identifier = uuid.uuid4()
         context = TrafficCaptureContext(self, identifier, fromip, self.destroy_callback_traffic_capture_context)
 
@@ -230,7 +253,12 @@ class UpnpCoordinator(CoordinatorBase):
         return context
 
     def destroy_callback_traffic_capture_context(self, context: TrafficCaptureContext):
+        """
+            Destroys a traffic capture context previously created for callback
+            monitoring.
 
+            :param context: The context object to destroy.
+        """
         fromip = context.fromip
         identifier = context.identifier
 
@@ -246,6 +274,9 @@ class UpnpCoordinator(CoordinatorBase):
         return
 
     def establish_presence(self):
+        """
+            Establishes presence subscriptions for all watched devices.
+        """
         watched_devices = self.watch_devices
 
         for wdev in watched_devices:
@@ -567,6 +598,12 @@ class UpnpCoordinator(CoordinatorBase):
         return found_devices, matching_devices, missing_devices
 
     def wakeup_device(self, usn, dev_hint):
+        """
+            Attempts to wake up a device using implementation specific means.
+
+            :param usn: The USN of the device to wake.
+            :param dev_hint: Additional hint information about the device.
+        """
         self.logger.info("TODO: Implement an overload for UpnpCoordinatorIntegration:wakeup_device.")
         return
 
@@ -586,7 +623,14 @@ class UpnpCoordinator(CoordinatorBase):
         return dev
 
     def _device_cache_scan(self, query_devices: list):
+        """
+            Scans the local device cache for any of the devices listed in
+            ``query_devices``.
 
+            :param query_devices: List of device hints to search for in the cache.
+
+            :returns: Dictionary of device information keyed by device hint.
+        """
         found_devices = {}
 
         for qdev_hint in query_devices:
@@ -606,7 +650,12 @@ class UpnpCoordinator(CoordinatorBase):
         return found_devices
 
     def _device_cache_update(self, found_device: dict):
+        """
+            Updates the on-disk cache with information about the devices
+            that were discovered.
 
+            :param found_device: Mapping of device hints to device data.
+        """
         if not os.path.exists(self._upnp_cache_dir):
             os.makedirs(self._upnp_cache_dir)
 
@@ -619,6 +668,17 @@ class UpnpCoordinator(CoordinatorBase):
         return
 
     def _device_cache_verify_device_info(self, device_hint: str, device_filename: str, device_info: dict):
+        """
+            Verifies cached device information by loading the device
+            description and ensuring the UDN matches the expected hint.
+
+            :param device_hint: The identifier hint for the device.
+            :param device_filename: Path to the cached device file.
+            :param device_info: Parsed device information from the cache.
+
+            :returns: ``True`` if the cached information is valid.
+        """
+
         valid = False
 
         if MSearchKeys.USN_DEV in device_info and "LOCATION" in device_info:
@@ -644,9 +704,19 @@ class UpnpCoordinator(CoordinatorBase):
 
         return valid
 
-    def _device_msearch_scan(self, query_devices: list, interface_list: list, response_timeout: float = 20, 
+    def _device_msearch_scan(self, query_devices: list, interface_list: list, response_timeout: float = 20,
                              retry: int = 2, custom_headers: Optional[dict]=None):
+        """
+            Performs an M-SEARCH scan looking for the specified devices.
 
+            :param query_devices: List of device hints to search for.
+            :param interface_list: Interfaces to send search requests on.
+            :param response_timeout: Seconds to wait for responses.
+            :param retry: Number of retries to perform.
+            :param custom_headers: Optional extra headers for the search.
+
+            :returns: Tuple of found devices and matching device information.
+        """
         found_devices = {}
         matching_devices = {}
 
@@ -675,7 +745,18 @@ class UpnpCoordinator(CoordinatorBase):
         return found_devices, matching_devices
 
     def _device_scan_final_alternatives(self, query_devices: list, interface_list: list, response_timeout: float = 20, retry: int = 2):
+        """
+            Performs additional attempts to locate devices that were not found
+            during the normal M-SEARCH scan by using ARP table hints and
+            unicast queries.
 
+            :param query_devices: Devices still missing after the initial scan.
+            :param interface_list: List of interfaces to use for queries.
+            :param response_timeout: Seconds to wait for responses.
+            :param retry: Number of retry attempts.
+
+            :returns: Tuple of found devices and matching device information.
+        """
         found_devices = {}
         matching_devices = {}
 
@@ -813,9 +894,27 @@ class UpnpCoordinator(CoordinatorBase):
         return
 
     def _process_service_alive_notification(self, ip_addr, usn_device: str, usn_class: str, host: str, request_info: dict):
+        """
+            Handles a service alive notification for a UPNP service.
+
+            :param ip_addr: IP address of the device.
+            :param usn_device: Device USN value.
+            :param usn_class: Service class USN value.
+            :param host: Host header from the notification.
+            :param request_info: Dictionary of header values from the request.
+        """
         return
 
     def _process_service_byebye_notification(self, ip_addr, usn_device: str, usn_class: str, host: str, request_info: dict):
+        """
+            Handles a service byebye notification for a UPNP service.
+
+            :param ip_addr: IP address of the device.
+            :param usn_device: Device USN value.
+            :param usn_class: Service class USN value.
+            :param host: Host header from the notification.
+            :param request_info: Dictionary of header values from the request.
+        """
         return
 
     def _process_subscription_callback(self, ifname: str, claddr: str, asock: socket):
@@ -1193,6 +1292,14 @@ class UpnpCoordinator(CoordinatorBase):
 
     def _activate_root_device(self, lscape: "Landscape", usn_device: str, ip_addr: str, location: str, deviceinfo: dict):
         """
+            Marks a device as active or creates it if unknown devices are
+            allowed.
+
+            :param lscape: The landscape instance.
+            :param usn_device: Device USN string.
+            :param ip_addr: IP address of the device.
+            :param location: Location URL of the device description.
+            :param deviceinfo: Parsed device information from discovery.
         """
 
         dev = self.lookup_device_by_upnp_usn(usn_device)
@@ -1224,6 +1331,14 @@ class UpnpCoordinator(CoordinatorBase):
 
     def _deactivate_root_device(self, lscape: "Landscape", usn_device: str, ip_addr: str, location: str, deviceinfo: dict):
         """
+            Marks a device as inactive when a byebye notification is
+            received.
+
+            :param lscape: The landscape instance.
+            :param usn_device: Device USN string.
+            :param ip_addr: IP address of the device.
+            :param location: Location URL of the device description.
+            :param deviceinfo: Parsed device information from discovery.
         """
         dev = self.lookup_device_by_upnp_usn(usn_device)
         if dev is not None:

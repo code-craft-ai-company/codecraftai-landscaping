@@ -27,6 +27,15 @@ class SshDevice(LandscapeDevice):
 
     def __init__(self, lscape: "Landscape", coordinator: "CoordinatorBase",
                  friendly_id:FriendlyIdentifier, device_type: str, device_config: dict):
+        """
+            Constructs an :class:`SshDevice` instance.
+
+            :param lscape: Owning landscape instance.
+            :param coordinator: Coordinator responsible for this device.
+            :param friendly_id: Friendly identifier for the device.
+            :param device_type: The declared device type.
+            :param device_config: Configuration dictionary.
+        """
         super().__init__(lscape, coordinator, friendly_id, device_type, device_config)
 
         self._host = device_config["host"]
@@ -34,10 +43,16 @@ class SshDevice(LandscapeDevice):
 
     @property
     def host(self) -> str:
+        """
+            Host name or address of the device.
+        """
         return self._host
 
     @property
     def ssh(self) -> SshAgent:
+        """
+            Returns the :class:`SshAgent` extension associated with this device.
+        """
         ext = self._extensions["network/ssh"]
         return ext
 

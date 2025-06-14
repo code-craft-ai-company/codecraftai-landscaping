@@ -45,10 +45,16 @@ class NodeBase(LandscapeDevice):
 
     @property
     def name(self) -> str:
+        """
+            The configured name of the node.
+        """
         return self._name
 
     @property
     def host(self) -> str:
+        """
+            The host name or IP address of the node.
+        """
         return self._host
 
     def enhance(self):

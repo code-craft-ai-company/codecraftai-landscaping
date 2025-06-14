@@ -27,6 +27,15 @@ class TcpSerialDevice(LandscapeDevice):
 
     def __init__(self, lscape: "Landscape", coordinator: "CoordinatorBase",
                  friendly_id:FriendlyIdentifier, device_type: str, device_config: dict):
+        """
+            Initializes a :class:`TcpSerialDevice` instance.
+
+            :param lscape: The landscape this device belongs to.
+            :param coordinator: Coordinator managing the device.
+            :param friendly_id: Friendly identifier for the device.
+            :param device_type: Declared device type.
+            :param device_config: Configuration dictionary for the device.
+        """
         super().__init__(lscape, coordinator, friendly_id, device_type, device_config)
 
         self._host = device_config["host"]
@@ -35,14 +44,23 @@ class TcpSerialDevice(LandscapeDevice):
 
     @property
     def host(self) -> str:
+        """
+            Host name or IP address of the device.
+        """
         return self._host
 
     @property
     def port(self) -> int:
+        """
+            TCP port used to connect to the device.
+        """
         return self._port
 
     @property
     def serial(self) -> TcpSerialAgent:
+        """
+            Returns the :class:`TcpSerialAgent` extension for this device.
+        """
         ext = self._extensions["network/ssh"]
         return ext
 

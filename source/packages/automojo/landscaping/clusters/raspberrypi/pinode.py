@@ -42,6 +42,9 @@ class PiNode(NodeBase):
     
     @property
     def ssh(self) -> SshAgent:
+        """
+            Returns the :class:`SshAgent` extension for this node.
+        """
         sshagent = self._extensions["network/ssh"]
         return sshagent
 

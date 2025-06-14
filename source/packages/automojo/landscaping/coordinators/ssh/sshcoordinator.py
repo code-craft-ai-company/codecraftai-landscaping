@@ -57,6 +57,11 @@ class SshCoordinator(CoordinatorBase):
     # pylint: disable=attribute-defined-outside-init
 
     def __init__(self, lscape: "Landscape", *args, **kwargs):
+        """
+            Constructs an instance of the :class:`SshCoordinator`.
+
+            :param lscape: The owning :class:`Landscape` instance.
+        """
         super().__init__(lscape, *args, **kwargs)
 
         self._cl_upnp_hint_to_ip_lookup: Dict[str, str] = {}

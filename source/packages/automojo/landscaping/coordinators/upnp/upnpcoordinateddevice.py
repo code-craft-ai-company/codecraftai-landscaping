@@ -17,6 +17,11 @@ from automojo.interop.protocols.upnp.model.upnpdevicedetail import UpnpDeviceDet
 class UpnpCoordinatedDevice(UpnpRootDevice):
 
     def __init__(self, device_detail: UpnpDeviceDetail):
+        """
+            Initializes a :class:`UpnpCoordinatedDevice`.
+
+            :param device_detail: The UPNP device description.
+        """
         super().__init__(device_detail)
 
         self._coordinator_ref = None

@@ -278,7 +278,15 @@ class Landscape:
         return
 
     def activate_operations(self, *, activation_params: LandscapeActivationParams=DEFAULT_LANDSCAPE_ACTIVATION_PARAMS) -> None:
-        
+        """
+            Activates the operational layer of the landscape.  This will cause
+            coordinators to enhance devices, establish connectivity and validate
+            topology and features.
+
+            :param activation_params: Optional activation parameters controlling
+                                       the activation process.
+        """
+
         thisType = type(self)
 
         with self.begin_locked_landscape_scope() as lkscope:

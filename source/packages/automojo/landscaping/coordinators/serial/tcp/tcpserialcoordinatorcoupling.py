@@ -25,6 +25,14 @@ if TYPE_CHECKING:
     from automojo.landscaping.landscape import Landscape
 
 def is_tcp_serial_type(config_info) -> bool:
+    """
+        Determines if the given configuration corresponds to a TCP serial device.
+
+        :param config_info: Device configuration dictionary.
+
+        :returns: ``True`` if the serial type matches the TCP integration class.
+    """
+
     is_sst = False
 
     if "serialType" in config_info:

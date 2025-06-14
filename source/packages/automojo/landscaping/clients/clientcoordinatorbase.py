@@ -92,7 +92,14 @@ class ClientCoordinatorBase(CoordinatorBase):
         return
 
     def attach_extension_for_ssh(self, landscape: "Landscape", device_info: Dict[str, Any], device: LandscapeDevice):
+        """
+            Attaches an SSH agent extension to a landscape device if a
+            corresponding credential and host are provided.
 
+            :param landscape: The landscape the device belongs to.
+            :param device_info: The configuration information for the device.
+            :param device: The :class:`LandscapeDevice` being extended.
+        """
         credentials = device.credentials
 
         ssh_cred = None
@@ -160,7 +167,20 @@ class ClientCoordinatorBase(CoordinatorBase):
 
     def create_ssh_agent(self, device: LandscapeDevice, device_info: Dict[str, Any], host: str, cred: BaseCredential,
                          users: Optional[dict] = None, port: int = 22, pty_params: Optional[dict] = None):
-        
+        """
+            Creates an SSH agent extension for the given device.  Derived
+            coordinators should override this method if SSH support is
+            mandatory.
+
+            :param device: The device to attach the SSH agent to.
+            :param device_info: Dictionary of configuration information for the device.
+            :param host: Host name or IP address of the device.
+            :param cred: Credential used for establishing the SSH connection.
+            :param users: Optional dictionary of user account definitions.
+            :param port: The SSH port number to connect on.
+            :param pty_params: Optional PTY parameters for the session.
+        """
+
         if self.MUST_INCLUDE_SSH:
             err_mgs = "if 'MUST_INCLUDE_SSH' is 'True' then 'create_ssh_agent' must be overloaded."
             raise AbstractMethodError(err_mgs)
