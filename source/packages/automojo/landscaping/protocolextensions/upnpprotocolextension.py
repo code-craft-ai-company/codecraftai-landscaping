@@ -39,7 +39,7 @@ class UpnpProtocolExtension(UpnpAgent, ProtocolExtension):
             when an agent is attached to a LandscapeDevice as a device extension.
 
             :param coord_ref: A weak reference to the coordinator that is managing interactions through this
-                              device extension.
+            device extension.
             :param extid: A unique reference that can be used to identify this device via the coordinator even if its location changes.
             :param location: The location reference where this device can be found via the coordinator.
             :param configinfo: The configuration information dictionary from the landscape file for the specified host.

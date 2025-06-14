@@ -1164,7 +1164,7 @@ class UpnpCoordinator(CoordinatorBase):
             The entry point for callback processing threads.
 
             :param sgate: The startup gate that is used to indicate to the thread spinning up the coordinator
-                          that the callback thread has started.
+            that the callback thread has started.
             :param ifname: The interface name of interface this thread is assigned to process callbacks for.
         """
         self._shutdown_gate.acquire()
@@ -1213,7 +1213,7 @@ class UpnpCoordinator(CoordinatorBase):
             The entry point for monitor thread.  The monitor thread sets up monitoring on all interfaces.
 
             :param sgate: The startup gate that is used to indicate to the thread spinning up the coordinator
-                          that the monitor thread has started.
+            that the monitor thread has started.
         """
         self._shutdown_gate.acquire()
 
@@ -1267,7 +1267,7 @@ class UpnpCoordinator(CoordinatorBase):
             The entry point for worker threads.  Worker threads process work packets queued up by other threads.
 
             :param sgate: The startup gate that is used to indicate to the thread spinning up the coordinator
-                          that this worker thread has started.
+            that this worker thread has started.
         """
         try:
             # Set the start gate to allow the thread spinning us up to continue

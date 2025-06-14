@@ -143,7 +143,7 @@ class ClientCoordinatorCouplingBase(CoordinatorCoupling):
             resources.
 
             :returns: A tuple with a list of error messages for failed connections and dict of connectivity
-                      reports for devices devices based on the coordinator.
+            reports for devices devices based on the coordinator.
         """
 
         lscape = cls.landscape
@@ -175,7 +175,7 @@ class ClientCoordinatorCouplingBase(CoordinatorCoupling):
             resources.
 
             :returns: A tuple with a list of error messages for failed connections and dict of connectivity
-                      reports for devices devices based on the coordinator.
+            reports for devices devices based on the coordinator.
         """
         return
 
@@ -185,13 +185,13 @@ class ClientCoordinatorCouplingBase(CoordinatorCoupling):
             Validate the item configuration.
 
             -   deviceType: network/client-osx
-                name: raspey03
-                host: 172.16.1.33
-                credentials:
-                -    pi-cluster
-                features:
-                    isolation: false
-                skip: false
+            name: raspey03
+            host: 172.16.1.33
+            credentials:
+            -    pi-cluster
+            features:
+            isolation: false
+            skip: false
         """
         errors = []
         warnings = []

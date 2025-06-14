@@ -168,10 +168,10 @@ class SshCoordinator(CoordinatorBase):
             connectivity with the remote node.
 
             :param cmd: A command to run on the remote machine in order
-                        to verify that ssh connectivity can be establish.
+            to verify that ssh connectivity can be establish.
             :param user: The name of the user credentials to use for connectivity.
-                         If the 'user' parameter is not provided, then the
-                         credentials of the default or priviledged user will be used.
+            If the 'user' parameter is not provided, then the
+            credentials of the default or priviledged user will be used.
             :param raiseerror: A boolean value indicating if this API should raise an Exception on failure.
 
             :returns: A list of errors encountered when verifying connectivity with the devices managed or watched by the coordinator.
