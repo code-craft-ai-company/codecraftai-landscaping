@@ -45,18 +45,30 @@ class LandscapeDeviceCluster:
 
     @property
     def group(self) -> LandscapeDeviceGroup:
+        """
+            Returns the device group associated with this cluster.
+        """
         return self._group
 
     @property
     def name(self) -> str:
+        """
+            Returns the name assigned to this cluster.
+        """
         return self._name
 
     @property
     def nodes(self) -> Dict[str, NodeBase]:
+        """
+            Returns a mapping of node names to node devices.
+        """
         return self._nodes
     
     @property
     def spares(self) -> Dict[str, NodeBase]:
+        """
+            Returns a mapping of spare node names to node devices.
+        """
         return self._spares
 
     def enchance_metadata(self):

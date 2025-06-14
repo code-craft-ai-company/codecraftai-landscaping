@@ -31,6 +31,11 @@ if TYPE_CHECKING:
 class LandscapeInstallationLayer(LandscapingLayerBase):
 
     def __init__(self, lscape: "Landscape"):
+        """
+            Creates a :class:`LandscapeInstallationLayer` instance.
+
+            :param lscape: The owning :class:`Landscape` object.
+        """
         super().__init__(lscape)
 
         self._installed_integration_couplings: Dict[str, IntegrationCouplingType] = {}
@@ -46,6 +51,9 @@ class LandscapeInstallationLayer(LandscapingLayerBase):
         return self._installed_integration_couplings
 
     def _load_integration_coupling_types(self):
+        """
+            Loads the integration coupling types from the configured factories.
+        """
 
         super_factory = ConfiguredSuperFactorySingleton()
         for integration_coupling_types in super_factory.iterate_override_types_for_each(

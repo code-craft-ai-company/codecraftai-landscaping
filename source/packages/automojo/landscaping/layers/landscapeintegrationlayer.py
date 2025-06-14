@@ -43,6 +43,11 @@ if TYPE_CHECKING:
 class LandscapeIntegrationLayer(LandscapingLayerBase):
 
     def __init__(self, lscape: "Landscape"):
+        """
+            Creates a :class:`LandscapeIntegrationLayer` instance.
+
+            :param lscape: The owning :class:`Landscape` object.
+        """
         super().__init__(lscape)
         self._integrated_devices: Dict[str, LandscapeDevice] = None
         self._integrated_power: Dict[str, Any] = None
@@ -64,6 +69,9 @@ class LandscapeIntegrationLayer(LandscapingLayerBase):
     
     @property
     def coordinators_for_devices(self) -> Dict[str, CoordinatorBase]:
+        """
+            Provides a thread safe copy of the device coordinator table.
+        """
         coord_table = {}
 
         lscape = self.landscape
@@ -74,6 +82,9 @@ class LandscapeIntegrationLayer(LandscapingLayerBase):
     
     @property
     def coordinators_for_power(self) -> Dict[str, CoordinatorBase]:
+        """
+            Provides a thread safe copy of the power coordinator table.
+        """
         coord_table = {}
 
         lscape = self.landscape
@@ -84,6 +95,9 @@ class LandscapeIntegrationLayer(LandscapingLayerBase):
     
     @property
     def coordinators_for_serial(self) -> Dict[str, CoordinatorBase]:
+        """
+            Provides a thread safe copy of the serial coordinator table.
+        """
         coord_table = {}
 
         lscape = self.landscape
@@ -94,6 +108,9 @@ class LandscapeIntegrationLayer(LandscapingLayerBase):
 
     @property
     def coordinators_for_services(self) -> Dict[str, CoordinatorBase]:
+        """
+            Provides a thread safe copy of the service coordinator table.
+        """
         coord_table = {}
 
         lscape = self.landscape

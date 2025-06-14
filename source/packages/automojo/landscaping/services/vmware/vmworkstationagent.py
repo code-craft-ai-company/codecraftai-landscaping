@@ -24,6 +24,16 @@ import requests
 class VmWorkstationAgent:
 
     def __init__(self, host: str, credential: BasicCredential, port: Optional[int]=None, verify_certificates: bool=False):
+        """
+            Creates a :class:`VmWorkstationAgent` instance used to interact with
+            VMware Workstation.
+
+            :param host: Host name or IP address of the workstation.
+            :param credential: Credential used for authentication.
+            :param port: Optional API port.
+            :param verify_certificates: Indicates if SSL certificates should be verified.
+        """
+
         self._session = requests.session()
         self._session.verify = False
 
@@ -43,6 +53,11 @@ class VmWorkstationAgent:
         return
     
     def vms_list(self):
+        """
+            Retrieves the list of virtual machines from the workstation.
+
+            :returns: A list describing the virtual machines.
+        """
 
         headers = {
             'Accept': 'application/vnd.vmware.vmw.rest-v1+json',
