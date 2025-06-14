@@ -21,6 +21,9 @@ from automojo.foundation.runtime.paths import get_path_for_output
 from automojo.landscaping.wellknown import LandscapeSingleton
 
 class OrchestrationJob(ContextUser):
+    """
+        Base class for automation orchestration jobs.
+    """
 
     name = "" # Friendly name for the test job
     title = "" # A descriptive title for the test job

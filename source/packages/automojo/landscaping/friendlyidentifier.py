@@ -22,6 +22,10 @@ import re
 from automojo.errors.exceptions import SemanticError
 
 class FriendlyIdentifier:
+    """
+        Associates a short identifier with a full identifier string and an
+        optional identity match pattern.
+    """
 
     def __init__(self, full_identifier: str, hint: str, identity_match: Optional[Union[re.Pattern, str]]=None):
         """

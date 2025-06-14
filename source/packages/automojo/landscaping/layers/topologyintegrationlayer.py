@@ -25,6 +25,9 @@ if TYPE_CHECKING:
 
 
 class TopologyIntegrationLayer(LandscapingLayerBase):
+    """
+        Layer responsible for applying topology configuration information.
+    """
 
     def __init__(self, lscape: "Landscape"):
         """

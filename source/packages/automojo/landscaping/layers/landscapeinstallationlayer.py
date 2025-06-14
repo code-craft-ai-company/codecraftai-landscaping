@@ -29,6 +29,9 @@ if TYPE_CHECKING:
 
 
 class LandscapeInstallationLayer(LandscapingLayerBase):
+    """
+        Layer responsible for installing integration couplings.
+    """
 
     def __init__(self, lscape: "Landscape"):
         """

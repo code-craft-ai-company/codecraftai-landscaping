@@ -36,6 +36,9 @@ class IncludeServiceBase(IIncludeFilter):
     """
 
 class IncludeDeviceByDeviceType(IncludeDeviceBase):
+    """
+        Includes devices that match a specific device type.
+    """
 
     def __init__(self, device_type: str) -> None:
         """
@@ -64,6 +67,9 @@ class IncludeDeviceByDeviceType(IncludeDeviceBase):
 
 
 class IncludeDeviceByDeviceTypeAndRole(IncludeDeviceBase):
+    """
+        Includes devices that match a device type and role.
+    """
 
     def __init__(self, device_type: str, role: str) -> None:
         """
@@ -94,6 +100,9 @@ class IncludeDeviceByDeviceTypeAndRole(IncludeDeviceBase):
 
 
 class IncludeDeviceByGroup(IncludeDeviceBase):
+    """
+        Includes devices that are members of a named group.
+    """
 
     def __init__(self, group: str) -> None:
         """
@@ -122,6 +131,9 @@ class IncludeDeviceByGroup(IncludeDeviceBase):
 
 
 class IncludeDeviceByName(IncludeDeviceBase):
+    """
+        Includes devices that match a specific device name.
+    """
 
     def __init__(self, name: str) -> None:
         """
@@ -150,6 +162,9 @@ class IncludeDeviceByName(IncludeDeviceBase):
 
 
 class IncludeDeviceByRole(IncludeDeviceBase):
+    """
+        Includes devices that match a specific role.
+    """
 
     def __init__(self, role: str) -> None:
         """
@@ -178,6 +193,9 @@ class IncludeDeviceByRole(IncludeDeviceBase):
 
 
 class IncludeDeviceConfigByDeviceType(IncludeDeviceConfigBase):
+    """
+        Includes device configuration entries that match a device type.
+    """
 
     def __init__(self, device_type: str) -> None:
         """
@@ -205,6 +223,9 @@ class IncludeDeviceConfigByDeviceType(IncludeDeviceConfigBase):
         return include
 
 class IncludeServiceByName(IncludeServiceBase):
+    """
+        Includes services that match a specific service name.
+    """
 
     def __init__(self, name: str) -> None:
         """
