@@ -37,6 +37,13 @@ class SerialCoordinatorBase(CoordinatorBase):
     SERIAL_AGENT_TYPE = None
 
     def __init__(self, lscape: "Landscape", serial_interfaces: Dict[str, Any], *args, **kwargs):
+        """
+            Initializes the coordinator with a dictionary of serial
+            interfaces that can be used to create serial agents.
+
+            :param lscape: The owning :class:`Landscape` instance.
+            :param serial_interfaces: Mapping of serial interface objects by name.
+        """
         super().__init__(lscape, *args, **kwargs)
         self._serial_interfaces = serial_interfaces
         return
@@ -55,6 +62,13 @@ class SerialCoordinatorBase(CoordinatorBase):
         return
 
     def lookup_serial_agent(self, serial_mapping: Dict[str, Any]):
+        """
+            Creates a serial agent instance based on the provided mapping.
+
+            :param serial_mapping: Dictionary describing the serial interface.
+
+            :returns: Instantiated serial agent for the requested interface.
+        """
 
         serial_agent = None
 

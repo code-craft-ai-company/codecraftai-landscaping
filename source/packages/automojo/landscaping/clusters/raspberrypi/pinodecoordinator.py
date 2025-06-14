@@ -52,7 +52,18 @@ class PiNodeCoordinator(NodeCoordinatorBase):
 
     def create_ssh_agent(self, device: PiNode, device_info: Dict[str, Any], host: str, cred: BaseCredential,
                          users: Optional[dict] = None, port: int = 22, pty_params: Optional[dict] = None):
-        
+        """
+            Creates and attaches an :class:`SshAgent` to a :class:`PiNode`.
+
+            :param device: The Pi node to attach the agent to.
+            :param device_info: Configuration information for the node.
+            :param host: Host name or IP address of the node.
+            :param cred: Credential used for authentication.
+            :param users: Optional dictionary of user account information.
+            :param port: SSH port number to use.
+            :param pty_params: Optional PTY parameters.
+        """
+
         ssh_agent = SshAgent(host, cred, users=users, port=port, pty_params=pty_params)
 
         device.attach_extension(INTEGRATION_CLASS_NETWORK_SSH, ssh_agent)

@@ -34,6 +34,11 @@ class TcpSerialCoordinator(CoordinatorBase):
     # pylint: disable=attribute-defined-outside-init
 
     def __init__(self, lscape: "Landscape", *args, **kwargs):
+        """
+            Constructs a new :class:`TcpSerialCoordinator` instance.
+
+            :param lscape: The owning :class:`Landscape`.
+        """
         super().__init__(lscape, *args, **kwargs)
         return
 

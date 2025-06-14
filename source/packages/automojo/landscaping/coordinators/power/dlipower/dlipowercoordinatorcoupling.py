@@ -25,6 +25,14 @@ if TYPE_CHECKING:
     from automojo.landscaping.landscape import Landscape
 
 def is_dlipower_type(config_info) -> bool:
+    """
+        Checks if the provided configuration describes a DLI power device.
+
+        :param config_info: Dictionary of power configuration values.
+
+        :returns: ``True`` if the configuration matches the DLI power type.
+    """
+
     is_sst = False
 
     if "powerType" in config_info:

@@ -134,6 +134,9 @@ class LandscapeDevice(FeatureAttachedObject):
 
     @property
     def configured_ipaddr(self) -> Union[str, None]:
+        """
+            Returns the IP address configured for the device if specified.
+        """
         return self._configured_ip
 
     @property
@@ -152,10 +155,16 @@ class LandscapeDevice(FeatureAttachedObject):
 
     @property
     def coordinator(self) -> "CoordinatorBase":
+        """
+            Returns the coordinator object managing this device.
+        """
         return self._coord_ref()
 
     @property
     def credentials(self) -> Dict[str, BaseCredential]:
+        """
+            Dictionary of credentials keyed by name for this device.
+        """
         return self._credentials
 
     @property
@@ -174,6 +183,9 @@ class LandscapeDevice(FeatureAttachedObject):
 
     @property
     def extensions(self) -> Dict[str, ProtocolExtension]:
+        """
+            Returns a shallow copy of the protocol extensions for the device.
+        """
         extdict = self._extensions.copy()
         return extdict
 
@@ -289,6 +301,9 @@ class LandscapeDevice(FeatureAttachedObject):
 
     @property
     def ssh_credential(self) -> Union[SshCredential, None]:
+        """
+            Returns the primary SSH credential for the device if present.
+        """
         return self._ssh_credential
 
     def attach_extension(self, ext_type: str, extension: ProtocolExtension) -> None:
@@ -457,6 +472,10 @@ class LandscapeDevice(FeatureAttachedObject):
         return
 
     def _resolve_ipaddress(self) -> str:
+        """
+            Resolves and caches the IP address for this device using the host
+            or configured IP address.
+        """
 
         ipaddr = None
 
@@ -472,6 +491,9 @@ class LandscapeDevice(FeatureAttachedObject):
         return ipaddr
 
     def _repr_html_(self) -> str:
+        """
+            HTML representation used in interactive notebooks.
+        """
         html_repr_lines = [
             "<h1>LandscapeDevice</h1>",
             "<h2>     type: {}</h2>".format(self._device_type),
@@ -484,6 +506,9 @@ class LandscapeDevice(FeatureAttachedObject):
         return html_repr
 
     def __repr__(self) -> str:
+        """
+            Returns a concise string representation for debugging.
+        """
 
         thisType = type(self)
 
@@ -502,5 +527,8 @@ class LandscapeDevice(FeatureAttachedObject):
         return devstr
 
     def __str__(self) -> str:
+        """
+            Returns a user friendly string representation of the device.
+        """
         devstr = repr(self)
         return devstr

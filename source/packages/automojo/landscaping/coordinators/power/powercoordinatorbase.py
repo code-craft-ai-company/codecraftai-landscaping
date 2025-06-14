@@ -32,8 +32,16 @@ class PowerCoordinatorBase(CoordinatorBase):
     POWER_AGENT_TYPE = None
 
     def __init__(self, lscape: "Landscape", power_interfaces: Dict[str, Any], *args, **kwargs):
+        """
+            Initializes the coordinator with a mapping of available power
+            interfaces.
+
+            :param lscape: The owning :class:`Landscape` instance.
+            :param power_interfaces: Dictionary of power interface objects keyed
+                                     by name.
+        """
         super().__init__(lscape, *args, **kwargs)
-        
+
         self._power_interfaces = power_interfaces
         return
 
@@ -51,6 +59,14 @@ class PowerCoordinatorBase(CoordinatorBase):
         return
 
     def lookup_power_agent(self, power_mapping: Dict[str, Any]):
+        """
+            Looks up a power agent instance using a mapping that describes
+            the interface and switch to control.
+
+            :param power_mapping: Mapping describing the power interface.
+
+            :returns: Instantiated power agent for the given interface.
+        """
 
         power_agent = None
 

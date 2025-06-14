@@ -37,6 +37,14 @@ if TYPE_CHECKING:
 
 
 def is_upnp_device_config(device_info):
+    """
+        Determines if a device configuration represents a UPNP device.
+
+        :param device_info: Device configuration dictionary.
+
+        :returns: ``True`` if the device is configured as a UPNP device.
+    """
+
     is_upnp_dev = False
 
     dev_type = device_info["deviceType"]
