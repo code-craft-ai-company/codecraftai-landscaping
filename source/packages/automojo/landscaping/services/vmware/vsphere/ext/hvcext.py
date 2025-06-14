@@ -23,5 +23,10 @@ if TYPE_CHECKING:
 class HvcExt(BaseExt):
 
     def __init__(self, agent: "VSphereAgent"):
+        """
+            Initializes the hybrid vCenter extension.
+
+            :param agent: Owning :class:`VSphereAgent` instance.
+        """
         super().__init__(agent)
         return

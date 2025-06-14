@@ -23,5 +23,10 @@ if TYPE_CHECKING:
 class ServicesExt(BaseExt):
 
     def __init__(self, agent: "VSphereAgent"):
+        """
+            Initializes the services extension for a vSphere agent.
+
+            :param agent: Owning :class:`VSphereAgent` instance.
+        """
         super().__init__(agent)
         return

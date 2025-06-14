@@ -23,5 +23,10 @@ if TYPE_CHECKING:
 class NamespaceManagementExt(BaseExt):
 
     def __init__(self, agent: "VSphereAgent"):
+        """
+            Initializes the namespace management extension.
+
+            :param agent: Owning :class:`VSphereAgent` instance.
+        """
         super().__init__(agent)
         return

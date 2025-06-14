@@ -23,5 +23,10 @@ if TYPE_CHECKING:
 class TopologyExt(BaseExt):
 
     def __init__(self, agent: "VSphereAgent"):
+        """
+            Initializes the topology extension.
+
+            :param agent: Owning :class:`VSphereAgent` instance.
+        """
         super().__init__(agent)
         return

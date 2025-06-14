@@ -23,10 +23,22 @@ if TYPE_CHECKING:
 class DataStoreExt(BaseExt):
 
     def __init__(self, agent: "VSphereAgent"):
+        """
+            Initializes the datastore extension for a vSphere agent.
+
+            :param agent: Owning :class:`VSphereAgent` instance.
+        """
         super().__init__(agent)
         return
     
     def get(self, name: str):
+        """
+            Retrieves information about a datastore.
+
+            :param name: Name of the datastore to retrieve.
+
+            :returns: Datastore information dictionary.
+        """
 
         dsinfo = None
 
@@ -43,6 +55,11 @@ class DataStoreExt(BaseExt):
         return dsinfo
 
     def list(self):
+        """
+            Retrieves a list of datastores from vCenter.
+
+            :returns: List of datastore records.
+        """
         datastore_list = None
 
         agent = self.agent

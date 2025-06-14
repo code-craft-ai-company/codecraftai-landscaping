@@ -22,9 +22,20 @@ if TYPE_CHECKING:
 class BaseExt:
 
     def __init__(self, agent: "VSphereAgent"):
+        """
+            Creates a base extension bound to a vSphere agent.
+
+            :param agent: Owning :class:`VSphereAgent` instance.
+        """
         self._agent_ref = weakref.ref(agent)
         return
     
     @property
     def agent(self) -> "VSphereAgent":
+        """
+            Returns the owning :class:`VSphereAgent` instance.
+
+            :returns: Agent instance associated with this extension.
+            :rtype: VSphereAgent
+        """
         return self._agent_ref()

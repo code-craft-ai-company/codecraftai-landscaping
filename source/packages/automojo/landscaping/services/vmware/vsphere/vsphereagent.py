@@ -213,114 +213,282 @@ class VSphereAgent:
 
     @property
     def CertificateManagement(self) -> CertificateManagementExt:
+        """
+            Provides access to certificate management operations.
+
+            :returns: Certificate management extension.
+            :rtype: CertificateManagementExt
+        """
         return self._ext_certificatemanagement
     
     @property
     def Cluster(self) -> ClusterExt:
+        """
+            Provides access to cluster operations.
+
+            :returns: Cluster extension.
+            :rtype: ClusterExt
+        """
         return self._ext_cluster
     
     @property
     def Compute(self) -> ComputeExt:
+        """
+            Provides access to compute operations.
+
+            :returns: Compute extension.
+            :rtype: ComputeExt
+        """
         return self._ext_compute
     
     @property
     def Content(self) -> ContentExt:
+        """
+            Provides access to content library operations.
+
+            :returns: Content extension.
+            :rtype: ContentExt
+        """
         return self._ext_content
 
     @property
     def CryptoManager(self) -> CryptoManagerExt:
+        """
+            Provides access to cryptographic operations.
+
+            :returns: Crypto manager extension.
+            :rtype: CryptoManagerExt
+        """
         return self._ext_cryptomanager
 
     @property
     def DataCenter(self) -> DataCenterExt:
+        """
+            Provides access to datacenter operations.
+
+            :returns: Datacenter extension.
+            :rtype: DataCenterExt
+        """
         return self._ext_datacenter
     
     @property
     def DataStore(self) -> DataStoreExt:
+        """
+            Provides access to datastore operations.
+
+            :returns: Datastore extension.
+            :rtype: DataStoreExt
+        """
         return self._ext_datastore
     
     @property
     def Deployment(self) -> DeploymentExt:
+        """
+            Provides access to deployment operations.
+
+            :returns: Deployment extension.
+            :rtype: DeploymentExt
+        """
         return self._ext_deployment
 
     @property
     def Folder(self) -> FolderExt:
+        """
+            Provides access to folder operations.
+
+            :returns: Folder extension.
+            :rtype: FolderExt
+        """
         return self._ext_folder
 
     @property
     def Guest(self) -> GuestExt:
+        """
+            Provides access to guest operations.
+
+            :returns: Guest extension.
+            :rtype: GuestExt
+        """
         return self._ext_guest
 
     @property
     def Host(self) -> HostExt:
+        """
+            Provides access to host operations.
+
+            :returns: Host extension.
+            :rtype: HostExt
+        """
         return self._ext_host
     
     @property
     def Hvc(self) -> HvcExt:
+        """
+            Provides access to hybrid vCenter operations.
+
+            :returns: HVC extension.
+            :rtype: HvcExt
+        """
         return self._ext_hvc
     
     @property
     def Identity(self) -> IdentityExt:
+        """
+            Provides access to identity operations.
+
+            :returns: Identity extension.
+            :rtype: IdentityExt
+        """
         return self._ext_identity
     
     @property
     def Inventory(self) -> InventoryExt:
+        """
+            Provides access to inventory operations.
+
+            :returns: Inventory extension.
+            :rtype: InventoryExt
+        """
         return self._ext_inventory
     
     @property
     def Iso(self) -> IsoExt:
+        """
+            Provides access to ISO operations.
+
+            :returns: ISO extension.
+            :rtype: IsoExt
+        """
         return self._ext_iso
     
     @property
     def Lcm(self) -> LcmExt:
+        """
+            Provides access to lifecycle management operations.
+
+            :returns: LCM extension.
+            :rtype: LcmExt
+        """
         return self._ext_lcm
     
     @property
     def NamespaceManagement(self) -> NamespaceManagementExt:
+        """
+            Provides access to namespace management operations.
+
+            :returns: Namespace management extension.
+            :rtype: NamespaceManagementExt
+        """
         return self._ext_namespacemanagement
     
     @property
     def Namespaces(self) -> NamespacesExt:
+        """
+            Provides access to namespace operations.
+
+            :returns: Namespaces extension.
+            :rtype: NamespacesExt
+        """
         return self._ext_namespaces
 
     @property
     def Network(self) -> NetworkExt:
+        """
+            Provides access to network operations.
+
+            :returns: Network extension.
+            :rtype: NetworkExt
+        """
         return self._ext_network
     
     @property
     def ResourcePool(self) -> ResourcePoolExt:
+        """
+            Provides access to resource pool operations.
+
+            :returns: Resource pool extension.
+            :rtype: ResourcePoolExt
+        """
         return self._ext_resourcepool
 
     @property
     def Services(self) -> ServicesExt:
+        """
+            Provides access to service operations.
+
+            :returns: Services extension.
+            :rtype: ServicesExt
+        """
         return self._ext_services
     
     @property
     def Storage(self) -> StorageExt:
+        """
+            Provides access to storage operations.
+
+            :returns: Storage extension.
+            :rtype: StorageExt
+        """
         return self._ext_storage
     
     @property
     def SystemConfig(self) -> SystemConfigExt:
+        """
+            Provides access to system configuration operations.
+
+            :returns: System configuration extension.
+            :rtype: SystemConfigExt
+        """
         return self._ext_systemconfig
 
     @property
     def Tagging(self) -> TaggingExt:
+        """
+            Provides access to tagging operations.
+
+            :returns: Tagging extension.
+            :rtype: TaggingExt
+        """
         return self._ext_tagging
     
     @property
     def TokenService(self) -> TokenServiceExt:
+        """
+            Provides access to token service operations.
+
+            :returns: Token service extension.
+            :rtype: TokenServiceExt
+        """
         return self._ext_tokenservice
 
     @property
     def Topology(self) -> TopologyExt:
+        """
+            Provides access to topology operations.
+
+            :returns: Topology extension.
+            :rtype: TopologyExt
+        """
         return self._ext_topology
     
     @property
     def TrustedInfrastructure(self) -> TrustedInfrastructureExt:
+        """
+            Provides access to trusted infrastructure operations.
+
+            :returns: Trusted infrastructure extension.
+            :rtype: TrustedInfrastructureExt
+        """
         return self._ext_trustedinfrastructure
 
     @property
     def Vm(self) -> VmExt:
+        """
+            Provides access to virtual machine operations.
+
+            :returns: VM extension.
+            :rtype: VmExt
+        """
         return self._ext_vm
 
     def apply_working_folder_filter(self, container_path: str):
@@ -350,6 +518,7 @@ class VSphereAgent:
             Builds a REST API URL for the given endpoint leaf.
 
             :param leaf: API leaf path to append.
+
             :returns: Full API URL string.
             :rtype: str
         """
