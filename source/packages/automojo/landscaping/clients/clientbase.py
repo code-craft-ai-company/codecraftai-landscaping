@@ -28,6 +28,15 @@ class ClientBase(LandscapeDevice):
 
     def __init__(self, lscape: "Landscape", coordinator: "CoordinatorBase",
                  friendly_id:FriendlyIdentifier, device_type: str, device_config: dict):
+        """
+            Initializes a :class:`ClientBase` instance.
+
+            :param lscape: The landscape this client belongs to.
+            :param coordinator: Coordinator responsible for the client.
+            :param friendly_id: The :class:`FriendlyIdentifier` for the client.
+            :param device_type: The declared device type.
+            :param device_config: Configuration dictionary for the client.
+        """
         super().__init__(lscape, coordinator, friendly_id, device_type, device_config)
 
         self._host = device_config["host"]
@@ -35,6 +44,9 @@ class ClientBase(LandscapeDevice):
 
     @property
     def host(self) -> str:
+        """
+            Returns the host name for the client.
+        """
         return self._host
 
     def enhance(self):

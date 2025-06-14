@@ -379,6 +379,12 @@ class Landscape:
 
     def get_device_configs(self, include_filters: Optional[List[IIncludeFilter]]=None, exclude_filters: Optional[List[IExcludeFilter]]=None) -> List[dict]:
         """
+            Returns a list of device configuration dictionaries.
+
+            :param include_filters: Optional include filters for selecting devices.
+            :param exclude_filters: Optional exclude filters for removing devices.
+
+            :returns: A list of configuration dictionaries.
         """
         selected_device_configs = self.layer_configuration.get_device_configs(include_filters=include_filters, exclude_filters=exclude_filters)
         return selected_device_configs
@@ -392,7 +398,12 @@ class Landscape:
 
     def get_services(self, include_filters: Optional[List[IIncludeFilter]]=None, exclude_filters: Optional[List[IExcludeFilter]]=None) -> List[LandscapeService]:
         """
-            Gets a copy of the integrated devices list.
+            Gets a copy of the integrated services list.
+
+            :param include_filters: Optional include filters for selecting services.
+            :param exclude_filters: Optional exclude filters for removing services.
+
+            :returns: A list of integrated services.
         """
         selected_services = self.layer_integration.get_services(include_filters=include_filters, exclude_filters=exclude_filters)
         return selected_services
@@ -417,6 +428,10 @@ class Landscape:
         return
     
     def _validate_init_caller(self):
+        """
+            Validates that the :class:`Landscape` constructor was invoked by the
+            :func:`LandscapeSingleton` helper and not directly by user code.
+        """
 
         stack = inspect.stack()
 

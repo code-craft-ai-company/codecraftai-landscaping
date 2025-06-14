@@ -31,4 +31,8 @@ class AutomationPod(ConfigurationCoupling):
     
     @property
     def landscape(self) -> Landscape:
+        """
+            Returns the global :class:`Landscape` instance used by this
+            automation pod.
+        """
         return self._lscape

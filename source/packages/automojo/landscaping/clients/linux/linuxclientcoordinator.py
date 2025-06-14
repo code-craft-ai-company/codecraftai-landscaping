@@ -40,6 +40,11 @@ class LinuxClientCoordinator(ClientCoordinatorBase):
     # pylint: disable=attribute-defined-outside-init
 
     def __init__(self, lscape: "Landscape", *args, **kwargs):
+        """
+            Creates a :class:`LinuxClientCoordinator` instance.
+
+            :param lscape: The landscape this coordinator belongs to.
+        """
         super().__init__(lscape, *args, **kwargs)
         return
 
@@ -56,7 +61,18 @@ class LinuxClientCoordinator(ClientCoordinatorBase):
 
     def create_ssh_agent(self, device: LinuxClient, device_info: Dict[str, Any], host: str, cred: BaseCredential,
                          users: Optional[dict] = None, port: int = 22, pty_params: Optional[dict] = None):
-        
+        """
+            Attaches an SSH agent extension to a Linux client.
+
+            :param device: The device instance to attach to.
+            :param device_info: Configuration dictionary for the device.
+            :param host: Host name of the target device.
+            :param cred: SSH credential to use for the connection.
+            :param users: Optional user mapping information.
+            :param port: SSH port number.
+            :param pty_params: Optional pseudo terminal parameters.
+        """
+
         ssh_agent = SshAgent(host, cred, users=users, port=port, pty_params=pty_params)
 
         device.attach_extension(INTEGRATION_CLASS_NETWORK_SSH, ssh_agent)

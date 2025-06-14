@@ -41,5 +41,10 @@ class LinuxClientCoordinatorCoupling(ClientCoordinatorCouplingBase):
 
 @testbase.register.integration_factory()
 def create_linux_client_coordinator_coupling() -> Generator[LinuxClientCoordinatorCoupling, None, None]:
+    """
+        Factory used by testbase to create a :class:`LinuxClientCoordinatorCoupling` instance.
+
+        :returns: A generator yielding the coupling instance.
+    """
     lc_coupling = LinuxClientCoordinatorCoupling()
     yield lc_coupling

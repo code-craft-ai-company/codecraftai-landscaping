@@ -51,16 +51,33 @@ class ConfigureExt:
     ]
 
     def __init__(self, client: "LinuxClient"):
+        """
+            Creates a :class:`ConfigureExt` instance bound to a client.
+
+            :param client: The :class:`LinuxClient` this extension operates on.
+        """
         self._client_ref = weakref.ref(client)
         return
 
     @property
     def client(self) -> "LinuxClient":
+        """
+            Returns the owning :class:`LinuxClient` instance.
+        """
         return self._client_ref()
 
 
     def configure_tasker_service(self, remote_source_root: str, sudo_username: Optional[str] = None, sudo_password: Optional[str] = None,
                                  config: Optional[Dict[str, Dict[str, str]]] = None, basis_session: Optional[SshSession] = None):
+        """
+            Installs and configures the tasker service on the remote client.
+
+            :param remote_source_root: Path on the remote host where the source is deployed.
+            :param sudo_username: Optional sudo user name to run commands as.
+            :param sudo_password: Optional sudo user password.
+            :param config: Optional dictionary of configuration values to write.
+            :param basis_session: Optional existing session to use for operations.
+        """
 
         client = self.client
 
@@ -155,6 +172,17 @@ class ConfigureExt:
 
     def deploy_source_package(self, source_root: str, package_name: str, remote_source_root: str, cache_dir: Optional[str] = None,
                               force_repackage: Optional[bool]=False, force_deploy: Optional[bool]=False, basis_session: Optional[SshSession] = None):
+        """
+            Packages and deploys a source archive to the remote client.
+
+            :param source_root: Local path to the source root directory.
+            :param package_name: Name of the package archive to create/deploy.
+            :param remote_source_root: Remote directory where the source is deployed.
+            :param cache_dir: Directory used to store cached packages.
+            :param force_repackage: Recreate the package even if it exists.
+            :param force_deploy: Force the deployment even if already installed.
+            :param basis_session: Optional session to base operations on.
+        """
 
         client = self.client
 
@@ -190,6 +218,13 @@ class ConfigureExt:
 
     def enabled_no_password_sudo(self, sudo_username: Optional[str] = None, sudo_password: Optional[str] = None,
                                  basis_session: Optional[SshSession] = None):
+        """
+            Enables passwordless sudo for a given user on the remote machine.
+
+            :param sudo_username: User name that should be granted sudo access.
+            :param sudo_password: Password for the sudo user.
+            :param basis_session: Optional session to base operations on.
+        """
         
         client = self.client
 
@@ -226,6 +261,13 @@ class ConfigureExt:
     
 
     def get_python_version(self, basis_session: Optional[SshSession] = None):
+        """
+            Queries the remote machine for its Python version string.
+
+            :param basis_session: Optional session to base operations on.
+
+            :returns: The ``major.minor`` version string.
+        """
 
         client = self.client
 
@@ -246,6 +288,11 @@ class ConfigureExt:
 
 
     def install_required_system_packages(self, basis_session: Optional[SshSession] = None):
+        """
+            Installs packages required for the automation environment.
+
+            :param basis_session: Optional session to base operations on.
+        """
 
         self.system_packages_install(self.REQUIRED_SYSTEM_PACKAGES, basis_session=basis_session)
 
@@ -254,6 +301,17 @@ class ConfigureExt:
 
     def install_systemd_service(self, svcname: str, svcuser: str, source_svc_config_file: str, pidfolder: Optional[str] =  None,
                                 optfolder: Optional[str] =  None, runtime_config_file: Optional[str] = None, basis_session: Optional[SshSession] = None):
+        """
+            Installs and enables a systemd service on the remote machine.
+
+            :param svcname: The service name to install.
+            :param svcuser: The user that owns the service.
+            :param source_svc_config_file: Path to the local service configuration file.
+            :param pidfolder: Optional pid directory path.
+            :param optfolder: Optional opt directory path.
+            :param runtime_config_file: Optional runtime configuration file to deploy.
+            :param basis_session: Optional session to base operations on.
+        """
 
         client = self.client
 
@@ -359,6 +417,14 @@ class ConfigureExt:
     
 
     def is_service_running(self, svcname: str, basis_session: Optional[SshSession] = None):
+        """
+            Checks if a systemd service is running on the remote machine.
+
+            :param svcname: Name of the service to query.
+            :param basis_session: Optional session to base operations on.
+
+            :returns: ``True`` if the service is running, otherwise ``False``.
+        """
 
         client = self.client
 
@@ -381,6 +447,12 @@ class ConfigureExt:
     
 
     def system_packages_install(self, packages_to_install: List[str], basis_session: Optional[SshSession] = None):
+        """
+            Installs a list of system packages on the remote host.
+
+            :param packages_to_install: List of package names to install.
+            :param basis_session: Optional session to base operations on.
+        """
 
         client = self.client
 
