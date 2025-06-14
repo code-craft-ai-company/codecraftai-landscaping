@@ -141,7 +141,7 @@ class ServiceCoordinatorCouplingBase(CoordinatorCoupling):
             resources.
 
             :returns: A tuple with a list of error messages for failed connections and dict of connectivity
-                      reports for services based on the coordinator.
+            reports for services based on the coordinator.
         """
 
         lscape = cls.landscape
@@ -173,7 +173,7 @@ class ServiceCoordinatorCouplingBase(CoordinatorCoupling):
             resources.
 
             :returns: A tuple with a list of error messages for failed connections and dict of connectivity
-                      reports for services based on the coordinator.
+            reports for services based on the coordinator.
         """
         return
 
@@ -183,13 +183,13 @@ class ServiceCoordinatorCouplingBase(CoordinatorCoupling):
             Validate the item configuration.
 
             -   serviceType: network/service-something
-                name: raspey03
-                host: 172.16.1.33
-                credentials:
-                -    pi-cluster
-                features:
-                    isolation: false
-                skip: false
+            name: raspey03
+            host: 172.16.1.33
+            credentials:
+            -    pi-cluster
+            features:
+            isolation: false
+            skip: false
         """
         errors = []
         warnings = []

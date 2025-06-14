@@ -284,7 +284,7 @@ class Landscape:
             topology and features.
 
             :param activation_params: Optional activation parameters controlling
-                                       the activation process.
+            the activation process.
         """
 
         thisType = type(self)

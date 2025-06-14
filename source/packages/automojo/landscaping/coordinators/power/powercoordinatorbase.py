@@ -38,7 +38,7 @@ class PowerCoordinatorBase(CoordinatorBase):
 
             :param lscape: The owning :class:`Landscape` instance.
             :param power_interfaces: Dictionary of power interface objects keyed
-                                     by name.
+            by name.
         """
         super().__init__(lscape, *args, **kwargs)
 

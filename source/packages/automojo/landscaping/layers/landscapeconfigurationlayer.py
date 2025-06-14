@@ -289,7 +289,7 @@ class LandscapeConfigurationLayer(LandscapingLayerBase):
             skip any device that have a "skip": true declared in the configuration.
 
             ..note: It is assumed that this call is being made in a thread safe context
-                    or with the landscape lock held.
+            or with the landscape lock held.
         """
 
         device_config_list = []
@@ -315,7 +315,7 @@ class LandscapeConfigurationLayer(LandscapingLayerBase):
             skip any device that have a "skip": true declared in the configuration.
 
             ..note: It is assumed that this call is being made in a thread safe context
-                    or with the landscape lock held.
+            or with the landscape lock held.
         """
 
         power_config_list = []
@@ -334,7 +334,7 @@ class LandscapeConfigurationLayer(LandscapingLayerBase):
             skip any device that have a "skip": true declared in the configuration.
 
             ..note: It is assumed that this call is being made in a thread safe context
-                    or with the landscape lock held.
+            or with the landscape lock held.
         """
 
         serial_config_list = []
@@ -353,7 +353,7 @@ class LandscapeConfigurationLayer(LandscapingLayerBase):
             skip any services that have a "skip": true declared in the configuration.
 
             ..note: It is assumed that this call is being made in a thread safe context
-                    or with the landscape lock held.
+            or with the landscape lock held.
         """
 
         service_config_list = []
@@ -452,7 +452,7 @@ class LandscapeConfigurationLayer(LandscapingLayerBase):
 
     def validate_landscape_environment(self, envinfo) -> Tuple[List[str], List[str]]:
         """
-        "environment":
+            "environment":
             "label": "production"
         """
         errors = []

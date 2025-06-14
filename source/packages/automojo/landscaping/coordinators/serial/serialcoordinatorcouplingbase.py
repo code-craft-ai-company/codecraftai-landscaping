@@ -97,7 +97,7 @@ class SerialCoordinatorCouplingBase(CoordinatorCoupling):
             resources.
 
             :returns: A tuple with a list of error messages for failed connections and dict of connectivity
-                      reports for devices devices based on the coordinator.
+            reports for devices devices based on the coordinator.
         """
 
         config_errors = [], scan_results = {}
@@ -111,7 +111,7 @@ class SerialCoordinatorCouplingBase(CoordinatorCoupling):
             resources.
 
             :returns: A tuple with a list of error messages for failed connections and dict of connectivity
-                      reports for devices devices based on the coordinator.
+            reports for devices devices based on the coordinator.
         """
         return
 
