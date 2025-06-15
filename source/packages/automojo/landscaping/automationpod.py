@@ -19,7 +19,8 @@ from automojo.testbase.coupling.configurationcoupling import ConfigurationCoupli
 
 class AutomationPod(ConfigurationCoupling):
     """
-        The :class:`AutomationPodBase` object serves as a base class for derived :class:`AutomationPodBase` objects.
+        The :class:`AutomationPod` class provides access to the global
+        :class:`Landscape` instance used by automation pods.
     """
 
     def __init__(self):
