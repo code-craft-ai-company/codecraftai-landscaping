@@ -96,10 +96,10 @@ class ConfigurationExtractor:
 
         return
 
-    def get_configurations(self) -> Tuple[dict, dict, dict, dict]:
+    def get_configurations(self) -> dict:
         """
-            Gets the configuration dictionaries that were extractive from the runtime.
+            Gets the configuration dictionary extracted from the runtime.
 
-            :returns: A tuple containing the Landscape, Topology, Runtime, Credentials
+            :returns: Dictionary describing the extracted configuration.
         """
         return self._description

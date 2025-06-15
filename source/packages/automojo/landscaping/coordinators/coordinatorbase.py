@@ -85,6 +85,7 @@ class CoordinatorBase:
             The dedicated coordinator configuration for coordinators that have a dedicated
             configuration section in the landscape file.  Example: power, serial, wireless
         """
+        return self._coord_config
 
     @property
     def landscape(self) -> "Landscape":
