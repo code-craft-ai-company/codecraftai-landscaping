@@ -21,6 +21,9 @@ if TYPE_CHECKING:
     from automojo.landscaping.services.vmware.vsphere.vsphereagent import VSphereAgent
 
 class InventoryExt(BaseExt):
+    """
+        Extension used for inventory queries against vSphere.
+    """
 
     def __init__(self, agent: "VSphereAgent"):
         """

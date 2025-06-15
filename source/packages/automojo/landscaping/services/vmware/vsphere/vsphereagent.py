@@ -56,6 +56,9 @@ from automojo.landscaping.services.vmware.vsphere.ext.trustedinfrastructureext i
 from automojo.landscaping.services.vmware.vsphere.ext.vmext import VmExt
 
 class VSphereFilterState:
+    """
+        Maintains filter selections when interacting with vSphere.
+    """
 
     def __init__(self) -> None:
         """
@@ -148,6 +151,9 @@ class VSphereFilterState:
 
 
 class VSphereAgent:
+    """
+        Agent object used to issue requests to a vSphere server.
+    """
 
     def __init__(self, host: str, credential: BasicCredential, verify_certificates: bool=False):
         """

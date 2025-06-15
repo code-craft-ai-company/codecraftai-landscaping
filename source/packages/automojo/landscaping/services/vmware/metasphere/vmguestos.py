@@ -11,6 +11,9 @@ __copyright__ = "Copyright 2025, Automation Mojo LLC"
 __credits__ = []
 
 class VmGuestOS:
+    """
+        Enumeration of VMware guest operating system identifiers.
+    """
     DOS = "DOS" # MS-DOS.
     WIN_31 = "WIN_31" # Windows 3.1
     WIN_95 = "WIN_95" # Windows 95

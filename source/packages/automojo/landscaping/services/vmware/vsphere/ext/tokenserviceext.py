@@ -21,6 +21,9 @@ if TYPE_CHECKING:
     from automojo.landscaping.services.vmware.vsphere.vsphereagent import VSphereAgent
 
 class TokenServiceExt(BaseExt):
+    """
+        Extension managing vSphere authentication tokens.
+    """
 
     def __init__(self, agent: "VSphereAgent"):
         """

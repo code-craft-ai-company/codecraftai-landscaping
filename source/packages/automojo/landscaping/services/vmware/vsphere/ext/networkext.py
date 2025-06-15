@@ -21,6 +21,9 @@ if TYPE_CHECKING:
     from automojo.landscaping.services.vmware.vsphere.vsphereagent import VSphereAgent
 
 class NetworkExt(BaseExt):
+    """
+        Extension that encapsulates vSphere network operations.
+    """
 
     def __init__(self, agent: "VSphereAgent"):
         """

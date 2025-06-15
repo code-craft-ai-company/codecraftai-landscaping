@@ -25,6 +25,9 @@ if TYPE_CHECKING:
     from automojo.landscaping.services.vmware.vsphere.vsphereagent import VSphereAgent
 
 class FolderExt(BaseExt):
+    """
+        Extension that handles folder-related actions in vSphere.
+    """
 
     def __init__(self, agent: "VSphereAgent"):
         """

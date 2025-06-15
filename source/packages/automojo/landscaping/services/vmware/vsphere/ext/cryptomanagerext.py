@@ -21,6 +21,9 @@ if TYPE_CHECKING:
     from automojo.landscaping.services.vmware.vsphere.vsphereagent import VSphereAgent
 
 class CryptoManagerExt(BaseExt):
+    """
+        Extension for managing the vSphere cryptographic manager.
+    """
 
     def __init__(self, agent: "VSphereAgent"):
         """

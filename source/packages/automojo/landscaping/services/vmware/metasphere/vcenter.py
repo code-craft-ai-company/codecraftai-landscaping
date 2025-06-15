@@ -13,6 +13,9 @@ __credits__ = []
 from enum import Enum
 
 class FolderType(str, Enum):
+    """
+        Folder types recognized by vCenter.
+    """
     DATACENTER = "DATACENTER"
     DATASTORE = "DATASTORE"
     HOST = "HOST"
@@ -20,6 +23,9 @@ class FolderType(str, Enum):
     VIRTUAL_MACHINE = "VIRTUAL_MACHINE"
 
 class VmPowerState(str, Enum):
+    """
+        Power states that a virtual machine can be in.
+    """
     POWERED_OFF = "POWERED_OFF"
     POWERED_ON = "POWERED_ON"
     SUSPENDED = "SUSPENDED"

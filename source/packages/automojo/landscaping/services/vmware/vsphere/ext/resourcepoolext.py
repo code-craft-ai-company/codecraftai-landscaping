@@ -21,6 +21,9 @@ if TYPE_CHECKING:
     from automojo.landscaping.services.vmware.vsphere.vsphereagent import VSphereAgent
 
 class ResourcePoolExt(BaseExt):
+    """
+        Extension for operations involving vSphere resource pools.
+    """
 
     def __init__(self, agent: "VSphereAgent"):
         """

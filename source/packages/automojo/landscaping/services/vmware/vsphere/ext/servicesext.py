@@ -21,6 +21,9 @@ if TYPE_CHECKING:
     from automojo.landscaping.services.vmware.vsphere.vsphereagent import VSphereAgent
 
 class ServicesExt(BaseExt):
+    """
+        Extension that exposes various vSphere services.
+    """
 
     def __init__(self, agent: "VSphereAgent"):
         """
