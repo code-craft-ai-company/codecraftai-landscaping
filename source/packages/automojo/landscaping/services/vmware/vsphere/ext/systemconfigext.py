@@ -21,6 +21,9 @@ if TYPE_CHECKING:
     from automojo.landscaping.services.vmware.vsphere.vsphereagent import VSphereAgent
 
 class SystemConfigExt(BaseExt):
+    """
+        Extension used for managing vSphere system configuration.
+    """
 
     def __init__(self, agent: "VSphereAgent"):
         """

@@ -53,6 +53,9 @@ if TYPE_CHECKING:
 
 
 class VmExt(BaseExt):
+    """
+        Extension providing VM operations for a vSphere agent.
+    """
 
     def __init__(self, agent: "VSphereAgent"):
         """

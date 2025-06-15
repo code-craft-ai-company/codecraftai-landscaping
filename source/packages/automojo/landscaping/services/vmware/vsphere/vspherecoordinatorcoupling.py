@@ -16,6 +16,9 @@ from automojo.landscaping.services.common import INTEGRATIION_CLASS_FOR_VSPHERE_
 from automojo.landscaping.services.vmware.vsphere.vspherecoordinator import VSphereCoordinator
 
 class VSphereCoordinatorCoupling(ServiceCoordinatorCouplingBase):
+    """
+        Coupling object that registers the vSphere coordinator with the landscape.
+    """
 
     integration_class: str = INTEGRATIION_CLASS_FOR_VSPHERE_VCENTER_SERVICE
 

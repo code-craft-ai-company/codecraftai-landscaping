@@ -21,6 +21,9 @@ if TYPE_CHECKING:
     from automojo.landscaping.services.vmware.vsphere.vsphereagent import VSphereAgent
 
 class TaggingExt(BaseExt):
+    """
+        Extension that provides access to the vSphere tagging API.
+    """
 
     def __init__(self, agent: "VSphereAgent"):
         """

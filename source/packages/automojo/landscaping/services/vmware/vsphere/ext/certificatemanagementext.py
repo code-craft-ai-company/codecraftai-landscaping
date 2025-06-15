@@ -21,6 +21,9 @@ if TYPE_CHECKING:
     from automojo.landscaping.services.vmware.vsphere.vsphereagent import VSphereAgent
 
 class CertificateManagementExt(BaseExt):
+    """
+        Extension that manages certificates in a vSphere environment.
+    """
 
     def __init__(self, agent: "VSphereAgent"):
         """

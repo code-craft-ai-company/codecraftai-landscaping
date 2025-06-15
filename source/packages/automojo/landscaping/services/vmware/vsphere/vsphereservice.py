@@ -24,6 +24,9 @@ if TYPE_CHECKING:
     from automojo.landscaping.coordinators.coordinatorbase import CoordinatorBase
 
 class VSphereService(ServiceBase):
+    """
+        Service wrapper used to manage vSphere interactions.
+    """
 
     def __init__(self, lscape: Landscape, coordinator: CoordinatorBase, friendly_id:
                  FriendlyIdentifier, service_type: str, service_config: dict):

@@ -21,6 +21,9 @@ if TYPE_CHECKING:
     from automojo.landscaping.services.vmware.vsphere.vsphereagent import VSphereAgent
 
 class StorageExt(BaseExt):
+    """
+        Extension responsible for vSphere storage operations.
+    """
 
     def __init__(self, agent: "VSphereAgent"):
         """

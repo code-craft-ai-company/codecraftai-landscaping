@@ -21,6 +21,9 @@ if TYPE_CHECKING:
     from automojo.landscaping.services.vmware.vsphere.vsphereagent import VSphereAgent
 
 class HostExt(BaseExt):
+    """
+        Extension that manages host interactions for a vSphere agent.
+    """
 
     def __init__(self, agent: "VSphereAgent"):
         """

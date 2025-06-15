@@ -21,6 +21,9 @@ if TYPE_CHECKING:
     from automojo.landscaping.services.vmware.vsphere.vsphereagent import VSphereAgent
 
 class IdentityExt(BaseExt):
+    """
+        Extension that wraps vSphere identity management APIs.
+    """
 
     def __init__(self, agent: "VSphereAgent"):
         """
