@@ -21,7 +21,9 @@ if TYPE_CHECKING:
     from automojo.landscaping.services.vmware.vsphere.vsphereagent import VSphereAgent
 
 class DataStoreExt(BaseExt):
-    """Provides datastore operations for a vSphere agent."""
+    """
+        Provides datastore operations for a vSphere agent.
+    """
 
     def __init__(self, agent: "VSphereAgent"):
         """
