@@ -25,6 +25,9 @@ if TYPE_CHECKING:
     from automojo.landscaping.services.vmware.vsphere.vsphereagent import VSphereAgent
 
 class DataCenterExt(BaseExt):
+    """
+        Extension that manages datacenter objects within vCenter.
+    """
 
     def __init__(self, agent: "VSphereAgent"):
         """

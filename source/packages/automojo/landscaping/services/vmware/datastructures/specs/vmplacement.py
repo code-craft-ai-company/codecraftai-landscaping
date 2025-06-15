@@ -16,6 +16,9 @@ from dataclasses import dataclass
 
 @dataclass
 class VmPlacementSpec:
+    """
+        Placement specification describing where a VM should reside.
+    """
     datastore: str
     folder: str
     cluster: Optional[str] = None

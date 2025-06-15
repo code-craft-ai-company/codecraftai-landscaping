@@ -21,6 +21,9 @@ if TYPE_CHECKING:
     from automojo.landscaping.services.vmware.vsphere.vsphereagent import VSphereAgent
 
 class ContentExt(BaseExt):
+    """
+        Extension that manages the content library service.
+    """
 
     def __init__(self, agent: "VSphereAgent"):
         """

@@ -20,6 +20,9 @@ if TYPE_CHECKING:
     from automojo.landscaping.services.vmware.vsphere.vsphereagent import VSphereAgent
 
 class BaseExt:
+    """
+        Base class for all vSphere extensions used by a :class:`VSphereAgent`.
+    """
 
     def __init__(self, agent: "VSphereAgent"):
         """

@@ -15,4 +15,7 @@ from dataclasses import dataclass
 
 @dataclass
 class VmStoragePolicySpec:
+    """
+        Storage policy specification used by a virtual machine.
+    """
     policy: str

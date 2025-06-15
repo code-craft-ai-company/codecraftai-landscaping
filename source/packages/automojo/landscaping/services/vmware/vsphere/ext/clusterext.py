@@ -21,6 +21,9 @@ if TYPE_CHECKING:
     from automojo.landscaping.services.vmware.vsphere.vsphereagent import VSphereAgent
 
 class ClusterExt(BaseExt):
+    """
+        Extension that provides access to cluster level operations.
+    """
 
     def __init__(self, agent: "VSphereAgent"):
         """

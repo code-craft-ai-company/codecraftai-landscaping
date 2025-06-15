@@ -21,6 +21,9 @@ if TYPE_CHECKING:
     from automojo.landscaping.services.vmware.vsphere.vsphereagent import VSphereAgent
 
 class TrustedInfrastructureExt(BaseExt):
+    """
+        Extension that manages trusted infrastructure resources.
+    """
 
     def __init__(self, agent: "VSphereAgent"):
         """

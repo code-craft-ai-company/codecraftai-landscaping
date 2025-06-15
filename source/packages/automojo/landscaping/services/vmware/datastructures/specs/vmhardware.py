@@ -49,6 +49,9 @@ class VmHardwareBootCreateSpec:
 
 @dataclass
 class VmHardwareCpuUpdateSpec:
+    """
+        Update parameters for a virtual machine CPU configuration.
+    """
     cores_per_socket: Optional[int] = None
     count: Optional[int] = None
     hot_add_enabled: Optional[bool] = None
@@ -56,41 +59,65 @@ class VmHardwareCpuUpdateSpec:
 
 @dataclass
 class VmHardwareDiskBackingSpec:
+    """
+        Specification describing the backing for a virtual disk.
+    """
     backing_type: Optional[VmHardwareDiskBackingType] = None
     vmdk_file: Optional[str] = None
 
 @dataclass
 class VmHardwareIdeAddressSpec:
+    """
+        IDE address information for a virtual device.
+    """
     master: Optional[bool] = None
     primary: Optional[bool] = None
 
 @dataclass
 class VmHardwareDiskStoragePolicySpec:
+    """
+        Storage policy specification for a virtual disk.
+    """
     policy: str
 
 @dataclass
 class VmHardwareDiskVmdkCreateSpec:
+    """
+        Parameters to create a new VMDK based virtual disk.
+    """
     capacity: Optional[int] = None
     name: Optional[str] = None
     storage_policy: Optional[VmHardwareDiskStoragePolicySpec] = None
 
 @dataclass
 class VmHardwareNvmeAddressSpec:
+    """
+        NVMe address specification for a virtual device.
+    """
     bus: int
     unit: Optional[int] = None
 
 @dataclass
 class VmHardwareSataAddressSpec:
+    """
+        SATA address specification for a virtual device.
+    """
     bus: int
     unit: Optional[int] = None
 
 @dataclass
 class VmHardwareScsiAddressSpec:
+    """
+        SCSI address specification for a virtual device.
+    """
     bus: int
     unit: Optional[int] = None
 
 @dataclass
 class VmHardwareDiskCreateSpec:
+    """
+        Creation parameters for a virtual disk device.
+    """
     backing: Optional[VmHardwareDiskBackingType] = None
     ide: Optional[VmHardwareIdeAddressSpec] = None
     new_vmdk: Optional[VmHardwareDiskVmdkCreateSpec] = None
@@ -101,18 +128,27 @@ class VmHardwareDiskCreateSpec:
 
 @dataclass
 class VmHardwareFloppyBackingSpec:
+    """
+        Specification describing the backing for a floppy device.
+    """
     type: VmHardwareFloppyBackingType
     host_device: Optional[str] = None
     image_file: Optional[str] = None
 
 @dataclass
 class VmHardwareFloppyCreateSpec:
+    """
+        Creation parameters for a virtual floppy device.
+    """
     allow_guest_control: Optional[bool] = None
     backing: Optional[VmHardwareFloppyBackingSpec] = None
     start_connected: Optional[str] = None
 
 @dataclass
 class VmHardwareCdromBackingSpec:
+    """
+        Specification describing the backing for a CD-ROM device.
+    """
     device_access_type: Optional[VmHardwareCdromDeviceAccessType] = None
     host_device: Optional[str] = None
     iso_file: Optional[str] = None
@@ -120,6 +156,9 @@ class VmHardwareCdromBackingSpec:
 
 @dataclass
 class VmHardwareCdromCreateSpec:
+    """
+        Creation parameters for a virtual CD-ROM device.
+    """
     allow_guest_control: Optional[str] = None
     backing: Optional[VmHardwareCdromBackingSpec] = None
     ide: Optional[VmHardwareIdeAddressSpec] = None
@@ -129,18 +168,27 @@ class VmHardwareCdromCreateSpec:
 
 @dataclass
 class VmHardwareMemoryUpdateSpec:
+    """
+        Update parameters for a virtual machine memory configuration.
+    """
     hot_add_enabled: Optional[bool] = None
     size_MiB: Optional[int] = None
 
 
 @dataclass
 class VmHardwareEthernetBackingSpec:
+    """
+        Specification describing the backing for an ethernet device.
+    """
     type: VmHardwareEthernetBackingType
     distributed_port: Optional[str] = None
     network: Optional[str] = None
 
 @dataclass
 class VmHardwareEthernetCreateSpec:
+    """
+        Creation parameters for a virtual ethernet device.
+    """
     type: VmHardwareEthernetEmulationType
     allow_guest_control: Optional[bool] = None
     backing: Optional[VmHardwareEthernetBackingSpec] = None
@@ -153,33 +201,51 @@ class VmHardwareEthernetCreateSpec:
 
 @dataclass
 class VmHardwareAdapterNvmeCreateSpec:
+    """
+        Creation parameters for a virtual NVMe adapter.
+    """
     bus: Optional[int] = None
     pci_slot_number: Optional[int] = None
 
 @dataclass
 class VmHardwareParallelBackingSpec:
+    """
+        Backing configuration for a virtual parallel port.
+    """
     type: VmHardwareParallelBackingType
     file: Optional[str] = None
     host_device: Optional[str] = None
 
 @dataclass
 class VmHardwareParallelCreateSpec:
+    """
+        Creation parameters for a virtual parallel port.
+    """
     allow_guest_control: Optional[bool] = None
     backing: Optional[VmHardwareParallelBackingSpec] = None
     start_connected: Optional[bool] = None
 
 @dataclass
 class VmHardwareBootDeviceEntryCreateSpec:
+    """
+        Entry describing a bootable device for a virtual machine.
+    """
     type: VmHardwareBootDeviceType
 
 @dataclass
 class VmHardwareAdapterSataCreateSpec:
+    """
+        Creation parameters for a virtual SATA adapter.
+    """
     type: VmHardwareAdapterSataType
     bus: Optional[int] = None
     pci_slot_number: Optional[int] = None
 
 @dataclass
 class VmHardwareAdapterScsiCreateSpec:
+    """
+        Creation parameters for a virtual SCSI adapter.
+    """
     bus: Optional[int] = None
     pci_slot_number: Optional[int] = None
     sharing: Optional[VmHardwareAdapterScsiSharing] = None
@@ -188,6 +254,9 @@ class VmHardwareAdapterScsiCreateSpec:
 
 @dataclass
 class VmHardwareSerialBackingSpec:
+    """
+        Specification describing the backing for a serial port.
+    """
     type: VmHardwareSerialBackingType
     file: Optional[str] = None
     host_device: Optional[str] = None
@@ -198,6 +267,9 @@ class VmHardwareSerialBackingSpec:
 
 @dataclass
 class VmHardwareSerialCreateSpec:
+    """
+        Creation parameters for a virtual serial port.
+    """
     backing: VmHardwareSerialBackingSpec
     allow_guest_control: Optional[bool] = None
     start_connected: Optional[bool] = None

@@ -21,6 +21,9 @@ if TYPE_CHECKING:
     from automojo.landscaping.services.vmware.vsphere.vsphereagent import VSphereAgent
 
 class IsoExt(BaseExt):
+    """
+        Extension that mounts and unmounts ISO images on VMs.
+    """
 
     def __init__(self, agent: "VSphereAgent"):
         """
