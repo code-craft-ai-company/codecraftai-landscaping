@@ -17,17 +17,26 @@ from automojo.landscaping.services.vmware.metasphere.vcenter import VmPowerState
 
 @dataclass
 class DatacenterSummary:
+    """
+        Simple datacenter summary returned from vCenter queries.
+    """
     name: str
     datacenter: str
 
 @dataclass
 class FolderSummary:
+    """
+        Folder summary describing a vCenter folder object.
+    """
     name: str
     folder: str
     type: FolderType
 
 @dataclass
 class VmSummary:
+    """
+        Summary information about a virtual machine.
+    """
     name: str
     power_state: VmPowerState
     vm: str

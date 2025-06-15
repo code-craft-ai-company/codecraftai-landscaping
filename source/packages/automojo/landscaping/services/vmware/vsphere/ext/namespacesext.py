@@ -21,6 +21,9 @@ if TYPE_CHECKING:
     from automojo.landscaping.services.vmware.vsphere.vsphereagent import VSphereAgent
 
 class NamespacesExt(BaseExt):
+    """
+        Extension that manages the vSphere namespaces API.
+    """
 
     def __init__(self, agent: "VSphereAgent"):
         """

@@ -21,6 +21,9 @@ if TYPE_CHECKING:
     from automojo.landscaping.services.vmware.vsphere.vsphereagent import VSphereAgent
 
 class LcmExt(BaseExt):
+    """
+        Extension that provides life-cycle management operations.
+    """
 
     def __init__(self, agent: "VSphereAgent"):
         """

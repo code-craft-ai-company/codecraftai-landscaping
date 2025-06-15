@@ -21,6 +21,9 @@ if TYPE_CHECKING:
     from automojo.landscaping.services.vmware.vsphere.vsphereagent import VSphereAgent
 
 class GuestExt(BaseExt):
+    """
+        Extension that provides guest operations for a vSphere agent.
+    """
 
     def __init__(self, agent: "VSphereAgent"):
         """

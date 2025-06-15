@@ -21,6 +21,9 @@ if TYPE_CHECKING:
     from automojo.landscaping.services.vmware.vsphere.vsphereagent import VSphereAgent
 
 class OvfExt(BaseExt):
+    """
+        Extension that performs operations related to OVF packages.
+    """
 
     def __init__(self, agent: "VSphereAgent"):
         """

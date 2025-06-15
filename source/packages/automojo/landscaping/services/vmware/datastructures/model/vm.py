@@ -42,6 +42,9 @@ from automojo.landscaping.services.vmware.metasphere.vmhardware import (
 
 @dataclass
 class VmHardwareSerialBackingInfo:
+    """
+        Backing information for a virtual serial port.
+    """
     type: VmHardwareSerialBackingType
     auto_detect: Optional[bool] = None
     file: Optional[str] = None
@@ -66,6 +69,9 @@ class VmHardwareSerialBackingInfo:
 
 @dataclass
 class VmHardwareSerialInfo:
+    """
+        Information for a virtual serial port device.
+    """
     allow_guest_control: bool
     backing: VmHardwareSerialBackingInfo
     label: str
@@ -88,6 +94,9 @@ class VmHardwareSerialInfo:
 
 @dataclass
 class VmHardwareBootDeviceEntry:
+    """
+        Entry describing a bootable device on a virtual machine.
+    """
     type: VmHardwareBootDeviceType
     disks: List[str]
     nic: str
@@ -106,6 +115,9 @@ class VmHardwareBootDeviceEntry:
 
 @dataclass
 class VmHardwareCdromBackingInfo:
+    """
+        Backing information for a virtual CD-ROM device.
+    """
     iso_file: str
     type: VmHardwareCdromBackingType
     auto_detect: Optional[bool] = None
@@ -126,6 +138,9 @@ class VmHardwareCdromBackingInfo:
 
 @dataclass
 class VmHardwareIdeAddressInfo:
+    """
+        IDE address information for a virtual device.
+    """
     master: bool
     primary: bool
 
@@ -143,6 +158,9 @@ class VmHardwareIdeAddressInfo:
 
 @dataclass
 class VmHardwareNvmeAddressInfo:
+    """
+        NVMe address information for a virtual device.
+    """
     bus: int
     unit: int
 
@@ -161,6 +179,9 @@ class VmHardwareNvmeAddressInfo:
 
 @dataclass
 class VmHardwareSataAddressInfo:
+    """
+        SATA address information for a virtual device.
+    """
     bus: int
     unit: int
 
@@ -178,6 +199,9 @@ class VmHardwareSataAddressInfo:
 
 @dataclass
 class VmHardwareScsiAddressInfo:
+    """
+        SCSI address information for a virtual device.
+    """
     bus: int
     unit: int
 
@@ -195,6 +219,9 @@ class VmHardwareScsiAddressInfo:
 
 @dataclass
 class VmHardwareCdromInfo:
+    """
+        Information describing a CD-ROM device.
+    """
     allow_guest_control: bool
     backing: VmHardwareCdromBackingInfo
     label: str
@@ -223,6 +250,9 @@ class VmHardwareCdromInfo:
 
 @dataclass
 class VmHardwareCpuInfo:
+    """
+        Information describing the CPU configuration of a VM.
+    """
     cores_per_socket: int
     count: int
     hot_add_enabled: bool
@@ -242,6 +272,9 @@ class VmHardwareCpuInfo:
 
 @dataclass
 class VmHardwareDiskBackingInfo:
+    """
+        Backing information for a virtual disk device.
+    """
     type: VmHardwareDiskBackingType
     vmdk_file: str
 
@@ -259,6 +292,9 @@ class VmHardwareDiskBackingInfo:
 
 @dataclass
 class VmHardwareDiskInfo:
+    """
+        Information describing a virtual disk device.
+    """
     backing: VmHardwareDiskBackingInfo
     type: VmHardwareDiskHostBusAdapterType
     label: str
@@ -291,6 +327,9 @@ class VmHardwareDiskInfo:
 
 @dataclass
 class VmHardwareFloppyBackingInfo:
+    """
+        Backing information for a virtual floppy device.
+    """
     type: VmHardwareFloppyBackingType
     auto_detect: Optional[bool] = None
     host_device: Optional[str] = None
@@ -310,6 +349,9 @@ class VmHardwareFloppyBackingInfo:
 
 @dataclass
 class VmHardwareFloppyInfo:
+    """
+        Information describing a virtual floppy device.
+    """
     allow_guest_control: bool
     backing: VmHardwareFloppyBackingInfo
     label: str
@@ -332,6 +374,9 @@ class VmHardwareFloppyInfo:
 
 @dataclass
 class VmHardwareInfo:
+    """
+        Overall hardware information for a virtual machine.
+    """
     upgrade_policy: VmHardwareUpgradePolicy
     upgrade_status: VmHardwareUpgradeStatus
     version: VmHardwareVersion
@@ -352,6 +397,9 @@ class VmHardwareInfo:
 
 @dataclass
 class VmHardwareAdapterScsiInfo:
+    """
+        Information describing a SCSI adapter in a VM.
+    """
     label: str
     scsi: VmHardwareScsiAddressInfo
     sharing: VmHardwareAdapterScsiSharing
@@ -373,6 +421,9 @@ class VmHardwareAdapterScsiInfo:
 
 @dataclass
 class VmHardwareBootInfo:
+    """
+        Boot configuration information for a VM.
+    """
     delay: int
     enter_setup_mode: bool
     retry: bool
@@ -395,6 +446,9 @@ class VmHardwareBootInfo:
 
 @dataclass
 class VmHardwareMemoryInfo:
+    """
+        Information describing the memory configuration of a VM.
+    """
     hot_add_enabled: bool
     size_MiB: int
     hot_add_increment_size_MiB: Optional[int] = None
@@ -415,6 +469,9 @@ class VmHardwareMemoryInfo:
 
 @dataclass
 class VmHardwareEthernetBackingInfo:
+    """
+        Backing information for a virtual ethernet device.
+    """
     type: VmHardwareEthernetBackingType
     connection_cookie: Optional[int] = None
     distributed_port: Optional[str] = None
@@ -439,6 +496,9 @@ class VmHardwareEthernetBackingInfo:
 
 @dataclass
 class VmHardwareEthernetInfo:
+    """
+        Information describing a virtual ethernet device.
+    """
     allow_guest_control: bool
     backing: VmHardwareEthernetBackingInfo
     label: str
@@ -466,6 +526,9 @@ class VmHardwareEthernetInfo:
 
 @dataclass
 class VmHardwareAdapterSataInfo:
+    """
+        Information describing a SATA adapter in a VM.
+    """
     bus: int
     label: str
     type: VmHardwareAdapterSataType
@@ -485,6 +548,9 @@ class VmHardwareAdapterSataInfo:
 
 @dataclass
 class VmHardwareParallelBackingInfo:
+    """
+        Backing information for a virtual parallel port.
+    """
     type: VmHardwareParallelBackingType
     auto_detect: Optional[bool] = None
     file: Optional[str] = None
@@ -504,6 +570,9 @@ class VmHardwareParallelBackingInfo:
 
 @dataclass
 class VmHardwareParallelInfo:
+    """
+        Information describing a virtual parallel port.
+    """
     allow_guest_control: bool
     backing: VmHardwareParallelBackingInfo
     label: str
@@ -525,6 +594,9 @@ class VmHardwareParallelInfo:
 
 @dataclass
 class VmHardwareAdapterNvmeInfo:
+    """
+        Information describing an NVMe adapter in a VM.
+    """
     bus: int
     label: str
     pci_slot_number: Optional[int] = None
@@ -543,6 +615,9 @@ class VmHardwareAdapterNvmeInfo:
 
 @dataclass
 class VmIdentityInfo:
+    """
+        Identification information for a virtual machine.
+    """
     bios_uuid: str
     instance_uuid: str
     name: str
@@ -561,6 +636,9 @@ class VmIdentityInfo:
 
 @dataclass
 class VmInfo:
+    """
+        Comprehensive information describing a virtual machine.
+    """
     serial_ports: List[VmHardwareSerialInfo]
     boot_devices: List[VmHardwareBootDeviceEntry]
     cdroms: List[VmHardwareCdromInfo]

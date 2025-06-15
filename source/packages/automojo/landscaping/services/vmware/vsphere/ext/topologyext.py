@@ -21,6 +21,9 @@ if TYPE_CHECKING:
     from automojo.landscaping.services.vmware.vsphere.vsphereagent import VSphereAgent
 
 class TopologyExt(BaseExt):
+    """
+        Extension that retrieves topology information from vCenter.
+    """
 
     def __init__(self, agent: "VSphereAgent"):
         """
