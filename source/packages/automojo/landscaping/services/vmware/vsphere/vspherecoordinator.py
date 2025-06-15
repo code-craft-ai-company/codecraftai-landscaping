@@ -23,6 +23,7 @@ if TYPE_CHECKING:
 
 class VSphereCoordinator(ServiceCoordinatorBase):
     """
+        Coordinates management of vSphere services for a landscape.
     """
 
     INTEGRATION_CLASS = INTEGRATIION_CLASS_FOR_VSPHERE_VCENTER_SERVICE
