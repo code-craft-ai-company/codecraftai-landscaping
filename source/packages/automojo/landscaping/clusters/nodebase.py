@@ -25,6 +25,9 @@ if TYPE_CHECKING:
     from automojo.landscaping.coordinators.coordinatorbase import CoordinatorBase
 
 class NodeBase(LandscapeDevice):
+    """
+        Base class representing a node that belongs to a compute cluster.
+    """
 
     def __init__(self, lscape: "Landscape", coordinator: "CoordinatorBase",
                  friendly_id:FriendlyIdentifier, device_type: str, device_config: dict):

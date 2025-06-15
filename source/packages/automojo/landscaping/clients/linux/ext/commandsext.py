@@ -27,6 +27,9 @@ if TYPE_CHECKING:
     from automojo.landscaping.clients.linux.linuxclient import LinuxClient
 
 class CommandsExt:
+    """
+        Provides command execution helpers for a Linux client.
+    """
 
     def __init__(self, client: "LinuxClient"):
         """

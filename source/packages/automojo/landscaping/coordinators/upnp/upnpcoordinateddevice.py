@@ -15,6 +15,9 @@ from automojo.interop.protocols.upnp.model.devices.upnprootdevice import UpnpRoo
 from automojo.interop.protocols.upnp.model.upnpdevicedetail import UpnpDeviceDetail
 
 class UpnpCoordinatedDevice(UpnpRootDevice):
+    """
+        Wraps a UPNP root device that can be managed by a coordinator.
+    """
 
     def __init__(self, device_detail: UpnpDeviceDetail):
         """

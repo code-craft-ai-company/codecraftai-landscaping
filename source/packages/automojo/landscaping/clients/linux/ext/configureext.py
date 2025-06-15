@@ -43,6 +43,9 @@ FILE_TASKER_SERVICE_SVC_TEMPLATE = os.path.join(DIR_TASKER_SERVICE, "linux", "ta
 
 
 class ConfigureExt:
+    """
+        Extension that configures a Linux client for automation.
+    """
 
     REQUIRED_SYSTEM_PACKAGES = [
         'build-essential',

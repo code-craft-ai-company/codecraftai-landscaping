@@ -28,6 +28,9 @@ if TYPE_CHECKING:
     from automojo.landscaping.coordinators.coordinatorbase import CoordinatorBase
 
 class LinuxClient(ClientBase):
+    """
+        Client implementation for hosts running the Linux OS.
+    """
 
     EXT_COMMANDS = CommandsExt
     EXT_CONFIGURE = ConfigureExt

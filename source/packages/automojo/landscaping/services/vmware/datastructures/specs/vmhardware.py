@@ -36,6 +36,9 @@ from automojo.landscaping.services.vmware.metasphere.vmhardware import (
 )
 @dataclass
 class VmHardwareBootCreateSpec:
+    """
+        Boot configuration parameters for a new virtual machine.
+    """
     delay: Optional[int] = None
     efi_lagacy_boot: Optional[bool] = None
     enter_setup_mode: Optional[bool] = None

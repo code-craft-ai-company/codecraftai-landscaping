@@ -17,11 +17,17 @@ from automojo.landscaping.services.vmware.metasphere.vcenter import FolderType
 
 @dataclass
 class DatacenterSummary:
+    """
+        Summary information describing a datacenter object.
+    """
     name: str
     datacenter: str
 
 @dataclass
 class FolderSummary:
+    """
+        Summary describing a folder object in vCenter.
+    """
     name: str
     folder: str
     type: FolderType

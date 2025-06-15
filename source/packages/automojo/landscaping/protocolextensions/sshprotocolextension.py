@@ -23,6 +23,9 @@ from automojo.interop.protocols.ssh.sshagent import SshAgent
 from automojo.interop.protocols.ssh.sshconst import SshJumpParams
 
 class SshProtocolExtension(SshAgent, ProtocolExtension):
+    """
+        SSH agent integrated as a protocol extension for a landscape device.
+    """
 
     def __init__(self, host: str, primary_credential: SshCredential, users: Optional[dict] = None, port: int = 22,
                  jump: Union[str, SshJumpParams, None] = None, pty_params: Optional[dict] = None, called_id: Optional[str]=None,

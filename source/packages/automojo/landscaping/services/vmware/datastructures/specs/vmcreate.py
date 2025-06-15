@@ -37,6 +37,9 @@ from automojo.landscaping.services.vmware.datastructures.specs.vmstorage import 
 
 @dataclass
 class VmCreateSpec:
+    """
+        Aggregate specification describing a virtual machine to create.
+    """
     guest_OS: VmGuestOS
     placement: VmPlacementSpec
     boot: Optional[VmHardwareBootCreateSpec] = None

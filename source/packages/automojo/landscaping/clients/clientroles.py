@@ -13,4 +13,8 @@ __credits__ = []
 from enum import Enum
 
 class ClientRoles(str, Enum):
+    """
+        Enumerates standard client roles within a landscape.
+    """
+
     TaskerServer = "taskerserver"

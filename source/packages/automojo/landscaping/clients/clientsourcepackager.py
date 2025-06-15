@@ -26,6 +26,9 @@ from automojo.interop.interfaces.isystemcontext import ISystemContext
 from automojo.interop.protocols.ssh.sshagent import SshAgent
 
 class ClientSourcePackager:
+    """
+        Packages a client source tree for deployment to remote hosts.
+    """
 
     EXCLUDE_DIRECTORY_LEAFS = [
         ".cache",

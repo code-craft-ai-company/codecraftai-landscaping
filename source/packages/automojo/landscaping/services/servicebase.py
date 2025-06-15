@@ -26,6 +26,9 @@ if TYPE_CHECKING:
     from automojo.landscaping.coordinators.coordinatorbase import CoordinatorBase
 
 class ServiceBase(LandscapeService):
+    """
+        Base class for services that are part of a landscape.
+    """
 
     def __init__(self, lscape: "Landscape", coordinator: "CoordinatorBase",
                  friendly_id:FriendlyIdentifier, service_type: str, service_config: dict):
