@@ -25,6 +25,9 @@ if TYPE_CHECKING:
     from automojo.landscaping.coordinators.coordinatorbase import CoordinatorBase
 
 class PiNode(NodeBase):
+    """
+        Represents a Raspberry Pi node in a device cluster.
+    """
 
     def __init__(self, lscape: "Landscape", coordinator: "CoordinatorBase",
                  friendly_id:FriendlyIdentifier, device_type: str, device_config: dict):

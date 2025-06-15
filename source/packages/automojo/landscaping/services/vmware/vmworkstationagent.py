@@ -22,6 +22,9 @@ from automojo.credentials.basiccredential import BasicCredential
 import requests
 
 class VmWorkstationAgent:
+    """
+        Provides a lightweight interface to VMware Workstation APIs.
+    """
 
     def __init__(self, host: str, credential: BasicCredential, port: Optional[int]=None, verify_certificates: bool=False):
         """

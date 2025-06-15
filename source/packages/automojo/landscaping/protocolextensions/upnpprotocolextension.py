@@ -20,6 +20,9 @@ from automojo.interop.protocols.upnp.upnpagent import UpnpAgent
 
 
 class UpnpProtocolExtension(UpnpAgent, ProtocolExtension):
+    """
+        UPNP agent integrated as a protocol extension for a landscape device.
+    """
 
     def __init__(self, manufacturer: str, modelNumber: str, modelDescription):
         """
