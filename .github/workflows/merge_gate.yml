@@ -54,5 +54,5 @@ jobs:
         # Start-up tests have to be run individually
         run: |
           source ./.venv/bin/activate
-          python3 -m unittest discover -s ./source/tests -p "test_*.py"
+          testbase testing run --root ./source/testroots/automojo --include=automojo.tests.singlehost
           deactivate
