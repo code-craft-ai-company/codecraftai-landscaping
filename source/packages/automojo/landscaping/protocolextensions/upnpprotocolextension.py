@@ -16,7 +16,7 @@ import weakref
 
 from automojo.landscaping.protocolextensions.protocolextension import ProtocolExtension
 
-from automojo.interop.protocols.upnp.upnpagent import UpnpAgent
+from automojo.interop.protocols.upnp import UpnpAgent
 
 
 class UpnpProtocolExtension(UpnpAgent, ProtocolExtension):

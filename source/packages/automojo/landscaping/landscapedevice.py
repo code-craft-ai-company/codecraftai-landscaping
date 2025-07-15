@@ -30,7 +30,7 @@ from automojo.credentials.sshcredential import SshCredential
 from automojo.interop.interfaces.isystemcontext import ISystemContext
 from automojo.landscaping.friendlyidentifier import FriendlyIdentifier
 from automojo.landscaping.protocolextensions.protocolextension import ProtocolExtension
-from automojo.foundation.xthreading.lockscopes import LockedScope, UnLockedScope
+from automojo.xmodules.xthreading.lockscopes import LockedScope, UnLockedScope
 
 from automojo.testbase.features import FeatureAttachedObject
 

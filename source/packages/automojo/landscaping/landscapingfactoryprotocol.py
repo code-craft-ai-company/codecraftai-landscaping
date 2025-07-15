@@ -20,10 +20,10 @@ from automojo.testbase.coupling.integrationcoupling import IntegrationCoupling
 
 class LandscapingFactoryProtocol(FactoryProtocolBase):
     """
-        Protocol defining extension points for landscaping integrations.
+        Protocol defining factory protocol extension points for landscaping integrations.
     """
 
-    factory_protocol_name = "mojo-landscaping-extension-protocol"
+    factory_protocol_name = "mojo-landscaping-factory-protocol"
 
     @classmethod
     def get_landscape_type(self) -> Type:
