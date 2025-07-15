@@ -15,14 +15,15 @@ __credits__ = []
 
 from typing import List, Protocol, Type
 
+from automojo.extension.factory.factoryprotocolbase import FactoryProtocolBase
 from automojo.testbase.coupling.integrationcoupling import IntegrationCoupling
 
-class LandscapingExtensionProtocol(Protocol):
+class LandscapingFactoryProtocol(FactoryProtocolBase):
     """
         Protocol defining extension points for landscaping integrations.
     """
 
-    ext_protocol_name = "mojo-landscaping-extension-protocol"
+    factory_protocol_name = "mojo-landscaping-extension-protocol"
 
     @classmethod
     def get_landscape_type(self) -> Type:
