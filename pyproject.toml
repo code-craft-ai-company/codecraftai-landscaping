@@ -20,7 +20,6 @@ python = ">=3.10,<4.0"
 automojo-interfaces = { git = "https://github.com/automationmojo/automojo-interfaces.git", branch = "main" }
 automojo-waiting = { git = "https://github.com/automationmojo/automojo-waiting.git", branch = "main" }
 automojo-testbase = { git = "https://github.com/automationmojo/automojo-testbase.git", branch = "main" }
-automojo-credentials = { git = "https://github.com/automationmojo/automojo-credentials.git", branch = "main" }
 automojo-dataprofiles = { git = "https://github.com/automationmojo/automojo-dataprofiles.git", branch = "main" }
 automojo-networking = { git = "https://github.com/automationmojo/automojo-networking.git", branch = "main" }
 automojo-interop = { git = "https://github.com/automationmojo/automojo-interop.git", branch = "main" }
