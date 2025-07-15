@@ -17,11 +17,11 @@ __credits__ = []
 
 from typing import Dict, TYPE_CHECKING
 
-from automojo.foundation.extension.wellknown import ConfiguredSuperFactorySingleton
+from automojo.presence.wellknown import ConfiguredSuperFactorySingleton
 
 from automojo.testbase.coupling.integrationcoupling import IntegrationCouplingType
 
-from automojo.landscaping.landscapingextensionprotocol import LandscapingExtensionProtocol
+from automojo.landscaping.landscapingfactoryprotocol import LandscapingFactoryProtocol
 from automojo.landscaping.layers.landscapinglayerbase import LandscapingLayerBase
 
 if TYPE_CHECKING:
@@ -60,7 +60,7 @@ class LandscapeInstallationLayer(LandscapingLayerBase):
 
         super_factory = ConfiguredSuperFactorySingleton()
         for integration_coupling_types in super_factory.iterate_override_types_for_each(
-            LandscapingExtensionProtocol.get_integration_coupling_types):
+            LandscapingFactoryProtocol.get_integration_coupling_types):
 
             for itype in integration_coupling_types:
                 itype: IntegrationCouplingType = itype
