@@ -16,9 +16,6 @@ from typing import Any, Dict, List, Tuple, TYPE_CHECKING
 
 from automojo.landscaping.coupling.coordinatorcoupling import CoordinatorCoupling
 
-from automojo.landscaping.coordinators.integrationclasses import INTEGRATION_CLASS_NETWORK_DLIPOWER
-from automojo.landscaping.coordinators.ssh.sshcoordinator import SshCoordinator
-
 from automojo.landscaping.constants import StartupLevel
 
 # Types imported only for type checking purposes

@@ -18,7 +18,6 @@ import weakref
 from automojo.errors.exceptions import ConfigurationError
 
 from automojo.landscaping.coordinators.coordinatorbase import CoordinatorBase
-from automojo.landscaping.friendlyidentifier import FriendlyIdentifier
 from automojo.landscaping.landscapeparameters import LandscapeActivationParams
 from automojo.landscaping.landscapedevice import LandscapeDevice
 

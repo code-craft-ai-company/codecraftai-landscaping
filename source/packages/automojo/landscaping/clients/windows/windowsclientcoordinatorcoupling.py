@@ -12,8 +12,6 @@ __credits__ = []
 
 
 
-from typing import TYPE_CHECKING
-
 from automojo.landscaping.clients.clientcoordinatorcouplingbase import ClientCoordinatorCouplingBase
 
 from automojo.landscaping.clients.constants import INTEGRATION_CLASS_FOR_WINDOWS_CLIENT

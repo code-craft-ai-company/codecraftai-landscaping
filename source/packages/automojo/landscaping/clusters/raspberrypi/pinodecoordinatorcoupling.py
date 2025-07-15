@@ -13,8 +13,6 @@ __credits__ = []
 
 
 
-from typing import TYPE_CHECKING
-
 from automojo.landscaping.clusters.constants import INTEGRATION_CLASS_FOR_RASPBERRYPI_NODE
 from automojo.landscaping.clusters.nodecoordinatorcouplingbase import NodeCoordinatorCouplingBase
 

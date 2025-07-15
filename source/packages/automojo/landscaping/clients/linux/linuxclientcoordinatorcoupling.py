@@ -11,7 +11,7 @@ __copyright__ = "Copyright 2025, Automation Mojo LLC"
 __credits__ = []
 
 
-from typing import TYPE_CHECKING, Generator
+from typing import Generator
 
 from automojo import testbase
 
