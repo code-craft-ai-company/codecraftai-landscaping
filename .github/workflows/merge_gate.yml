@@ -54,5 +54,5 @@ jobs:
         # Start-up tests have to be run individually
         run: |
           source ./.venv/bin/activate
-          testbase testing run --root ./source/testroots/automojo --include=automojo.tests.singlehost
+          testbase testing run --root ./source/testroots/automojo --includes=automojo.tests.singlehost
           deactivate
