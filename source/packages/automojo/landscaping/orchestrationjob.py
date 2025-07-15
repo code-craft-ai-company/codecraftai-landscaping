@@ -12,11 +12,11 @@ __credits__ = []
 
 import os
 
-from automojo.foundation.collections.contextuser import ContextUser
+from automojo.xmodules.xcollections.contextuser import ContextUser
 
-from automojo.foundation.runtime.runtimevariables import AM_RUNTIME_VARIABLES
+from automojo.runtime.runtimevariables import AM_RUNTIME_VARIABLES
 
-from automojo.foundation.runtime.paths import get_path_for_output
+from automojo.runtime.paths import get_path_for_output
 
 from automojo.landscaping.wellknown import LandscapeSingleton
 
