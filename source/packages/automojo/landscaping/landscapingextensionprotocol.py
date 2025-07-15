@@ -13,7 +13,7 @@ __credits__ = []
 
 
 
-from typing import List, Protocol, Type
+from typing import List, Type
 
 from automojo.extension.factory.factoryprotocolbase import FactoryProtocolBase
 from automojo.testbase.coupling.integrationcoupling import IntegrationCoupling
@@ -37,5 +37,4 @@ class LandscapingFactoryProtocol(FactoryProtocolBase):
             Used to lookup and return the most relevant list of integration coupling types.
         """
 
-    
 
