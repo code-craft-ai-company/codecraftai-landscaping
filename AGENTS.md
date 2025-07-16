@@ -14,7 +14,7 @@ AI based testing should run only the 'singlehost' tests tests with:
 ```
     source .venv/bin/activate
     
-    testbase --root source/testroots/automojo --includes=automojo.tests.singlehost --output=<desired output folder>
+    testbase testing run --root source/testroots/automojo --includes=automojo.tests.singlehost --output=<desired output folder>
 ```
 
 When running tests you should create an output folder in order to be able to capture all the test run artifacts in an isolated folder.
@@ -22,6 +22,29 @@ When running tests you should create an output folder in order to be able to cap
 
 # Code Naming Conventions
 The code naming conventions of this repository follows the [Automation Mojo Python Naming Conventions](https://github.com/automationmojo/automojo-docs/blob/main/userguide/10-01-naming-conventions.rst)
+
+## Documentation Comments
+Documentation comments use sphinx style.  I do not put the parameter types in the comment because all the function should use type hinting.  There should be no need to duplicate the type information in the comments.  The text of the doc comment should be indented four spaces to the inside of the start of the triple quote.  The following is an example.
+
+```
+def repeat(what: str, count: int) -> List[str]:
+    """
+        This function repeats what you feed it up to 100 times.
+
+        :param what: What you want repeated.
+        :param count: How many times to repeat it.
+    
+        :returns: The repeated strings.
+        :raises: ValueError if you tyr to repeat more than 100 times.
+    """
+
+    if count > 100:
+        raise ValueError("The 'count' parameter cannot exceed 100.")
+
+    rtnval = [what for _ in range(0, count - 1)]
+
+    return rtnval
+```
 
 
 # Code Structure
@@ -36,9 +59,10 @@ The code in this repository is meant to be utilized by testing tools and test fr
 
 For all the code in this repository, follow the coding standards specified at [Coding Standards](https://github.com/automationmojo/automojo-docs/blob/main/userguide/10-00-coding-standards.rst)
 
+
 # Writing Tests
 
-A test base test takes the form of a function with a 'test_' prefix like so:
+A 'testbase' test takes the form of a function with a 'test_' prefix like so:
 
 ```
 def test_something():
@@ -69,7 +93,7 @@ You can create resources using the factories in a scope in the test tree.  Resou
 testbase.originate.parameter(create_landscape, identifier='lscape')
 ```
 
-To use a test in a descendant test scope, just reference it by name in the test function signature like:
+To use a resource in a descendant test scope, just reference it by name in the test function signature like:
 
 ```
 def test_use_landscape(lscape: Landscape):
@@ -79,6 +103,9 @@ def test_use_landscape(lscape: Landscape):
     return
 
 ```
+
+The test tree should only contain resource origination declarations and tests.  It should not contain factories unless the usage of the factory is very isolated.  It is preferable to place factories in a folder such as a factory that creates the AutomationPodSimple object might be located at 'source/testroots/automojo/testshared/factories/automationpods/automationpodsimple.py'
+
 
 # Environment Setup
 When checking out the code for this repository in order to test changes, agents must:
