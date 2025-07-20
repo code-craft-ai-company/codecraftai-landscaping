@@ -14,12 +14,12 @@ from typing import Dict
 
 import fnmatch
 import hashlib
-import logging
+from automojo.xmodules.xlogging.enhancedloggers import getEnhancedLogger
 import os
 import tempfile
 import zipfile
 
-logger = logging.getLogger()
+logger = getEnhancedLogger()
 
 from automojo.interop.interfaces.isystemcontext import ISystemContext
 

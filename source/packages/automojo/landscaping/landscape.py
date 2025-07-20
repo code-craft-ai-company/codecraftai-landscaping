@@ -16,7 +16,7 @@ __credits__ = []
 from typing import Dict, List, Optional, Union
 
 import inspect
-import logging
+from automojo.xmodules.xlogging.enhancedloggers import getEnhancedLogger
 import os
 import threading
 
@@ -76,7 +76,7 @@ class Landscape:
     """
 
     context = ContextSingleton()
-    logger = logging.getLogger()
+    logger = getEnhancedLogger()
     landscape_lock = threading.RLock()
 
     landscape_type = None
