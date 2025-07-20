@@ -31,12 +31,11 @@ from requests.exceptions import ConnectionError
 from automojo.errors.exceptions import ConfigurationError, SemanticError
 from automojo.landscaping.friendlyidentifier import FriendlyIdentifier
 
-from automojo.foundation.collections.context import Context
-from automojo.foundation.collections.contextpaths import ContextPaths
+from automojo.presence.wellknown import ContextSingleton
+from automojo.presence.contextpaths import ContextPaths
 
 from automojo.networking.constants import HTTP1_1_LINESEP, HTTP1_1_END_OF_HEADER
 from automojo.networking.interfaces import get_interface_for_ip
-from automojo.networking.multicast import create_multicast_socket
 from automojo.networking.resolution import get_arp_table, refresh_arp_table
 from automojo.networking.trafficcapturecontext import TrafficCaptureContext
 
@@ -45,10 +44,10 @@ import automojo.interop.protocols.upnp as upnp_module
 from automojo.landscaping.coordinators.coordinatorbase import CoordinatorBase
 from automojo.landscaping.landscapedevice import LandscapeDevice
 
-from automojo.interop.protocols.upnp.upnpconstants import UPNP_HEADERS
-from automojo.interop.protocols.upnp.devices.upnprootdevice import UpnpRootDevice
-from automojo.interop.protocols.upnp.devices.upnprootdevice import device_description_load
-from automojo.interop.protocols.upnp.devices.upnprootdevice import device_description_find_components
+from automojo.interop.protocols.upnp.constants import UPNP_HEADERS
+from automojo.interop.protocols.upnp.model.devices.upnprootdevice import UpnpRootDevice
+from automojo.interop.protocols.upnp.model.devices.upnprootdevice import device_description_load
+from automojo.interop.protocols.upnp.model.devices.upnprootdevice import device_description_find_components
 
 from automojo.interop.protocols.upnp.upnpfactory import UpnpFactory
 from automojo.interop.protocols.upnp.upnpprotocol import msearch_query_host, msearch_scan, notify_parse_request
@@ -119,7 +118,7 @@ class UpnpCoordinator(CoordinatorBase):
         """
         super(UpnpCoordinator, self).__init__(lscape, control_point=control_point, workers=workers)
 
-        context = Context()
+        context = ContextSingleton()
         self._upnp_cache_dir = context.lookup(ContextPaths.RUNTIME_HOME_DIRECTORY, default=os.path.expanduser("~/mjr"))
         self._local_udn = uuid.getnode()
 

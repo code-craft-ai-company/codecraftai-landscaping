@@ -17,14 +17,13 @@ import os
 import pprint
 import weakref
 
-from automojo.landscaping.friendlyidentifier import FriendlyIdentifier
+from automojo.interop.protocols.ssh.sshagent import SshAgent
 
+from automojo.landscaping.friendlyidentifier import FriendlyIdentifier
 from automojo.landscaping.coordinators.coordinatorbase import CoordinatorBase
 from automojo.landscaping.landscapeparameters import LandscapeActivationParams
 from automojo.landscaping.landscapedevice import LandscapeDevice
-
-from automojo.interop.protocols.ssh.sshagent import SshAgent
-from automojo.interop.protocols.ssh.sshdevice import SshDevice
+from automojo.landscaping.coordinators.ssh.sshdevice import SshDevice
 
 if TYPE_CHECKING:
     from automojo.landscaping.landscape import Landscape

@@ -11,7 +11,7 @@ __copyright__ = "Copyright 2025, Automation Mojo LLC"
 __credits__ = []
 
 
-from typing import Union, TYPE_CHECKING
+from typing import Union
 
 from automojo.landscaping.coordinators.coordinatorbase import CoordinatorBase
 from automojo.landscaping.landscapeparameters import LandscapeActivationParams

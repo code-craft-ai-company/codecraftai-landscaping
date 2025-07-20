@@ -24,12 +24,13 @@ import yaml
 
 from automojo.errors.exceptions import ConfigurationError
 
-from automojo.foundation.collections.mergemap import MergeMap
-from automojo.foundation.collections.wellknown import ContextSingleton
+from automojo.xmodules.xcollections.mergemap import MergeMap
+
+from automojo.presence.wellknown import ContextSingleton
 
 from automojo.credentials.credentialmanager import CredentialManager
 
-from automojo.foundation.configuration.configurationmaps import CONFIGURATION_MAPS
+from automojo.configuration.configurationmaps import CONFIGURATION_MAPS
 from automojo.credentials.wellknown import CredentialManagerSingleton
 
 

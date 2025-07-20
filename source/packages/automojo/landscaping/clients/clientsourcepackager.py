@@ -14,16 +14,17 @@ from typing import Dict
 
 import fnmatch
 import hashlib
-from automojo.xmodules.xlogging.enhancedloggers import getEnhancedLogger
 import os
 import tempfile
 import zipfile
 
-logger = getEnhancedLogger()
+from automojo.xmodules.xlogging.enhancedloggers import getEnhancedLogger
 
 from automojo.interop.interfaces.isystemcontext import ISystemContext
-
 from automojo.interop.protocols.ssh.sshagent import SshAgent
+
+
+logger = getEnhancedLogger()
 
 class ClientSourcePackager:
     """

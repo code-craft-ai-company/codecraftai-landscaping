@@ -13,8 +13,6 @@ __credits__ = []
 
 from typing import Any, Dict, Union, TYPE_CHECKING
 
-import weakref
-
 from automojo.errors.exceptions import ConfigurationError
 
 from automojo.landscaping.coordinators.coordinatorbase import CoordinatorBase

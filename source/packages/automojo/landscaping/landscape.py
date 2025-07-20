@@ -22,8 +22,8 @@ import threading
 
 from automojo.errors.exceptions import SemanticError
 
-from automojo.foundation.collections.contextpaths import ContextPaths
-from automojo.foundation.collections.wellknown import ContextSingleton
+from automojo.presence.contextpaths import ContextPaths
+from automojo.presence.wellknown import ContextSingleton
 
 from automojo.interfaces.iexcludefilter import IExcludeFilter
 from automojo.interfaces.iincludefilter import IIncludeFilter

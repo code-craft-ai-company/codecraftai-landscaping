@@ -19,7 +19,7 @@ import weakref
 from automojo.errors.exceptions import CommandError, SemanticError
 
 from automojo.interop.interfaces.isystemcontext import ISystemContext
-from automojo.foundation.xformatting import format_command_result
+from automojo.xmodules.xformatting import format_command_result
 
 from automojo.interop.protocols.ssh.sshagent import SshSession
 

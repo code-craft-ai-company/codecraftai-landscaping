@@ -11,17 +11,16 @@ __copyright__ = "Copyright 2025, Automation Mojo LLC"
 __credits__ = []
 
 
-from typing import Dict, List, Tuple, TYPE_CHECKING
+from typing import List, Tuple, TYPE_CHECKING
 
-from functools import partial
-
-from automojo.foundation.collections.wellknown import ContextSingleton
-from automojo.foundation.collections.contextpaths import ContextPaths
 from automojo.errors.exceptions import SemanticError
 
-from automojo.networking.protocols.upnp.upnppresence import UpnpPresence
-from automojo.networking.protocols.upnp.upnpdevicehint import UpnpDeviceHint
-from automojo.networking.protocols.upnp.upnpsearchwindow import UpnpSearchWindow
+from automojo.presence.wellknown import ContextSingleton
+from automojo.presence.contextpaths import ContextPaths
+
+from automojo.interop.protocols.upnp.upnppresence import UpnpPresence
+from automojo.interop.protocols.upnp.model.upnpdevicehint import UpnpDeviceHint
+from automojo.interop.protocols.upnp.upnpsearchwindow import UpnpSearchWindow
 
 from automojo.landscaping.coupling.coordinatorcoupling import CoordinatorCoupling
 

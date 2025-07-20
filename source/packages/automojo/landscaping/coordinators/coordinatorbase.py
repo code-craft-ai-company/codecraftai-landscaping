@@ -21,7 +21,7 @@ import weakref
 
 from automojo.errors.exceptions import AbstractMethodError
 
-from automojo.foundation.xthreading.lockscopes import LockedScope, UnLockedScope
+from automojo.xmodules.xthreading.lockscopes import LockedScope, UnLockedScope
 
 from automojo.landscaping.landscapeparameters import LandscapeActivationParams
 from automojo.landscaping.landscapedevice import LandscapeDevice
