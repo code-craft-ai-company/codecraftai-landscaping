@@ -60,7 +60,7 @@ class Landscape:
         * Operational
 
         The different phases of operation of the landscape allow it to be used for a wider variety
-        of purposes from commandline configuration and maintenance operations, peristent services
+        of purposes from commandline configuration and maintenance operations, persistent services
         and automation run functionality.
 
         The activation stages or levels of the :class:`Landscape` object are implemented using
@@ -455,8 +455,11 @@ class Landscape:
             pass
         
         if caller_func_name != "LandscapeSingleton":
-            errmsg = "The `Landscape` object should only be instantiated from `LandscapeSingleton`" \
-                    "function located in the `mojoxmods.wellknown.singltons` module."
+            errmsg = (
+                "The `Landscape` object should only be instantiated from "
+                "`LandscapeSingleton` function located in the "
+                "`automojo.landscaping.wellknown` module."
+            )
             raise SemanticError(errmsg)
         
         return
@@ -466,7 +469,7 @@ class Landscape:
 def startup_landscape(activation_params: LandscapeActivationParams=DEFAULT_LANDSCAPE_ACTIVATION_PARAMS,
         interactive: Optional[bool]=None) -> Landscape:
     """
-        Statup the landscape outside of a testrun.
+        Startup the landscape outside of a testrun.
     """
 
     from automojo.landscaping.wellknown import LandscapeSingleton
