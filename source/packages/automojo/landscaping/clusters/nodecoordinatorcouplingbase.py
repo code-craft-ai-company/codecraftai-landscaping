@@ -22,7 +22,6 @@ from automojo.errors.exceptions import SemanticError
 
 from automojo.landscaping.coupling.coordinatorcoupling import CoordinatorCoupling
 from automojo.landscaping.clusters.nodecoordinatorbase import NodeCoordinatorBase
-
 from automojo.landscaping.constants import StartupLevel
 
 # Types imported only for type checking purposes

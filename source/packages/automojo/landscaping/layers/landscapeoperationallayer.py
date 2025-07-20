@@ -16,7 +16,7 @@ from typing import Any, Dict, List, Optional, Union, TYPE_CHECKING
 import os
 
 from automojo.errors.xtraceback import format_exception
-from automojo.errors.exceptions import CheckinError, CheckoutError, SemanticError
+from automojo.errors.exceptions import CheckinError, CheckoutError
 
 from automojo.interfaces.iexcludefilter import IExcludeFilter
 from automojo.interfaces.iincludefilter import IIncludeFilter

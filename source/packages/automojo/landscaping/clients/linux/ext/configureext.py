@@ -21,7 +21,6 @@ import weakref
 from automojo.errors.exceptions import CommandError
 
 from automojo.credentials.sshcredential import SshCredential
-from automojo.interop.interfaces.isystemcontext import ISystemContext
 from automojo.xmodules.xformatting import format_command_result
 
 from automojo.landscaping.clients.clientsourcepackager import ClientSourcePackager

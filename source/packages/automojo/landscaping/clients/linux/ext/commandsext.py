@@ -11,7 +11,7 @@ __copyright__ = "Copyright 2025, Automation Mojo LLC"
 __credits__ = []
 
 
-from typing import Optional, Type, TYPE_CHECKING
+from typing import Optional, TYPE_CHECKING
 
 import os
 import weakref
