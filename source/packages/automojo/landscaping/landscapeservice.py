@@ -91,13 +91,19 @@ class LandscapeService(FeatureAttachedObject):
         if "name" in service_config:
             self._name = service_config["name"]
 
+        # Services can be organized into groups.  Track the group
+        # for the service if one has been specified.
+        self._group = ""
+        if "group" in service_config:
+            self._group = service_config["group"]
+
         self._features = {}
         if "features" in service_config:
              self._features = service_config["features"]
 
         self._configured_ipaddr = None
         if "ipaddr" in service_config:
-            self._configured_ip = service_config["ipaddr"]
+            self._configured_ipaddr = service_config["ipaddr"]
 
         credmgr = lscape.credential_manager
 
@@ -123,7 +129,7 @@ class LandscapeService(FeatureAttachedObject):
             :returns: Configured IP address or ``None`` if not set.
             :rtype: Union[str, None]
         """
-        return self._configured_ip
+        return self._configured_ipaddr
 
     @property
     def contacted_first(self) -> datetime:
@@ -388,7 +394,7 @@ class LandscapeService(FeatureAttachedObject):
         match_func = None
         match_self = None
 
-        with self.begin_locked_scope(self._service_lock) as lk_locked:
+        with self.begin_locked_scope() as lk_locked:
 
             if match_type in self._table_for_match_callbacks:
                 dext_attr, match_func = self._table_for_match_callbacks[match_type]
@@ -416,7 +422,7 @@ class LandscapeService(FeatureAttachedObject):
             Method called  to update the match functions.
         """
 
-        with self.begin_locked_scope(self._service_lock) as lk_locked:
+        with self.begin_locked_scope() as lk_locked:
 
             self._table_for_match_callbacks.update(match_table)
 
@@ -427,7 +433,7 @@ class LandscapeService(FeatureAttachedObject):
             Method called  to update the verification callback functions for a given protocol.
         """
 
-        with self.begin_locked_scope(self._service_lock) as lk_locked:
+        with self.begin_locked_scope() as lk_locked:
 
             self._table_for_status_callbacks[protocol] = status_callback
 
