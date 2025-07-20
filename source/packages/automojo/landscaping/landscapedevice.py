@@ -15,7 +15,7 @@ __credits__ = []
 
 from typing import Callable, Dict, Union, TYPE_CHECKING
 
-import logging
+from automojo.xmodules.xlogging.enhancedloggers import getEnhancedLogger
 import os
 import socket
 import threading
@@ -50,7 +50,7 @@ class LandscapeDevice(FeatureAttachedObject):
     # tags or not.
     FEATURE_TAGS = []
 
-    logger = logging.getLogger()
+    logger = getEnhancedLogger()
 
     def __init__(self, lscape: "Landscape", coordinator: "CoordinatorBase", friendly_id:
                  FriendlyIdentifier, device_type: str, device_config: dict):

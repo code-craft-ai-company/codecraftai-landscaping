@@ -15,7 +15,7 @@ __credits__ = []
 
 from typing import TYPE_CHECKING
 
-import logging
+from automojo.xmodules.xlogging.enhancedloggers import getEnhancedLogger
 import weakref
 
 if TYPE_CHECKING:
@@ -27,7 +27,7 @@ class LandscapingLayerBase:
         Base class providing common functionality for landscape layers.
     """
 
-    logger = logging.getLogger()
+    logger = getEnhancedLogger()
 
     def __init__(self, lscape: "Landscape"):
         """

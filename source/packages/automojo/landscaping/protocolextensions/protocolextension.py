@@ -17,7 +17,7 @@ __credits__ = []
 
 from typing import Dict, Union, TYPE_CHECKING
 
-import logging
+from automojo.xmodules.xlogging.enhancedloggers import getEnhancedLogger
 import weakref
 
 if TYPE_CHECKING:
@@ -33,7 +33,7 @@ class ProtocolExtension:
         devices with metadata and device connectivity for the UPnp, SSH and Other protocols.
     """
 
-    logger = logging.getLogger()
+    logger = getEnhancedLogger()
 
     def __init__(self):
         """
