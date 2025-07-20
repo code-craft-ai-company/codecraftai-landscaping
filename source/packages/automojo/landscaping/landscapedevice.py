@@ -114,7 +114,7 @@ class LandscapeDevice(FeatureAttachedObject):
 
         self._configured_ipaddr = None
         if "ipaddr" in device_config:
-            self._configured_ip = device_config["ipaddr"]
+            self._configured_ipaddr = device_config["ipaddr"]
 
         credmgr = lscape.credential_manager
 
@@ -137,7 +137,7 @@ class LandscapeDevice(FeatureAttachedObject):
         """
             Returns the IP address configured for the device if specified.
         """
-        return self._configured_ip
+        return self._configured_ipaddr
 
     @property
     def contacted_first(self) -> datetime:
@@ -416,7 +416,7 @@ class LandscapeDevice(FeatureAttachedObject):
         match_func = None
         match_self = None
 
-        with self.begin_locked_scope(self._device_lock) as lk_locked:
+        with self.begin_locked_scope() as lk_locked:
 
             if match_type in self._table_for_match_callbacks:
                 dext_attr, match_func = self._table_for_match_callbacks[match_type]
@@ -444,7 +444,7 @@ class LandscapeDevice(FeatureAttachedObject):
             Method called  to update the match functions.
         """
 
-        with self.begin_locked_scope(self._device_lock) as lk_locked:
+        with self.begin_locked_scope() as lk_locked:
 
             self._table_for_match_callbacks.update(match_table)
 
@@ -455,7 +455,7 @@ class LandscapeDevice(FeatureAttachedObject):
             Method called  to update the verification callback functions for a given protocol.
         """
 
-        with self.begin_locked_scope(self._device_lock) as lk_locked:
+        with self.begin_locked_scope() as lk_locked:
 
             self._table_for_status_callbacks[protocol] = status_callback
 
