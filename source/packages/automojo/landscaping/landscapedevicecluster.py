@@ -71,7 +71,7 @@ class LandscapeDeviceCluster:
         """
         return self._spares
 
-    def enchance_metadata(self):
+    def enhance_metadata(self):
         """
             Hook function to allow a cluster object the opportunity to enhance its Metadata.
         """
