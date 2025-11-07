@@ -11,11 +11,9 @@ __copyright__ = "Copyright 2025, Automation Mojo LLC"
 __credits__ = []
 
 
-from typing import Dict, List, Optional, TYPE_CHECKING
+from typing import List, Optional, TYPE_CHECKING
 
 import os
-import shutil
-import tempfile
 import weakref
 
 from automojo.errors.exceptions import CommandError
@@ -26,20 +24,12 @@ from automojo.xmodules.xformatting import format_command_result
 from automojo.landscaping.clients.clientsourcepackager import ClientSourcePackager
 from automojo.interop.protocols.ssh.sshsession import SshSession
 
-import automojo.interop.protocols.tasker.taskerservice as tasker_service
 
 if TYPE_CHECKING:
     from automojo.landscaping.clients.linux.linuxclient import LinuxClient
 
 
 TEMPLATE_FILE_SUDO_CONFIG = "/etc/sudoers.d/77-automation-{username}"
-
-DIR_TASKER_SERVICE = os.path.dirname(tasker_service.__file__)
-
-FILE_TASKER_SERVICE_BIN = os.path.join(DIR_TASKER_SERVICE, "linux", "taskerservice")
-
-FILE_TASKER_SERVICE_SVC_TEMPLATE = os.path.join(DIR_TASKER_SERVICE, "linux", "tasker-service.template")
-
 
 class ConfigureExt:
     """
@@ -67,110 +57,6 @@ class ConfigureExt:
             Returns the owning :class:`LinuxClient` instance.
         """
         return self._client_ref()
-
-
-    def configure_tasker_service(self, remote_source_root: str, sudo_username: Optional[str] = None, sudo_password: Optional[str] = None,
-                                 config: Optional[Dict[str, Dict[str, str]]] = None, basis_session: Optional[SshSession] = None):
-        """
-            Installs and configures the tasker service on the remote client.
-
-            :param remote_source_root: Path on the remote host where the source is deployed.
-            :param sudo_username: Optional sudo user name to run commands as.
-            :param sudo_password: Optional sudo user password.
-            :param config: Optional dictionary of configuration values to write.
-            :param basis_session: Optional existing session to use for operations.
-        """
-
-        client = self.client
-
-        if sudo_username is None:
-            sshcred: SshCredential = client.get_credentials_by_category("ssh")[0]
-
-            sudo_username = sshcred.username
-        
-        with client.ssh.open_session(basis_session=basis_session) as session:
-
-            status, stdout, stderr = session.run_cmd('echo "$HOME"')
-            if status != 0:
-                errmsg = "Unable to obtain remote home directory for client."
-                raise Exception(errmsg)
-
-            remote_home = stdout.strip().rstrip(os.sep)
-
-            remote_source_root = remote_source_root.strip()
-            if remote_source_root.startswith("~"):
-                remote_source_root = remote_source_root.replace("~", remote_home)
-
-            tasker_server_bin_rmt = os.path.join(remote_source_root, ".venv/bin/taskerservice")
-            tasker_server_packages_rmt = os.path.join(remote_source_root, "source", "packages")
-
-            session.file_push(FILE_TASKER_SERVICE_BIN, tasker_server_bin_rmt)
-
-            chmod_cmd = f"chmod +x {tasker_server_bin_rmt}"
-            status, stdout, stderr = session.run_cmd(chmod_cmd)
-            if status != 0:
-                errmsg = format_command_result(f"Unable to make file='{tasker_server_bin_rmt}' executable",
-                                            chmod_cmd, status, stdout, stderr, target=client.ipaddr)
-                raise CommandError(errmsg, status, stdout, stderr)
-
-            # If we were able to install the `taserserver` binary, then setup the service to automatically
-            # run via systemd
-
-            tasker_server_cfg_fill_dict = {
-                "username": sudo_username,
-                "group": sudo_username,
-                "tasker-binary": tasker_server_bin_rmt,
-                "tasker-packages": tasker_server_packages_rmt
-            }
-
-            ts_cfg_template_content = None
-            with open(FILE_TASKER_SERVICE_SVC_TEMPLATE, 'r') as tscfg:
-                ts_cfg_template_content = tscfg.read()
-
-            tasker_server_cfg_content = ts_cfg_template_content.format(**tasker_server_cfg_fill_dict)
-
-            config_content = None
-            if config is not None:
-                config_content_lines = [
-                    "",
-                ]
-
-                sec_info: dict
-                for sec_name, sec_info in config.items():
-                    config_content_lines.append(f"[{sec_name}]")
-                    
-                    for key, val in sec_info.items():
-                        config_content_lines.append(f"{key} = {val}")
-
-                    config_content_lines.append("")
-
-                config_content = os.linesep.join(config_content_lines)
-
-            tasker_server_cfg_local = tempfile.mktemp()
-            runtime_config_file = None
-            runtime_config_dir = None
-            try:
-                with open(tasker_server_cfg_local, 'w+') as tscf:
-                    tscf.write(tasker_server_cfg_content)
-
-                if config_content is not None:
-                    runtime_config_dir = tempfile.mkdtemp()
-                    runtime_config_file = os.path.join(runtime_config_dir, "tasker.conf")
-
-                    with open(runtime_config_file, 'w+') as ccf:
-                        ccf.write(config_content)
-
-
-                self.install_systemd_service("tasker", sudo_username, tasker_server_cfg_local, pidfolder=f"/var/run/tasker",
-                                             optfolder="/opt/tasker", runtime_config_file=runtime_config_file, basis_session=session)
-            finally:
-                os.remove(tasker_server_cfg_local)
-
-                if runtime_config_dir is not None:
-                    shutil.rmtree(runtime_config_dir, ignore_errors=True)
-
-        return
-
 
     def deploy_source_package(self, source_root: str, package_name: str, remote_source_root: str, cache_dir: Optional[str] = None,
                               force_repackage: Optional[bool]=False, force_deploy: Optional[bool]=False, basis_session: Optional[SshSession] = None):
@@ -433,7 +319,7 @@ class ConfigureExt:
         svc_running = False
 
         with client.ssh.open_session(basis_session=basis_session) as session:
-            chk_svc_running_cmd = "systemctl is-active --quiet tasker && echo $?"
+            chk_svc_running_cmd = f"systemctl is-active --quiet {svcname} && echo $?"
             status, stdout, stderr = session.run_cmd(chk_svc_running_cmd)
             if status != 0:
                 if stderr != "":
