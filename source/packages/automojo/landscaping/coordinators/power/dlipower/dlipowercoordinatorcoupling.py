@@ -15,7 +15,7 @@ __credits__ = []
 from typing import TYPE_CHECKING
 
 from automojo.landscaping.coordinators.power.powercoordinatorcouplingbase import PowerCoordinatorCouplingBase
-from automojo.landscaping.coordinators.integrationclasses import INTEGRATION_CLASS_NETWORK_DLIPOWER
+from automojo.landscaping.integrationclasses import INTEGRATION_CLASS_NETWORK_DLIPOWER
 
 
 # Types imported only for type checking purposes

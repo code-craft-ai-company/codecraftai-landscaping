@@ -21,7 +21,7 @@ from automojo.landscaping.clients.constants import INTEGRATION_CLASS_FOR_WINDOWS
 from automojo.landscaping.clients.windows.windowsclient import WindowsClient
 
 from automojo.interop.protocols.ssh.sshagent import SshAgent
-from automojo.landscaping.coordinators.integrationclasses import INTEGRATION_CLASS_NETWORK_SSH
+from automojo.landscaping.integrationclasses import INTEGRATION_CLASS_NETWORK_SSH
 
 if TYPE_CHECKING:
     from automojo.landscaping.landscape import Landscape

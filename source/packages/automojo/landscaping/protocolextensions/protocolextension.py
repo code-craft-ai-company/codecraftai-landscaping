@@ -21,7 +21,7 @@ from automojo.xmodules.xlogging.enhancedloggers import getEnhancedLogger
 import weakref
 
 if TYPE_CHECKING:
-    from automojo.landscaping.coordinators.coordinatorbase import CoordinatorBase
+    from automojo.landscaping.coordinatorbase import CoordinatorBase
     from automojo.landscaping.landscapedevice import LandscapeDevice
     from automojo.landscaping.landscapeservice import LandscapeService
 

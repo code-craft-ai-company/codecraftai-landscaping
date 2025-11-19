@@ -24,7 +24,7 @@ from automojo.errors.exceptions import ConfigurationError, AbstractMethodError
 from automojo.credentials.basecredential import BaseCredential
 from automojo.landscaping.friendlyidentifier import FriendlyIdentifier
 
-from automojo.landscaping.coordinators.coordinatorbase import CoordinatorBase
+from automojo.landscaping.coordinatorbase import CoordinatorBase
 from automojo.landscaping.landscapeparameters import LandscapeActivationParams
 from automojo.landscaping.landscapeservice import LandscapeService
 

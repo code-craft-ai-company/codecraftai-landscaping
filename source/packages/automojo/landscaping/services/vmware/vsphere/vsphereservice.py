@@ -12,7 +12,7 @@ __credits__ = []
 from typing import TYPE_CHECKING
 
 from automojo.credentials.basecredential import BaseCredential
-from automojo.landscaping.coordinators.coordinatorbase import CoordinatorBase
+from automojo.landscaping.coordinatorbase import CoordinatorBase
 from automojo.landscaping.friendlyidentifier import FriendlyIdentifier
 from automojo.landscaping.landscape import Landscape
 from automojo.landscaping.services.servicebase import ServiceBase
@@ -21,7 +21,7 @@ from automojo.landscaping.services.vmware.vsphere.vsphereagent import VSphereAge
 
 if TYPE_CHECKING:
     from automojo.landscaping.landscape import Landscape
-    from automojo.landscaping.coordinators.coordinatorbase import CoordinatorBase
+    from automojo.landscaping.coordinatorbase import CoordinatorBase
 
 class VSphereService(ServiceBase):
     """

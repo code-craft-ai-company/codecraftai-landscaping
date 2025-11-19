@@ -22,7 +22,7 @@ from automojo.interop.protocols.ssh.sshagent import SshAgent
 
 if TYPE_CHECKING:
     from automojo.landscaping.landscape import Landscape
-    from automojo.landscaping.coordinators.coordinatorbase import CoordinatorBase
+    from automojo.landscaping.coordinatorbase import CoordinatorBase
 
 class PiNode(NodeBase):
     """

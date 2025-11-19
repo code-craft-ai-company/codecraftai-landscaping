@@ -15,7 +15,7 @@ from typing import Any, Dict, Tuple, Union, TYPE_CHECKING
 
 import weakref
 
-from automojo.landscaping.coordinators.coordinatorbase import CoordinatorBase
+from automojo.landscaping.coordinatorbase import CoordinatorBase
 from automojo.landscaping.friendlyidentifier import FriendlyIdentifier
 from automojo.landscaping.landscapeparameters import LandscapeActivationParams
 from automojo.landscaping.landscapedevice import LandscapeDevice

@@ -15,7 +15,7 @@ from typing import Any, Dict, Union, TYPE_CHECKING
 
 from automojo.errors.exceptions import ConfigurationError
 
-from automojo.landscaping.coordinators.coordinatorbase import CoordinatorBase
+from automojo.landscaping.coordinatorbase import CoordinatorBase
 from automojo.landscaping.landscapeparameters import LandscapeActivationParams
 from automojo.landscaping.landscapedevice import LandscapeDevice
 

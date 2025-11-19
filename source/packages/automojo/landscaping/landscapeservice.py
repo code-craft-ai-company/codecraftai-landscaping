@@ -35,7 +35,7 @@ from automojo.testbase.features import FeatureAttachedObject
 
 if TYPE_CHECKING:
     from automojo.landscaping.landscape import Landscape
-    from automojo.landscaping.coordinators.coordinatorbase import CoordinatorBase
+    from automojo.landscaping.coordinatorbase import CoordinatorBase
 
 class LandscapeService(FeatureAttachedObject):
     """

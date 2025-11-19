@@ -23,7 +23,7 @@ from automojo.interfaces.iincludefilter import IIncludeFilter
 from automojo.testbase.coupling.integrationcoupling import IntegrationCouplingType
 
 from automojo.landscaping.constants import DeviceExtensionType
-from automojo.landscaping.coordinators.coordinatorbase import CoordinatorBase
+from automojo.landscaping.coordinatorbase import CoordinatorBase
 from automojo.landscaping.coupling.coordinatorcoupling import CoordinatorCoupling
 from automojo.landscaping.layers.landscapinglayerbase import LandscapingLayerBase
 from automojo.landscaping.layers.landscapeconfigurationlayer import LandscapeConfigurationLayer

@@ -15,7 +15,7 @@ __credits__ = []
 from typing import Any, Dict, List, Tuple, TYPE_CHECKING
 
 from automojo.landscaping.coupling.coordinatorcoupling import CoordinatorCoupling
-from automojo.landscaping.coordinators.integrationclasses import INTEGRATION_CLASS_NETWORK_TCPSERIAL
+from automojo.landscaping.integrationclasses import INTEGRATION_CLASS_NETWORK_TCPSERIAL
 from automojo.landscaping.coordinators.ssh.sshcoordinator import SshCoordinator
 
 from automojo.landscaping.constants import StartupLevel

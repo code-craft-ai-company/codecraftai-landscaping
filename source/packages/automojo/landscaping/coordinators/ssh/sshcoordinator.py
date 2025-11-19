@@ -20,7 +20,7 @@ import weakref
 from automojo.interop.protocols.ssh.sshagent import SshAgent
 
 from automojo.landscaping.friendlyidentifier import FriendlyIdentifier
-from automojo.landscaping.coordinators.coordinatorbase import CoordinatorBase
+from automojo.landscaping.coordinatorbase import CoordinatorBase
 from automojo.landscaping.landscapeparameters import LandscapeActivationParams
 from automojo.landscaping.landscapedevice import LandscapeDevice
 from automojo.landscaping.coordinators.ssh.sshdevice import SshDevice
