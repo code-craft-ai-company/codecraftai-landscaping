@@ -23,7 +23,7 @@
                 "testing",
                 "run",
                 "--root=${workspaceFolder}/source/testroots/automojo",
-                "--includes=automojo.tests.singlehost",
+                "--includes=automojo.tests.landscaping.singlehost",
                 "--breakpoint=testrun-start"
             ],
             "console": "integratedTerminal",
