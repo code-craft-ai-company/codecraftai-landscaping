@@ -45,7 +45,7 @@ from automojo.landscaping.friendlyidentifier import FriendlyIdentifier
 
 from automojo.testbase.coupling.integrationcoupling import IntegrationCoupling
 
-from automojo.foundation.xthreading.lockscopes import LockedScope, UnLockedScope
+from automojo.xmodules.xthreading.lockscopes import LockedScope, UnLockedScope
 
 
 class Landscape:
