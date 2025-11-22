@@ -1,6 +1,6 @@
 """Tests for the include filter implementations."""
 
-import testbase
+from automojo.testbase import verification
 
 from automojo.landscaping.includefilters import (
     IncludeDeviceByDeviceType,
@@ -36,7 +36,7 @@ def test_include_device_by_device_type_matches_device_type() -> None:
 
     include_result = matcher.should_include(device)
 
-    testbase.assert_equal(include_result, True)
+    verification.assert_equal(include_result, True)
 
 
 def test_include_device_by_device_type_rejects_mismatch_and_non_device() -> None:
@@ -46,8 +46,8 @@ def test_include_device_by_device_type_rejects_mismatch_and_non_device() -> None
     include_result = matcher.should_include(device)
     include_non_device = matcher.should_include(object())
 
-    testbase.assert_equal(include_result, False)
-    testbase.assert_equal(include_non_device, False)
+    verification.assert_equal(include_result, False)
+    verification.assert_equal(include_non_device, False)
 
 
 def test_include_device_by_device_type_and_role_matches_both() -> None:
@@ -56,7 +56,7 @@ def test_include_device_by_device_type_and_role_matches_both() -> None:
 
     include_result = matcher.should_include(device)
 
-    testbase.assert_equal(include_result, True)
+    verification.assert_equal(include_result, True)
 
 
 def test_include_device_by_device_type_and_role_rejects_partial_matches() -> None:
@@ -67,8 +67,8 @@ def test_include_device_by_device_type_and_role_rejects_partial_matches() -> Non
     include_type_mismatch = matcher.should_include(type_mismatch)
     include_role_mismatch = matcher.should_include(role_mismatch)
 
-    testbase.assert_equal(include_type_mismatch, False)
-    testbase.assert_equal(include_role_mismatch, False)
+    verification.assert_equal(include_type_mismatch, False)
+    verification.assert_equal(include_role_mismatch, False)
 
 
 def test_include_device_by_group_matches_group() -> None:
@@ -77,7 +77,7 @@ def test_include_device_by_group_matches_group() -> None:
 
     include_result = matcher.should_include(device)
 
-    testbase.assert_equal(include_result, True)
+    verification.assert_equal(include_result, True)
 
 
 def test_include_device_by_group_rejects_different_group() -> None:
@@ -86,7 +86,7 @@ def test_include_device_by_group_rejects_different_group() -> None:
 
     include_result = matcher.should_include(device)
 
-    testbase.assert_equal(include_result, False)
+    verification.assert_equal(include_result, False)
 
 
 def test_include_device_by_name_matches_device_name() -> None:
@@ -95,7 +95,7 @@ def test_include_device_by_name_matches_device_name() -> None:
 
     include_result = matcher.should_include(device)
 
-    testbase.assert_equal(include_result, True)
+    verification.assert_equal(include_result, True)
 
 
 def test_include_device_by_name_rejects_different_name() -> None:
@@ -104,7 +104,7 @@ def test_include_device_by_name_rejects_different_name() -> None:
 
     include_result = matcher.should_include(device)
 
-    testbase.assert_equal(include_result, False)
+    verification.assert_equal(include_result, False)
 
 
 def test_include_device_by_role_matches_role() -> None:
@@ -113,7 +113,7 @@ def test_include_device_by_role_matches_role() -> None:
 
     include_result = matcher.should_include(device)
 
-    testbase.assert_equal(include_result, True)
+    verification.assert_equal(include_result, True)
 
 
 def test_include_device_by_role_rejects_other_roles() -> None:
@@ -122,7 +122,7 @@ def test_include_device_by_role_rejects_other_roles() -> None:
 
     include_result = matcher.should_include(device)
 
-    testbase.assert_equal(include_result, False)
+    verification.assert_equal(include_result, False)
 
 
 def test_include_device_config_by_device_type_matches_dict() -> None:
@@ -131,7 +131,7 @@ def test_include_device_config_by_device_type_matches_dict() -> None:
 
     include_result = matcher.should_include(device_config)
 
-    testbase.assert_equal(include_result, True)
+    verification.assert_equal(include_result, True)
 
 
 def test_include_device_config_by_device_type_rejects_non_matching_and_non_dict() -> None:
@@ -141,8 +141,8 @@ def test_include_device_config_by_device_type_rejects_non_matching_and_non_dict(
     include_result = matcher.should_include(mismatched_config)
     include_non_dict = matcher.should_include("not a dict")
 
-    testbase.assert_equal(include_result, False)
-    testbase.assert_equal(include_non_dict, False)
+    verification.assert_equal(include_result, False)
+    verification.assert_equal(include_non_dict, False)
 
 
 def test_include_service_by_name_matches_service() -> None:
@@ -151,7 +151,7 @@ def test_include_service_by_name_matches_service() -> None:
 
     include_result = matcher.should_include(service)
 
-    testbase.assert_equal(include_result, True)
+    verification.assert_equal(include_result, True)
 
 
 def test_include_service_by_name_rejects_non_matching_and_non_service() -> None:
@@ -161,5 +161,5 @@ def test_include_service_by_name_rejects_non_matching_and_non_service() -> None:
     include_result = matcher.should_include(service)
     include_non_service = matcher.should_include(object())
 
-    testbase.assert_equal(include_result, False)
-    testbase.assert_equal(include_non_service, False)
+    verification.assert_equal(include_result, False)
+    verification.assert_equal(include_non_service, False)
