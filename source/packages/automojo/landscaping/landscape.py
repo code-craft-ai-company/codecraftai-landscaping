@@ -41,7 +41,6 @@ from automojo.landscaping.landscapeparameters import (
 from automojo.landscaping.landscapedevice import LandscapeDevice
 from automojo.landscaping.landscapedevicecluster import LandscapeDeviceCluster
 from automojo.landscaping.landscapeservice import LandscapeService
-from automojo.landscaping.friendlyidentifier import FriendlyIdentifier
 
 from automojo.testbase.coupling.integrationcoupling import IntegrationCoupling
 
