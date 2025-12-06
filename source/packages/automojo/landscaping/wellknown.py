@@ -16,7 +16,7 @@ from typing import TYPE_CHECKING
 
 from threading import RLock
 
-from automojo.presence.wellknown import ConfiguredSuperFactorySingleton
+from automojo.thisapp.wellknown import ConfiguredSuperFactorySingleton
 
 if TYPE_CHECKING:
     from automojo.landscaping.landscape import Landscape

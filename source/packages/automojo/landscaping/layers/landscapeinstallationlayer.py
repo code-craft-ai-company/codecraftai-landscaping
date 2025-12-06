@@ -17,7 +17,7 @@ __credits__ = []
 
 from typing import Dict, TYPE_CHECKING
 
-from automojo.presence.wellknown import ConfiguredSuperFactorySingleton
+from automojo.thisapp.wellknown import ConfiguredSuperFactorySingleton
 
 from automojo.testbase.coupling.integrationcoupling import IntegrationCouplingType
 
