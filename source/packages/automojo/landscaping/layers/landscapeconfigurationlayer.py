@@ -26,19 +26,15 @@ from automojo.errors.exceptions import ConfigurationError
 
 from automojo.xmodules.xcollections.mergemap import MergeMap
 
-from automojo.thisapp.wellknown import ThisApplicationSingleton
+from automojo.configuration.configurationmaps import CONFIGURATION_MAPS
 
 from automojo.credentials.credentialmanager import CredentialManager
-
-from automojo.configuration.configurationmaps import CONFIGURATION_MAPS
 from automojo.credentials.wellknown import CredentialManagerSingleton
-
 
 from automojo.interfaces.iexcludefilter import IExcludeFilter
 from automojo.interfaces.iincludefilter import IIncludeFilter
 
 from automojo.landscaping.layers.landscapinglayerbase import LandscapingLayerBase
-
 from automojo.landscaping.landscapeparameters import (
     LandscapeActivationParams
 )
@@ -73,10 +69,6 @@ class LandscapeConfigurationLayer(LandscapingLayerBase):
         self._topology_files: List[str] = None
         self._topology_info: MergeMap = None
 
-        # We can get runtime configuration from the global context which
-        # should already be loaded
-        self._this_app = ThisApplicationSingleton()
-        self._global_context = self._this_app.context
         return
 
     @property
