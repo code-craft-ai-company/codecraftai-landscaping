@@ -26,7 +26,7 @@ from automojo.errors.exceptions import ConfigurationError
 
 from automojo.xmodules.xcollections.mergemap import MergeMap
 
-from automojo.presence.wellknown import ContextSingleton
+from automojo.thisapp.wellknown import ThisApplicationSingleton
 
 from automojo.credentials.credentialmanager import CredentialManager
 
@@ -75,7 +75,8 @@ class LandscapeConfigurationLayer(LandscapingLayerBase):
 
         # We can get runtime configuration from the global context which
         # should already be loaded
-        self._global_context = ContextSingleton()
+        self._this_app = ThisApplicationSingleton()
+        self._global_context = self._this_app.context
         return
 
     @property

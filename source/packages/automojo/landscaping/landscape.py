@@ -22,8 +22,8 @@ import threading
 
 from automojo.errors.exceptions import SemanticError
 
-from automojo.presence.contextpaths import ContextPaths
-from automojo.presence.wellknown import ContextSingleton
+from automojo.thisapp.contextpaths import ContextPaths
+from automojo.thisapp.wellknown import ThisApplicationSingleton
 
 from automojo.interfaces.iexcludefilter import IExcludeFilter
 from automojo.interfaces.iincludefilter import IIncludeFilter
@@ -74,7 +74,8 @@ class Landscape:
                 object, you must ensure the proper use of `super` in its constructor.
     """
 
-    context = ContextSingleton()
+    this_app = ThisApplicationSingleton()
+    context = this_app.context
     logger = getEnhancedLogger()
     landscape_lock = threading.RLock()
 
@@ -202,11 +203,13 @@ class Landscape:
 
                     self._layer_configuration.load_topology(activation_params)
 
-                    log_configuration_declarations = thisType.context.lookup(ContextPaths.BEHAVIORS_LOG_CONFIGURATION, True)
+                    log_configuration_declarations = thisType.this_app.context.lookup(
+                        ContextPaths.BEHAVIORS_LOG_CONFIGURATION, True
+                    )
                     if log_configuration_declarations:
                         log_to_directory = os.path.abspath(
                             os.path.expanduser(
-                                os.path.expandvars(thisType.context.lookup(ContextPaths.OUTPUT_DIRECTORY))
+                                os.path.expandvars(thisType.this_app.context.lookup(ContextPaths.OUTPUT_DIRECTORY))
                             )
                         )
                         if log_to_directory is not None:
