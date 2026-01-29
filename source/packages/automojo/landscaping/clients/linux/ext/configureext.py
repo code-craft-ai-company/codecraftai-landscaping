@@ -125,20 +125,25 @@ class ConfigureExt:
         fill_dict = {"username": sudo_username}
         user_cfg_file = TEMPLATE_FILE_SUDO_CONFIG.format(**fill_dict)
 
+        # Escape single quotes to prevent command injection
+        escaped_password = sudo_password.replace("'", "'\\''")
+        escaped_username = sudo_username.replace("'", "'\\''")
+        escaped_cfg_file = user_cfg_file.replace("'", "'\\''")
+
         with client.ssh.open_session(basis_session=basis_session) as session:
 
-            sudo_file_exists_cmd = f"echo '{sudo_password}' | sudo -S bash -c \"[[ -f '{user_cfg_file}' ]] && echo 0 || echo 1\""
+            sudo_file_exists_cmd = f"echo '{escaped_password}' | sudo -S bash -c \"[[ -f '{escaped_cfg_file}' ]] && echo 0 || echo 1\""
             status, stdout, stderr = session.run_cmd(sudo_file_exists_cmd)
             if int(stdout.strip()) == 1:
 
-                sudo_grp_cmd = f"echo '{sudo_password}' | sudo -S usermod -aG sudo '{sudo_username}'"
+                sudo_grp_cmd = f"echo '{escaped_password}' | sudo -S usermod -aG sudo '{escaped_username}'"
                 status, stdout, stderr = session.run_cmd(sudo_grp_cmd)
                 if status != 0:
                     errmsg = format_command_result(f"Error while attempting to add `{sudo_username}` to the 'sudo' user group.",
                                                 sudo_grp_cmd, status, stdout, stderr, exp_status=[0], target=client.ipaddr)
                     raise CommandError(errmsg, status, stdout, stderr)
 
-                sudo_user_cfg_cmd =  f"echo '{sudo_password}' | sudo -S bash -c \"echo '{sudo_username} ALL=(ALL) NOPASSWD: ALL' | EDITOR='tee -a' visudo -f '{user_cfg_file}'\""
+                sudo_user_cfg_cmd =  f"echo '{escaped_password}' | sudo -S bash -c \"echo '{escaped_username} ALL=(ALL) NOPASSWD: ALL' | EDITOR='tee -a' visudo -f '{escaped_cfg_file}'\""
                 status, stdout, stderr = session.run_cmd(sudo_user_cfg_cmd)
                 if status != 0:
                     errmsg = format_command_result(f"Error while installing sudo config for user `{sudo_username}`.",
