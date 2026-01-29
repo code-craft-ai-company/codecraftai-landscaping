@@ -14,6 +14,8 @@ __credits__ = []
 from typing import List, Optional, TYPE_CHECKING
 
 import os
+import re
+import shlex
 import weakref
 
 from automojo.errors.exceptions import CommandError
@@ -125,25 +127,23 @@ class ConfigureExt:
         fill_dict = {"username": sudo_username}
         user_cfg_file = TEMPLATE_FILE_SUDO_CONFIG.format(**fill_dict)
 
-        # Escape single quotes to prevent command injection
-        escaped_password = sudo_password.replace("'", "'\\''")
-        escaped_username = sudo_username.replace("'", "'\\''")
-        escaped_cfg_file = user_cfg_file.replace("'", "'\\''")
-
         with client.ssh.open_session(basis_session=basis_session) as session:
 
-            sudo_file_exists_cmd = f"echo '{escaped_password}' | sudo -S bash -c \"[[ -f '{escaped_cfg_file}' ]] && echo 0 || echo 1\""
+            inner_cmd = f"[[ -f {shlex.quote(user_cfg_file)} ]] && echo 0 || echo 1"
+            sudo_file_exists_cmd = f"echo {shlex.quote(sudo_password)} | sudo -S bash -c {shlex.quote(inner_cmd)}"
             status, stdout, stderr = session.run_cmd(sudo_file_exists_cmd)
             if int(stdout.strip()) == 1:
 
-                sudo_grp_cmd = f"echo '{escaped_password}' | sudo -S usermod -aG sudo '{escaped_username}'"
+                sudo_grp_cmd = f"echo {shlex.quote(sudo_password)} | sudo -S usermod -aG sudo {shlex.quote(sudo_username)}"
                 status, stdout, stderr = session.run_cmd(sudo_grp_cmd)
                 if status != 0:
                     errmsg = format_command_result(f"Error while attempting to add `{sudo_username}` to the 'sudo' user group.",
                                                 sudo_grp_cmd, status, stdout, stderr, exp_status=[0], target=client.ipaddr)
                     raise CommandError(errmsg, status, stdout, stderr)
 
-                sudo_user_cfg_cmd =  f"echo '{escaped_password}' | sudo -S bash -c \"echo '{escaped_username} ALL=(ALL) NOPASSWD: ALL' | EDITOR='tee -a' visudo -f '{escaped_cfg_file}'\""
+                sudo_line = f"{sudo_username} ALL=(ALL) NOPASSWD: ALL"
+                inner_cfg_cmd = f"echo {shlex.quote(sudo_line)} | EDITOR='tee -a' visudo -f {shlex.quote(user_cfg_file)}"
+                sudo_user_cfg_cmd =  f"echo {shlex.quote(sudo_password)} | sudo -S bash -c {shlex.quote(inner_cfg_cmd)}"
                 status, stdout, stderr = session.run_cmd(sudo_user_cfg_cmd)
                 if status != 0:
                     errmsg = format_command_result(f"Error while installing sudo config for user `{sudo_username}`.",
@@ -214,14 +214,14 @@ class ConfigureExt:
         with client.ssh.open_session(basis_session=basis_session) as session:
 
             if optfolder is not None:
-                mkdir_cmd = f"sudo mkdir -p {optfolder}"
+                mkdir_cmd = f"sudo mkdir -p {shlex.quote(optfolder)}"
                 status, stdout, stderr = session.run_cmd(mkdir_cmd)
                 if status != 0:
                     errmsg = format_command_result(f"Error while attempting to create the opt folder for `{svcname}`.",
                                                 mkdir_cmd, status, stdout, stderr, exp_status=[0], target=client.ipaddr)
                     raise CommandError(errmsg, status, stdout, stderr)
 
-                chown_cmd = f"sudo chown {svcuser}: {optfolder}"
+                chown_cmd = f"sudo chown {shlex.quote(svcuser)}: {shlex.quote(optfolder)}"
                 status, stdout, stderr = session.run_cmd(chown_cmd)
                 if status != 0:
                     errmsg = format_command_result(f"Error while attempting to change the ownership of the opt folder for `{svcname}`.",
@@ -236,24 +236,24 @@ class ConfigureExt:
                     session.file_push(runtime_config_file, dest_runtime_config_file)
 
             if pidfolder is not None:
-                mkdir_cmd = f"sudo mkdir -p {pidfolder}"
+                mkdir_cmd = f"sudo mkdir -p {shlex.quote(pidfolder)}"
                 status, stdout, stderr = session.run_cmd(mkdir_cmd)
                 if status != 0:
                     errmsg = format_command_result(f"Error while attempting to create the pid folder for `{svcname}`.",
                                                 mkdir_cmd, status, stdout, stderr, exp_status=[0], target=client.ipaddr)
                     raise CommandError(errmsg, status, stdout, stderr)
 
-                chown_cmd = f"sudo chown {svcuser}: {pidfolder}"
+                chown_cmd = f"sudo chown {shlex.quote(svcuser)}: {shlex.quote(pidfolder)}"
                 status, stdout, stderr = session.run_cmd(chown_cmd)
                 if status != 0:
                     errmsg = format_command_result(f"Error while attempting to change the ownership of pid folder for `{svcname}`.",
                                                 chown_cmd, status, stdout, stderr, exp_status=[0], target=client.ipaddr)
                     raise CommandError(errmsg, status, stdout, stderr)
 
-            stop_svc_cmd = f"sudo systemctl stop {svcname}"
+            stop_svc_cmd = f"sudo systemctl stop {shlex.quote(svcname)}"
             session.run_cmd(stop_svc_cmd)
 
-            rm_svc_cfg_cmd = f"sudo rm -f {final_dest_svc_config_file}"
+            rm_svc_cfg_cmd = f"sudo rm -f {shlex.quote(final_dest_svc_config_file)}"
             status, stdout, stderr = session.run_cmd(rm_svc_cfg_cmd)
             if status != 0:
                 errmsg = format_command_result(f"Error while attempting to remove the config file for `{svcname}` service.",
@@ -262,21 +262,21 @@ class ConfigureExt:
 
             session.file_push(source_svc_config_file, tmp_dest_svc_config_file)
 
-            enable_svc_cmd = f"sudo cp -f {tmp_dest_svc_config_file} {final_dest_svc_config_file}"
+            enable_svc_cmd = f"sudo cp -f {shlex.quote(tmp_dest_svc_config_file)} {shlex.quote(final_dest_svc_config_file)}"
             status, stdout, stderr = session.run_cmd(enable_svc_cmd)
             if status != 0:
                 errmsg = format_command_result(f"Error while attempting to install `{svcname}` service config file.",
                                             enable_svc_cmd, status, stdout, stderr, exp_status=[0], target=client.ipaddr)
                 raise CommandError(errmsg, status, stdout, stderr)
 
-            chown_cmd = f"sudo chown root {final_dest_svc_config_file}"
+            chown_cmd = f"sudo chown root {shlex.quote(final_dest_svc_config_file)}"
             status, stdout, stderr = session.run_cmd(chown_cmd)
             if status != 0:
                 errmsg = format_command_result(f"Error while attempting to change `{svcname}` service config file owner.",
                                             chown_cmd, status, stdout, stderr, exp_status=[0], target=client.ipaddr)
                 raise CommandError(errmsg, status, stdout, stderr)
 
-            chmod_cmd = f"sudo chmod 644 {final_dest_svc_config_file}"
+            chmod_cmd = f"sudo chmod 644 {shlex.quote(final_dest_svc_config_file)}"
             status, stdout, stderr = session.run_cmd(chmod_cmd)
             if status != 0:
                 errmsg = format_command_result(f"Error while attempting to change `{svcname}` service config permissions.",
@@ -290,7 +290,7 @@ class ConfigureExt:
                                             daemon_reload_cmd, status, stdout, stderr, exp_status=[0], target=client.ipaddr)
                 raise CommandError(errmsg, status, stdout, stderr)
 
-            start_svc_cmd = f"sudo systemctl enable {svcname}"
+            start_svc_cmd = f"sudo systemctl enable {shlex.quote(svcname)}"
             status, stdout, stderr = session.run_cmd(start_svc_cmd)
             if status != 0:
                 errmsg = format_command_result(f"Error while attempting to start `{svcname}` service.",
@@ -299,7 +299,7 @@ class ConfigureExt:
 
             if not self.is_service_running(svcname, basis_session=session):
 
-                start_svc_cmd = f"sudo systemctl start {svcname}"
+                start_svc_cmd = f"sudo systemctl start {shlex.quote(svcname)}"
                 status, stdout, stderr = session.run_cmd(start_svc_cmd)
                 if status != 0:
                     errmsg = format_command_result(f"Error while attempting to start `{svcname}` service.",
@@ -324,7 +324,7 @@ class ConfigureExt:
         svc_running = False
 
         with client.ssh.open_session(basis_session=basis_session) as session:
-            chk_svc_running_cmd = f"systemctl is-active --quiet {svcname} && echo $?"
+            chk_svc_running_cmd = f"systemctl is-active --quiet {shlex.quote(svcname)} && echo $?"
             status, stdout, stderr = session.run_cmd(chk_svc_running_cmd)
             if status != 0:
                 if stderr != "":
@@ -352,11 +352,13 @@ class ConfigureExt:
         with client.ssh.open_session(basis_session=basis_session) as session:
 
             for package in packages_to_install:
-                ensure_cmd = f"apt list --installed | grep -E '^{package}/'"
+                package_escaped = re.escape(package)
+                pattern = f"^{package_escaped}/"
+                ensure_cmd = f"apt list --installed | grep -E {shlex.quote(pattern)}"
                 status, stdout, stderr = session.run_cmd(ensure_cmd)
                 if status != 0:
                     # If the package is not found, install it.
-                    install_cmd = f"sudo DEBIAN_FRONTEND=noninteractive apt -yq install {package}"
+                    install_cmd = f"sudo DEBIAN_FRONTEND=noninteractive apt -yq install {shlex.quote(package)}"
                     status, stdout, stderr = session.run_cmd(install_cmd)
                     if status != 0:
                         errmsg = format_command_result(f"Error while attempting to install the `{package}` system package.",
