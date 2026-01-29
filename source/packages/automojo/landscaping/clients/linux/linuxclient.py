@@ -100,7 +100,7 @@ class LinuxClient(ClientBase):
 
             # sudo -v updates the user's cached credentials.
             # We quote the password to handle spaces and special characters.
-            cmd = f"echo '{escaped_password}' | sudo -S -v"
+            cmd = f"printf '%s\\n' '{escaped_password}' | sudo -S -v"
             status, stdout, stderr = session.run_cmd(cmd)
 
             if status != 0:
