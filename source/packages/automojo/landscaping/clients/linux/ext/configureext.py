@@ -216,7 +216,7 @@ class ConfigureExt:
                                                 mkdir_cmd, status, stdout, stderr, exp_status=[0], target=client.ipaddr)
                     raise CommandError(errmsg, status, stdout, stderr)
 
-                chown_cmd = f"sudo chown {svcuser}:{svcuser} {optfolder}"
+                chown_cmd = f"sudo chown {svcuser}: {optfolder}"
                 status, stdout, stderr = session.run_cmd(chown_cmd)
                 if status != 0:
                     errmsg = format_command_result(f"Error while attempting to change the ownership of the opt folder for `{svcname}`.",
@@ -238,7 +238,7 @@ class ConfigureExt:
                                                 mkdir_cmd, status, stdout, stderr, exp_status=[0], target=client.ipaddr)
                     raise CommandError(errmsg, status, stdout, stderr)
 
-                chown_cmd = f"sudo chown {svcuser}:{svcuser} {pidfolder}"
+                chown_cmd = f"sudo chown {svcuser}: {pidfolder}"
                 status, stdout, stderr = session.run_cmd(chown_cmd)
                 if status != 0:
                     errmsg = format_command_result(f"Error while attempting to change the ownership of pid folder for `{svcname}`.",
@@ -347,10 +347,10 @@ class ConfigureExt:
         with client.ssh.open_session(basis_session=basis_session) as session:
 
             for package in packages_to_install:
-                ensure_cmd = f"apt list --installed | grep -E '^[{package[0]}]{package[1:]}/[a-z]+'"
+                ensure_cmd = f"apt list --installed | grep -E '^{package}/'"
                 status, stdout, stderr = session.run_cmd(ensure_cmd)
                 if status != 0:
-                    # If the 'zip' package is not found, install it.
+                    # If the package is not found, install it.
                     install_cmd = f"sudo DEBIAN_FRONTEND=noninteractive apt -yq install {package}"
                     status, stdout, stderr = session.run_cmd(install_cmd)
                     if status != 0:

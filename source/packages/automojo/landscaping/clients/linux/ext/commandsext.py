@@ -87,17 +87,21 @@ class CommandsExt:
                 errmsg = "If you provide a domain you must provide a username and password."
                 raise SemanticError(errmsg)
     
-            options = ""
+            options_list = []
             if username is not None:
-                options += f"-o username=\"{username}\" "
+                options_list.append(f"username=\"{username}\"")
 
             if password is not None:
-                options += f"password=\"{password}\" "
+                options_list.append(f"password=\"{password}\"")
 
             if domain is not None:
-                options += f"domain={domain}"
+                options_list.append(f"domain={domain}")
 
-            mnt_cmd = f"mount -t cifs \"{share}\" \"{mpoint}\""
+            options = ""
+            if len(options_list) > 0:
+                options = f"-o {','.join(options_list)}"
+
+            mnt_cmd = f"mount -t cifs {options} \"{share}\" \"{mpoint}\""
             status, stdout, stderr = session.run_cmd(mnt_cmd)
             if status != 0:
                 ipaddr = self.client.ipaddr
