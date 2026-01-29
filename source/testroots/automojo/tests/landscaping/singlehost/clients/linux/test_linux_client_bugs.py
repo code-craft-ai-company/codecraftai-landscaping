@@ -39,6 +39,44 @@ def test_bug_cifs_mount_arguments():
     assert len(args) > 0, "session.run_cmd() called without arguments (mkdir)"
     assert "mkdir -p" in args[0], f"Expected mkdir command, got {args[0]}"
 
+def test_bug_cifs_mount_options_inclusion():
+    """
+    Regression test ensuring cifs_mount includes the constructed options in the mount command.
+    """
+    mock_client = MagicMock()
+    mock_client.ipaddr = "1.2.3.4"
+
+    mock_session = MagicMock()
+    mock_session.__enter__.return_value = mock_session
+    mock_session.__exit__.return_value = None
+    mock_session.run_cmd.return_value = (0, "stdout", "stderr")
+    mock_session.directory_exists.return_value = True
+
+    mock_sysctx = MagicMock()
+    mock_sysctx.open_session.return_value = mock_session
+    mock_client.get_default_system_context.return_value = mock_sysctx
+
+    cmd_ext = CommandsExt(mock_client)
+
+    # Act
+    cmd_ext.cifs_mount("//server/share", "/mnt/point", "myuser", "mypass", domain="mydomain")
+
+    # Assert
+    calls = mock_session.run_cmd.call_args_list
+    assert len(calls) >= 2
+
+    # The second call should be the mount command
+    mount_call = calls[1]
+    args, _ = mount_call
+    cmd = args[0]
+
+    # Check for options
+    assert 'username="myuser"' in cmd, f"Command missing username option: {cmd}"
+    assert 'password="mypass"' in cmd, f"Command missing password option: {cmd}"
+    assert 'domain=mydomain' in cmd, f"Command missing domain option: {cmd}"
+    assert '-o ' in cmd, f"Command missing -o flag: {cmd}"
+    assert 'mount -t cifs' in cmd, f"Command missing mount prefix: {cmd}"
+
 def test_bug_unpacking_order():
     """
     Regression test for variable unpacking order in CommandsExt methods.
