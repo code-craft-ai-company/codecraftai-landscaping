@@ -104,7 +104,7 @@ class ConfigureExt:
         return
 
 
-    def enabled_no_password_sudo(self, sudo_username: Optional[str] = None, sudo_password: Optional[str] = None,
+    def enable_no_password_sudo(self, sudo_username: Optional[str] = None, sudo_password: Optional[str] = None,
                                  basis_session: Optional[SshSession] = None):
         """
             Enables passwordless sudo for a given user on the remote machine.
