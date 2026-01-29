@@ -13,7 +13,10 @@ __credits__ = []
 
 from typing import TYPE_CHECKING
 
+from automojo.credentials.simplecredential import SimpleCredential
+from automojo.errors.exceptions import CommandError
 from automojo.interop.interfaces.isystemcontext import ISystemContext
+from automojo.interop.protocols.ssh.sshsession import SshSession
 from automojo.landscaping.friendlyidentifier import FriendlyIdentifier
 from automojo.landscaping.clients.clientbase import ClientBase
 
@@ -80,3 +83,32 @@ class LinuxClient(ClientBase):
         """
         return self.ssh
 
+    def open_sudo_ssh_session(self, credential: SimpleCredential) -> SshSession:
+        """
+            Opens an SSH session with sudo privileges authenticated.
+
+            :param credential: The credential to use for sudo authentication.
+        """
+
+        session = self.ssh.open_session()
+
+        try:
+            password = credential.password
+
+            # Escape single quotes to prevent command injection
+            escaped_password = password.replace("'", "'\\''")
+
+            # sudo -v updates the user's cached credentials.
+            # We quote the password to handle spaces and special characters.
+            cmd = f"echo '{escaped_password}' | sudo -S -v"
+            status, stdout, stderr = session.run_cmd(cmd)
+
+            if status != 0:
+                errmsg = f"Failed to authenticate sudo session."
+                raise CommandError(errmsg, status, stdout, stderr)
+
+        except Exception:
+            session.close()
+            raise
+
+        return session
