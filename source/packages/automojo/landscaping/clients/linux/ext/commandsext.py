@@ -14,6 +14,7 @@ __credits__ = []
 from typing import Optional, TYPE_CHECKING
 
 import os
+import shlex
 import weakref
 
 from automojo.errors.exceptions import CommandError, SemanticError
@@ -72,7 +73,7 @@ class CommandsExt:
                 errmsg = f"The parent directory '{mparent}' of the specified mount point must exist. mpoint={mpoint}"
                 raise SemanticError(errmsg)
 
-            mount_cmd = f"mkdir -p {mpoint}"
+            mount_cmd = f"mkdir -p {shlex.quote(mpoint)}"
             status, stdout, stderr = session.run_cmd(mount_cmd)
             if status != 0:
                 errmsg = f"Error attempting to create mount point mpoint={mpoint}."
@@ -87,21 +88,27 @@ class CommandsExt:
                 errmsg = "If you provide a domain you must provide a username and password."
                 raise SemanticError(errmsg)
     
+            def escape_cifs_val(val):
+                return val.replace('\\', '\\\\').replace('"', '\\"')
+
             options_list = []
             if username is not None:
-                options_list.append(f"username=\"{username}\"")
+                options_list.append(f'username="{escape_cifs_val(username)}"')
 
             if password is not None:
-                options_list.append(f"password=\"{password}\"")
+                options_list.append(f'password="{escape_cifs_val(password)}"')
 
             if domain is not None:
-                options_list.append(f"domain={domain}")
+                options_list.append(f'domain={escape_cifs_val(domain)}')
 
-            options = ""
-            if len(options_list) > 0:
-                options = f"-o {','.join(options_list)}"
+            parts = ["mount", "-t", "cifs"]
+            if options_list:
+                parts.append("-o")
+                parts.append(",".join(options_list))
+            parts.append(share)
+            parts.append(mpoint)
 
-            mnt_cmd = f"mount -t cifs {options} \"{share}\" \"{mpoint}\""
+            mnt_cmd = " ".join(shlex.quote(p) for p in parts)
             status, stdout, stderr = session.run_cmd(mnt_cmd)
             if status != 0:
                 ipaddr = self.client.ipaddr
@@ -132,18 +139,19 @@ class CommandsExt:
                 errmsg = f"The parent directory '{mparent}' of the specified mount point must exist. mpoint={mpoint}"
                 raise SemanticError(errmsg)
 
-            mkdir_cmd = f"mkdir -p {mpoint}"
+            mkdir_cmd = f"mkdir -p {shlex.quote(mpoint)}"
             status, stdout, stderr = session.run_cmd(mkdir_cmd)
             if status != 0:
                 errmsg = f"Error attempting to create mount point mpoint={mpoint}."
                 errmsg = format_command_result(errmsg, mkdir_cmd, status, stdout, stderr, exp_status=0)
                 raise CommandError(errmsg, status, stdout, stderr)
 
-            mnt_cmd = f"mount -t nfs {host}:\"{export}\" \"{mpoint}\""
+            source = f"{host}:{export}"
+            mnt_cmd = f"mount -t nfs {shlex.quote(source)} {shlex.quote(mpoint)}"
             status, stdout, stderr = session.run_cmd(mnt_cmd)
             if status != 0:
                 ipaddr = self.client.ipaddr
-                errmsg = f"Error attempting to mount nfsmoun export={export} on mpoint={mpoint}."
+                errmsg = f"Error attempting to mount nfs export={export} on mpoint={mpoint}."
                 errmsg = format_command_result(errmsg, mnt_cmd, status, stdout, stderr, exp_status=0, target=ipaddr)
                 raise CommandError(errmsg, status, stdout, stderr)
 
@@ -163,7 +171,7 @@ class CommandsExt:
 
         session: ISystemContext
         with sysctx.open_session(basis_session=basis_session) as session:
-            command = f'sudo logger "{msg}"'
+            command = f"sudo logger {shlex.quote(msg)}"
             status, stdout, stderr = session.run_cmd(command)
             if status != 0:
                 ipaddr = self.client.ipaddr
@@ -188,7 +196,12 @@ class CommandsExt:
         session: ISystemContext
         with sysctx.open_session(basis_session=basis_session) as session:
 
-            mnt_cmd = f"umount {flags} \"{mpoint}\""
+            parts = ["umount"]
+            if flags:
+                parts.extend(shlex.split(flags))
+            parts.append(mpoint)
+
+            mnt_cmd = " ".join(shlex.quote(p) for p in parts)
             status, stdout, stderr = session.run_cmd(mnt_cmd)
             if status != 0:
                 errmsg = f"Error attempting to unmount mpoint={mpoint}."
