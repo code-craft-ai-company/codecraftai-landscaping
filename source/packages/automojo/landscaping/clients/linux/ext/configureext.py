@@ -130,11 +130,11 @@ class ConfigureExt:
         with client.ssh.open_session(basis_session=basis_session) as session:
 
             inner_cmd = f"[[ -f {shlex.quote(user_cfg_file)} ]] && echo 0 || echo 1"
-            sudo_file_exists_cmd = f"echo {shlex.quote(sudo_password)} | sudo -S bash -c {shlex.quote(inner_cmd)}"
+            sudo_file_exists_cmd = f"printf '%s\\n' {shlex.quote(sudo_password)} | sudo -S bash -c {shlex.quote(inner_cmd)}"
             status, stdout, stderr = session.run_cmd(sudo_file_exists_cmd)
             if int(stdout.strip()) == 1:
 
-                sudo_grp_cmd = f"echo {shlex.quote(sudo_password)} | sudo -S usermod -aG sudo {shlex.quote(sudo_username)}"
+                sudo_grp_cmd = f"printf '%s\\n' {shlex.quote(sudo_password)} | sudo -S usermod -aG sudo {shlex.quote(sudo_username)}"
                 status, stdout, stderr = session.run_cmd(sudo_grp_cmd)
                 if status != 0:
                     errmsg = format_command_result(f"Error while attempting to add `{sudo_username}` to the 'sudo' user group.",
@@ -142,8 +142,8 @@ class ConfigureExt:
                     raise CommandError(errmsg, status, stdout, stderr)
 
                 sudo_line = f"{sudo_username} ALL=(ALL) NOPASSWD: ALL"
-                inner_cfg_cmd = f"echo {shlex.quote(sudo_line)} | EDITOR='tee -a' visudo -f {shlex.quote(user_cfg_file)}"
-                sudo_user_cfg_cmd =  f"echo {shlex.quote(sudo_password)} | sudo -S bash -c {shlex.quote(inner_cfg_cmd)}"
+                inner_cfg_cmd = f"printf '%s\\n' {shlex.quote(sudo_line)} | EDITOR='tee -a' visudo -f {shlex.quote(user_cfg_file)}"
+                sudo_user_cfg_cmd =  f"printf '%s\\n' {shlex.quote(sudo_password)} | sudo -S bash -c {shlex.quote(inner_cfg_cmd)}"
                 status, stdout, stderr = session.run_cmd(sudo_user_cfg_cmd)
                 if status != 0:
                     errmsg = format_command_result(f"Error while installing sudo config for user `{sudo_username}`.",
