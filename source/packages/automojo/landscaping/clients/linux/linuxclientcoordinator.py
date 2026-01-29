@@ -27,13 +27,15 @@ if TYPE_CHECKING:
 
 class LinuxClientCoordinator(ClientCoordinatorBase):
     """
-        The :class:`LinuxPoolCoordinator` creates a pool of agents that can be used to
+        The :class:`LinuxClientCoordinator` creates a pool of agents that can be used to
         coordinate the interop activities of the automation process and remote Linux
         client.
     """
 
     INTEGRATION_CLASS = INTEGRATION_CLASS_FOR_LINUX_CLIENT
     CLIENT_TYPE = LinuxClient
+
+    MUST_INCLUDE_SSH = True
 
     # pylint: disable=attribute-defined-outside-init
 
