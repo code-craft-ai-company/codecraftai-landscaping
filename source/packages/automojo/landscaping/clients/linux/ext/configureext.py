@@ -14,6 +14,7 @@ __credits__ = []
 from typing import List, Optional, TYPE_CHECKING
 
 import os
+import posixpath
 import re
 import shlex
 import weakref
@@ -231,7 +232,7 @@ class ConfigureExt:
                 if runtime_config_file is not None:
 
                     dest_base_name = os.path.basename(runtime_config_file)
-                    dest_runtime_config_file = os.path.join(optfolder, dest_base_name)
+                    dest_runtime_config_file = posixpath.join(optfolder, dest_base_name)
 
                     session.file_push(runtime_config_file, dest_runtime_config_file)
 
