@@ -4,26 +4,38 @@ import shlex
 
 from automojo.testbase import mocking
 from automojo.testbase import verification
-from automojo.testbase.mocking import MagicMock
+from automojo.testbase.mocking import Mock
 
+import automojo.landscaping.clients.linux.ext.commandsext as commandsext_module
 from automojo.landscaping.clients.linux.ext.commandsext import CommandsExt
 from automojo.landscaping.clients.linux.ext.configureext import ConfigureExt
 from automojo.landscaping.clients.linux.linuxclientcoordinator import LinuxClientCoordinator
+
+
+class LocalMagicMock(Mock):
+    def __init__(self, *args, **kwargs):
+        kwargs.setdefault('recursive', True)
+        super().__init__(*args, **kwargs)
+
+    def __enter__(self):
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        return None
+
 
 def test_bug_cifs_mount_arguments():
     """
     Regression test for cifs_mount calling session.run_cmd() without arguments.
     """
-    mock_client = MagicMock()
+    mock_client = LocalMagicMock()
     mock_client.ipaddr = "1.2.3.4"
 
-    mock_session = MagicMock()
-    mock_session.__enter__.return_value = mock_session
-    mock_session.__exit__.return_value = None
+    mock_session = LocalMagicMock()
     mock_session.run_cmd.return_value = (0, "stdout", "stderr")
     mock_session.directory_exists.return_value = True
 
-    mock_sysctx = MagicMock()
+    mock_sysctx = LocalMagicMock()
     mock_sysctx.open_session.return_value = mock_session
     mock_client.get_default_system_context.return_value = mock_sysctx
 
@@ -47,16 +59,14 @@ def test_bug_cifs_mount_options_inclusion():
     """
     Regression test ensuring cifs_mount includes the constructed options in the mount command.
     """
-    mock_client = MagicMock()
+    mock_client = LocalMagicMock()
     mock_client.ipaddr = "1.2.3.4"
 
-    mock_session = MagicMock()
-    mock_session.__enter__.return_value = mock_session
-    mock_session.__exit__.return_value = None
+    mock_session = LocalMagicMock()
     mock_session.run_cmd.return_value = (0, "stdout", "stderr")
     mock_session.directory_exists.return_value = True
 
-    mock_sysctx = MagicMock()
+    mock_sysctx = LocalMagicMock()
     mock_sysctx.open_session.return_value = mock_session
     mock_client.get_default_system_context.return_value = mock_sysctx
 
@@ -86,18 +96,16 @@ def test_bug_unpacking_order():
     Regression test for variable unpacking order in CommandsExt methods.
     It was unpacking as status, stderr, stdout. Should be status, stdout, stderr.
     """
-    mock_client = MagicMock()
+    mock_client = LocalMagicMock()
     mock_client.ipaddr = "1.2.3.4"
 
-    mock_session = MagicMock()
-    mock_session.__enter__.return_value = mock_session
-    mock_session.__exit__.return_value = None
+    mock_session = LocalMagicMock()
     # Return distinct strings to identify which is which
     # standard return is (status, stdout, stderr)
     mock_session.run_cmd.return_value = (1, "MY_STDOUT", "MY_STDERR")
     mock_session.directory_exists.return_value = True
 
-    mock_sysctx = MagicMock()
+    mock_sysctx = LocalMagicMock()
     mock_sysctx.open_session.return_value = mock_session
     mock_client.get_default_system_context.return_value = mock_sysctx
 
@@ -106,7 +114,7 @@ def test_bug_unpacking_order():
     # Patch format_command_result to verify what arguments are passed to it.
     # The code passes stdout and stderr to format_command_result when status != 0.
 
-    with mocking.patch("automojo.landscaping.clients.linux.ext.commandsext.format_command_result") as mock_fmt:
+    with mocking.create_module_patch(commandsext_module, "format_command_result") as mock_fmt:
         mock_fmt.return_value = "Formatted Error"
 
         # We need to suppress the exception or catch it
@@ -118,7 +126,7 @@ def test_bug_unpacking_order():
         # check call to format_command_result
         # The signature in code: format_command_result(errmsg, mount_cmd, status, stdout, stderr, exp_status=0)
 
-        verification.assert_equal(mock_fmt.called, True)
+        verification.assert_equal(mock_fmt.call_count > 0, True)
 
         args, _ = mock_fmt.call_args
         # args[3] is stdout, args[4] is stderr
@@ -131,7 +139,7 @@ def test_bug_sudo_method_name():
     Regression test for the method name typo in ConfigureExt.
     Should be enable_no_password_sudo.
     """
-    mock_client = MagicMock()
+    mock_client = LocalMagicMock()
     config_ext = ConfigureExt(mock_client)
 
     verification.assert_equal(hasattr(config_ext, "enable_no_password_sudo"), True)
@@ -149,12 +157,10 @@ def test_install_systemd_service_runtime_config_file_push():
     Test that install_systemd_service pushes runtime_config_file to a temp location
     and then moves it to the destination using sudo.
     """
-    mock_client = MagicMock()
+    mock_client = LocalMagicMock()
     mock_client.ipaddr = "1.2.3.4"
 
-    mock_session = MagicMock()
-    mock_session.__enter__.return_value = mock_session
-    mock_session.__exit__.return_value = None
+    mock_session = LocalMagicMock()
     mock_session.run_cmd.return_value = (0, "stdout", "stderr")
     mock_session.is_service_running.return_value = False
 
