@@ -91,8 +91,8 @@ class SshCoordinator(CoordinatorBase):
         ssh_agent.initialize(coord_ref, device_ref, host, host, device_info)
 
         with self.begin_locked_coordinator_scope() as locked:
-            self._cl_children[host] = ssh_agent
-            self._cl_ip_to_host_lookup[ssh_agent.ipaddr] = host
+            self._cl_children[host] = device
+            self._cl_ip_to_host_lookup[device.ipaddr] = host
 
         device.attach_extension("network/ssh", ssh_agent)
 
@@ -107,7 +107,8 @@ class SshCoordinator(CoordinatorBase):
 
         cmd: str = "echo 'It Works'"
 
-        for agent in self.children_as_extension:
+        for device in self.children:
+            agent = device.ssh
             host = agent.host
             ipaddr = agent.ipaddr
             try:
@@ -132,7 +133,7 @@ class SshCoordinator(CoordinatorBase):
         self._coord_lock.acquire()
         try:
             if host in self._cl_children:
-                device = self._cl_children[host].basedevice
+                device = self._cl_children[host]
         finally:
             self._coord_lock.release()
 
@@ -155,7 +156,7 @@ class SshCoordinator(CoordinatorBase):
                 if ip in self._cl_ip_to_host_lookup:
                     host = self._cl_ip_to_host_lookup[ip]
                     if host in self._cl_children:
-                        device = self._cl_children[host].basedevice
+                        device = self._cl_children[host]
         finally:
             self._coord_lock.release()
 
@@ -177,7 +178,8 @@ class SshCoordinator(CoordinatorBase):
         """
         results = []
 
-        for agent in self.children_as_extension:
+        for device in self.children:
+            agent = device.ssh
             host = agent.host
             ipaddr = agent.ipaddr
             try:
