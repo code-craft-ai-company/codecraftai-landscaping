@@ -34,7 +34,7 @@ Environment Preparation
 Writing Tests with TestBase
 ---------------------------
 
-- ``testbase`` tests are plain functions prefixed with ``test_``; test discovery mirrors ``pytest`` naming but assertions follow ``testbase`` utilities::
+- ``testbase`` tests are plain functions prefixed with ``test_``, assertions follow ``testbase`` utilities::
 
     def test_something():
         return
