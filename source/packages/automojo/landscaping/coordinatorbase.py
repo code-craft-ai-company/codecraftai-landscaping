@@ -73,30 +73,11 @@ class CoordinatorBase:
 
         self._coord_lock.acquire()
         try:
-            for c in self._cl_children.values():
-                if hasattr(c, "basedevice"):
-                    chlist.append(c.basedevice)
-                else:
-                    chlist.append(c)
+            chlist = [c for c in self._cl_children.values()]
         finally:
             self._coord_lock.release()
 
         return chlist
-
-    @property
-    def children_as_extension(self) -> List[Any]:
-        """
-            Returns a list of the extension objects (agents) created by the coordinator.
-        """
-        extlist = []
-
-        self._coord_lock.acquire()
-        try:
-            extlist = [c for c in self._cl_children.values()]
-        finally:
-            self._coord_lock.release()
-
-        return extlist
 
     @property
     def coord_config(self):
