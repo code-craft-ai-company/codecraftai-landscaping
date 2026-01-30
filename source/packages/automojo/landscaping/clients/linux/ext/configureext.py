@@ -233,8 +233,23 @@ class ConfigureExt:
 
                     dest_base_name = os.path.basename(runtime_config_file)
                     dest_runtime_config_file = posixpath.join(optfolder, dest_base_name)
+                    tmp_runtime_config_file = posixpath.join("/tmp", dest_base_name)
 
-                    session.file_push(runtime_config_file, dest_runtime_config_file)
+                    session.file_push(runtime_config_file, tmp_runtime_config_file)
+
+                    mv_cmd = f"sudo mv -f {shlex.quote(tmp_runtime_config_file)} {shlex.quote(dest_runtime_config_file)}"
+                    status, stdout, stderr = session.run_cmd(mv_cmd)
+                    if status != 0:
+                        errmsg = format_command_result(f"Error while attempting to move `{dest_base_name}` to `{optfolder}`.",
+                                                    mv_cmd, status, stdout, stderr, exp_status=[0], target=client.ipaddr)
+                        raise CommandError(errmsg, status, stdout, stderr)
+
+                    chown_rt_cmd = f"sudo chown {shlex.quote(svcuser)}: {shlex.quote(dest_runtime_config_file)}"
+                    status, stdout, stderr = session.run_cmd(chown_rt_cmd)
+                    if status != 0:
+                        errmsg = format_command_result(f"Error while attempting to change ownership of `{dest_base_name}`.",
+                                                    chown_rt_cmd, status, stdout, stderr, exp_status=[0], target=client.ipaddr)
+                        raise CommandError(errmsg, status, stdout, stderr)
 
             if pidfolder is not None:
                 mkdir_cmd = f"sudo mkdir -p {shlex.quote(pidfolder)}"
