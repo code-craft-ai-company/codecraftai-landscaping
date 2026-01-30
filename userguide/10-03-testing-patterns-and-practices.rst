@@ -21,11 +21,6 @@ of assertions.  This practice does not provide adequate isolation and causes che
 missed when an assertion fails. Instead, each test should be focused on a single
 component or function, allowing for easier debugging and understanding of test failures.
 
-The unittest framework in Python provides setup and tearDown methods that can be
-used to establish common conditions that can be shared across multiple tests within
-a given test class.  This allows for efficient code reuse while maintaining seperation
-of concerns for individual tests.
-
 
 Unit Tests
 ==========
