@@ -14,6 +14,7 @@ __credits__ = []
 from typing import Optional, TYPE_CHECKING
 
 import os
+import posixpath
 import shlex
 import weakref
 
@@ -68,7 +69,7 @@ class CommandsExt:
 
         session: ISystemContext
         with sysctx.open_session(basis_session=basis_session) as session:
-            mparent = os.path.dirname(mpoint)
+            mparent = posixpath.dirname(mpoint)
             if not session.directory_exists(mparent):
                 errmsg = f"The parent directory '{mparent}' of the specified mount point must exist. mpoint={mpoint}"
                 raise SemanticError(errmsg)
@@ -134,7 +135,7 @@ class CommandsExt:
         session: ISystemContext
         with sysctx.open_session(basis_session=basis_session) as session:
 
-            mparent = os.path.dirname(mpoint)
+            mparent = posixpath.dirname(mpoint)
             if not session.directory_exists(mparent):
                 errmsg = f"The parent directory '{mparent}' of the specified mount point must exist. mpoint={mpoint}"
                 raise SemanticError(errmsg)

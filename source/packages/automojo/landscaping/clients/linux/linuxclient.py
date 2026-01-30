@@ -13,6 +13,8 @@ __credits__ = []
 
 from typing import TYPE_CHECKING
 
+import shlex
+
 from automojo.credentials.simplecredential import SimpleCredential
 from automojo.errors.exceptions import CommandError
 from automojo.interop.interfaces.isystemcontext import ISystemContext
@@ -95,14 +97,12 @@ class LinuxClient(ClientBase):
         try:
             password = credential.password
 
-            # Escape single quotes to prevent command injection
-            # Note: We use manual escaping here instead of shlex.quote because we are
-            # explicitly wrapping the password in single quotes in the printf command below.
-            escaped_password = password.replace("'", "'\\''")
+            # Use shlex.quote to prevent command injection
+            quoted_password = shlex.quote(password)
 
             # sudo -v updates the user's cached credentials.
             # We quote the password to handle spaces and special characters.
-            cmd = f"printf '%s\\n' '{escaped_password}' | sudo -S -v"
+            cmd = f"printf '%s\\n' {quoted_password} | sudo -S -v"
             status, stdout, stderr = session.run_cmd(cmd)
 
             if status != 0:
