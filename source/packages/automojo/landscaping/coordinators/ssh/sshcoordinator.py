@@ -88,7 +88,6 @@ class SshCoordinator(CoordinatorBase):
         device_ref = weakref.ref(device)
 
         ssh_agent = SshAgent(host, device.ssh_credential)
-        ssh_agent.initialize(coord_ref, device_ref, host, host, device_info)
 
         with self.begin_locked_coordinator_scope() as locked:
             self._cl_children[host] = device

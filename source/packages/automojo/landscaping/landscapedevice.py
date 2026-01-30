@@ -486,7 +486,7 @@ class LandscapeDevice(FeatureAttachedObject):
                 ipaddr = socket.gethostbyname(self._host)
                 self._configured_ipaddr = ipaddr
             except (socket.gaierror, OSError):
-                pass
+                ipaddr = None
 
         if ipaddr is None:
             errmsg = f"_resolve_ipaddress: Unable to resolve IP address for dev {self}."
