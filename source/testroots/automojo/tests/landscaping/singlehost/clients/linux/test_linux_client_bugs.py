@@ -1,6 +1,10 @@
 
-import unittest.mock
-from unittest.mock import MagicMock
+import posixpath
+import shlex
+
+from automojo.testbase import mocking
+from automojo.testbase import verification
+from automojo.testbase.mocking import MagicMock
 
 from automojo.landscaping.clients.linux.ext.commandsext import CommandsExt
 from automojo.landscaping.clients.linux.ext.configureext import ConfigureExt
@@ -31,13 +35,13 @@ def test_bug_cifs_mount_arguments():
     # Assert
     # Verify that run_cmd was called with arguments (at least one call, checking the first one which was the bug)
     calls = mock_session.run_cmd.call_args_list
-    assert len(calls) >= 2, "Expected at least 2 calls to run_cmd"
+    verification.assert_equal(len(calls) >= 2, True)
 
     # The first call was the mkdir command which was missing arguments
     mkdir_call = calls[0]
     args, _ = mkdir_call
-    assert len(args) > 0, "session.run_cmd() called without arguments (mkdir)"
-    assert "mkdir -p" in args[0], f"Expected mkdir command, got {args[0]}"
+    verification.assert_equal(len(args) > 0, True)
+    verification.assert_equal("mkdir -p" in args[0], True)
 
 def test_bug_cifs_mount_options_inclusion():
     """
@@ -63,7 +67,7 @@ def test_bug_cifs_mount_options_inclusion():
 
     # Assert
     calls = mock_session.run_cmd.call_args_list
-    assert len(calls) >= 2
+    verification.assert_equal(len(calls) >= 2, True)
 
     # The second call should be the mount command
     mount_call = calls[1]
@@ -71,11 +75,11 @@ def test_bug_cifs_mount_options_inclusion():
     cmd = args[0]
 
     # Check for options
-    assert 'username="myuser"' in cmd, f"Command missing username option: {cmd}"
-    assert 'password="mypass"' in cmd, f"Command missing password option: {cmd}"
-    assert 'domain=mydomain' in cmd, f"Command missing domain option: {cmd}"
-    assert '-o ' in cmd, f"Command missing -o flag: {cmd}"
-    assert 'mount -t cifs' in cmd, f"Command missing mount prefix: {cmd}"
+    verification.assert_equal('username="myuser"' in cmd, True)
+    verification.assert_equal('password="mypass"' in cmd, True)
+    verification.assert_equal('domain=mydomain' in cmd, True)
+    verification.assert_equal('-o ' in cmd, True)
+    verification.assert_equal('mount -t cifs' in cmd, True)
 
 def test_bug_unpacking_order():
     """
@@ -102,7 +106,7 @@ def test_bug_unpacking_order():
     # Patch format_command_result to verify what arguments are passed to it.
     # The code passes stdout and stderr to format_command_result when status != 0.
 
-    with unittest.mock.patch("automojo.landscaping.clients.linux.ext.commandsext.format_command_result") as mock_fmt:
+    with mocking.patch("automojo.landscaping.clients.linux.ext.commandsext.format_command_result") as mock_fmt:
         mock_fmt.return_value = "Formatted Error"
 
         # We need to suppress the exception or catch it
@@ -114,13 +118,13 @@ def test_bug_unpacking_order():
         # check call to format_command_result
         # The signature in code: format_command_result(errmsg, mount_cmd, status, stdout, stderr, exp_status=0)
 
-        assert mock_fmt.called, "format_command_result was not called"
+        verification.assert_equal(mock_fmt.called, True)
 
         args, _ = mock_fmt.call_args
         # args[3] is stdout, args[4] is stderr
 
-        assert args[3] == "MY_STDOUT", f"Expected stdout='MY_STDOUT', got '{args[3]}'. Unpacking might be wrong."
-        assert args[4] == "MY_STDERR", f"Expected stderr='MY_STDERR', got '{args[4]}'. Unpacking might be wrong."
+        verification.assert_equal(args[3], "MY_STDOUT")
+        verification.assert_equal(args[4], "MY_STDERR")
 
 def test_bug_sudo_method_name():
     """
@@ -130,11 +134,89 @@ def test_bug_sudo_method_name():
     mock_client = MagicMock()
     config_ext = ConfigureExt(mock_client)
 
-    assert hasattr(config_ext, "enable_no_password_sudo"), "ConfigureExt missing 'enable_no_password_sudo'"
-    assert not hasattr(config_ext, "enabled_no_password_sudo"), "ConfigureExt still has typo 'enabled_no_password_sudo'"
+    verification.assert_equal(hasattr(config_ext, "enable_no_password_sudo"), True)
+    verification.assert_equal(hasattr(config_ext, "enabled_no_password_sudo"), False)
 
 def test_bug_coordinator_ssh_requirement():
     """
     Regression test for LinuxClientCoordinator.MUST_INCLUDE_SSH = True
     """
-    assert getattr(LinuxClientCoordinator, "MUST_INCLUDE_SSH", False) is True, "LinuxClientCoordinator.MUST_INCLUDE_SSH should be True"
+    verification.assert_equal(getattr(LinuxClientCoordinator, "MUST_INCLUDE_SSH", False), True)
+
+
+def test_install_systemd_service_runtime_config_file_push():
+    """
+    Test that install_systemd_service pushes runtime_config_file to a temp location
+    and then moves it to the destination using sudo.
+    """
+    mock_client = MagicMock()
+    mock_client.ipaddr = "1.2.3.4"
+
+    mock_session = MagicMock()
+    mock_session.__enter__.return_value = mock_session
+    mock_session.__exit__.return_value = None
+    mock_session.run_cmd.return_value = (0, "stdout", "stderr")
+    mock_session.is_service_running.return_value = False
+
+    mock_client.ssh.open_session.return_value = mock_session
+
+    config_ext = ConfigureExt(mock_client)
+
+    svcname = "myservice"
+    svcuser = "myuser"
+    source_svc_config = "local/service.service"
+    optfolder = "/opt/myservice"
+    runtime_config = "local/config.json"
+
+    # Act
+    config_ext.install_systemd_service(svcname, svcuser, source_svc_config, optfolder=optfolder, runtime_config_file=runtime_config)
+
+    # Assert
+    # Check that file_push was called with a tmp path as destination
+    # We expect session.file_push(runtime_config, tmp_path)
+    # tmp_path should start with /tmp and end with config.json
+    push_calls = mock_session.file_push.call_args_list
+
+    # There are two pushes: one for runtime_config, one for source_svc_config
+    # We need to find the one for runtime_config
+    runtime_push_found = False
+    tmp_runtime_path = None
+
+    for args, _ in push_calls:
+        src, dst = args
+        if src == runtime_config:
+            runtime_push_found = True
+            verification.assert_equal(dst.startswith("/tmp/"), True)
+            verification.assert_equal(dst.endswith("config.json"), True)
+            tmp_runtime_path = dst
+            break
+
+    verification.assert_equal(runtime_push_found, True)
+
+    # Check that sudo mv was called to move it to optfolder
+    dest_runtime_path = posixpath.join(optfolder, "config.json")
+    # We used shlex.quote in the code.
+    quoted_tmp = shlex.quote(tmp_runtime_path)
+    quoted_dest = shlex.quote(dest_runtime_path)
+
+    mv_found = False
+    for call_args in mock_session.run_cmd.call_args_list:
+        cmd = call_args[0][0]
+        if f"mv -f {quoted_tmp} {quoted_dest}" in cmd:
+                mv_found = True
+                break
+
+    verification.assert_equal(mv_found, True)
+
+    # Check that sudo chown was called for the file
+    quoted_user = shlex.quote(svcuser)
+    chown_pattern = f"chown {quoted_user}: {quoted_dest}"
+
+    chown_found = False
+    for call_args in mock_session.run_cmd.call_args_list:
+        cmd = call_args[0][0]
+        if chown_pattern in cmd:
+                chown_found = True
+                break
+
+    verification.assert_equal(chown_found, True)
