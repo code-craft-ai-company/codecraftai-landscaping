@@ -15,7 +15,7 @@ from typing import TYPE_CHECKING
 
 import shlex
 
-from automojo.credentials.simplecredential import SimpleCredential
+from automojo.credentials.basiccredential import BasicCredential
 from automojo.errors.exceptions import CommandError
 from automojo.interop.interfaces.isystemcontext import ISystemContext
 from automojo.interop.protocols.ssh.sshsession import SshSession
@@ -85,7 +85,7 @@ class LinuxClient(ClientBase):
         """
         return self.ssh
 
-    def open_sudo_ssh_session(self, credential: SimpleCredential) -> SshSession:
+    def open_sudo_ssh_session(self, credential: BasicCredential) -> SshSession:
         """
             Opens an SSH session with sudo privileges authenticated.
 
