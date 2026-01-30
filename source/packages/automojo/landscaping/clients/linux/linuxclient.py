@@ -11,6 +11,7 @@ __copyright__ = "Copyright 2025, Automation Mojo LLC"
 __credits__ = []
 
 
+import shlex
 from typing import TYPE_CHECKING
 
 import shlex
@@ -96,7 +97,7 @@ class LinuxClient(ClientBase):
 
         try:
             password = credential.password
-
+            
             # Use shlex.quote to prevent command injection
             quoted_password = shlex.quote(password)
 
