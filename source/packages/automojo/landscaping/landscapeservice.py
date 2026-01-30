@@ -473,11 +473,21 @@ class LandscapeService(FeatureAttachedObject):
             :returns: HTML fragment.
             :rtype: str
         """
+        ipaddr = "unknown"
+
+        # Note: We may not have an assigned IP address, a repr function
+        # should never raise an exception so guard against a RuntimeException
+        # being raised if we dont have an IP
+        try:
+            ipaddr = self._resolve_ipaddress()
+        except RuntimeError:
+            pass
+
         html_repr_lines = [
             "<h1>LandscapeService</h1>",
             "<h2>     type: {}</h2>".format(self._service_type),
             "<h2>    identity: {}</h2>".format(self.identity),
-            "<h2>       ip: {}</h2>".format(self.ipaddr)
+            "<h2>       ip: {}</h2>".format(ipaddr)
         ]
 
         html_repr = os.linesep.join(html_repr_lines)

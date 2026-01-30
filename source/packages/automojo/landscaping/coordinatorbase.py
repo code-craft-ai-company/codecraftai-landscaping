@@ -100,14 +100,24 @@ class CoordinatorBase:
         """
             The devices that were expected to be discovered by the coordinators discovery protocol.
         """
-        return self._expected_devices
+        devices = []
+
+        with self._coord_lock:
+            devices = list(self._cl_expected_devices)
+
+        return devices
 
     @property
     def found_devices(self):
         """
             The devices that were dynamically discovery by the coordinators discovery protocol.
         """
-        return self._found_devices
+        devices = []
+
+        with self._coord_lock:
+            devices = list(self._cl_found_devices)
+
+        return devices
 
     @property
     def matched_devices(self):
@@ -115,14 +125,24 @@ class CoordinatorBase:
             The devices that the coordinator found during protocol discovery that matched corresponding
             expected devices.
         """
-        return self._matched_devices
+        devices = []
+
+        with self._coord_lock:
+            devices = list(self._cl_matched_devices)
+
+        return devices
 
     @property
     def missing_devices(self):
         """
             The devices that the coordinator found to be missing during startup.
         """
-        return self._missing_devices
+        devices = []
+
+        with self._coord_lock:
+            devices = list(self._cl_missing_devices)
+
+        return devices
 
     def activate(self, activation_params: LandscapeActivationParams):
         """
