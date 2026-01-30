@@ -96,6 +96,8 @@ class LinuxClient(ClientBase):
             password = credential.password
 
             # Escape single quotes to prevent command injection
+            # Note: We use manual escaping here instead of shlex.quote because we are
+            # explicitly wrapping the password in single quotes in the printf command below.
             escaped_password = password.replace("'", "'\\''")
 
             # sudo -v updates the user's cached credentials.
