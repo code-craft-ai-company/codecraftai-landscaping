@@ -211,7 +211,7 @@ class LandscapeOperationalLayer(LandscapingLayerBase):
                 for exnames in self._operational_clusters:
                     err_msg_lines.append(f"    {exnames}")
 
-                err_msg = os.lines.join(err_msg_lines)
+                err_msg = os.linesep.join(err_msg_lines)
                 raise CheckoutError(err_msg)
             
             if cname not in self._operational_clusters_pool:

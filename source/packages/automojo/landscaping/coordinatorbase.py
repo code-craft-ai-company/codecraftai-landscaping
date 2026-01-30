@@ -14,7 +14,7 @@ __credits__ = []
 
 
 
-from typing import List, Optional, TYPE_CHECKING
+from typing import Any, List, Optional, TYPE_CHECKING
 
 import threading
 import weakref
@@ -73,11 +73,30 @@ class CoordinatorBase:
 
         self._coord_lock.acquire()
         try:
-            chlist = [c for c in self._cl_children.values()]
+            for c in self._cl_children.values():
+                if hasattr(c, "basedevice"):
+                    chlist.append(c.basedevice)
+                else:
+                    chlist.append(c)
         finally:
             self._coord_lock.release()
 
         return chlist
+
+    @property
+    def children_as_extension(self) -> List[Any]:
+        """
+            Returns a list of the extension objects (agents) created by the coordinator.
+        """
+        extlist = []
+
+        self._coord_lock.acquire()
+        try:
+            extlist = [c for c in self._cl_children.values()]
+        finally:
+            self._coord_lock.release()
+
+        return extlist
 
     @property
     def coord_config(self):
@@ -197,7 +216,11 @@ class CoordinatorBase:
         self._coord_lock.acquire()
         try:
             if key in self._cl_children:
-                found = self._cl_children[key].basedevice
+                item = self._cl_children[key]
+                if hasattr(item, "basedevice"):
+                    found = item.basedevice
+                else:
+                    found = item
         finally:
             self._coord_lock.release()
 
