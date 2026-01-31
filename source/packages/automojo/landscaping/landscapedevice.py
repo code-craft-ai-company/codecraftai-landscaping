@@ -486,7 +486,7 @@ class LandscapeDevice(FeatureAttachedObject):
                 ipaddr = socket.gethostbyname(self._host)
                 self._configured_ipaddr = ipaddr
             except (socket.gaierror, OSError):
-                errmsg = "Unable to resolve ipaddr for host={self._host}, contact information for devices must be valid."
+                errmsg = f"Unable to resolve ipaddr for host={self._host}, contact information for devices must be valid."
                 self.logger.error(errmsg)
                 raise ConfigurationError(errmsg)
         else:
