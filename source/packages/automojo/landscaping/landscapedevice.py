@@ -23,7 +23,7 @@ import weakref
 
 from datetime import datetime
 
-from automojo.errors.exceptions import AbstractMethodError, SemanticError
+from automojo.errors.exceptions import AbstractMethodError, ConfigurationError, SemanticError
 
 from automojo.credentials.basecredential import BaseCredential
 from automojo.credentials.sshcredential import SshCredential
@@ -123,7 +123,7 @@ class LandscapeDevice(FeatureAttachedObject):
                 self._credentials[cred_key] = credmgr.lookup_credential(cred_key)
 
         self._has_ssh_credential = False
-        self._primary_ssh_credential = None
+        self._ssh_credential = None
         for cred in self._credentials.values():
             if isinstance(cred, SshCredential):
                 self._has_ssh_credential = True
@@ -482,8 +482,13 @@ class LandscapeDevice(FeatureAttachedObject):
         if self._configured_ipaddr is not None:
             ipaddr = self._configured_ipaddr
         elif self._host is not None:
-            ipaddr = socket.gethostbyname(self._host)
-            self._configured_ipaddr = ipaddr
+            try:
+                ipaddr = socket.gethostbyname(self._host)
+                self._configured_ipaddr = ipaddr
+            except (socket.gaierror, OSError):
+                errmsg = "Unable to resolve ipaddr for host={self._host}, contact information for devices must be valid."
+                self.logger.error(errmsg)
+                raise ConfigurationError(errmsg)
         else:
             errmsg = f"_resolve_ipaddress: Unable to resolve IP address for dev {self}."
             raise RuntimeError(errmsg)

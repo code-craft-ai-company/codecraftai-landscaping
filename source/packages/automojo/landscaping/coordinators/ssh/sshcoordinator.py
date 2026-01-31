@@ -24,6 +24,7 @@ from automojo.landscaping.coordinatorbase import CoordinatorBase
 from automojo.landscaping.landscapeparameters import LandscapeActivationParams
 from automojo.landscaping.landscapedevice import LandscapeDevice
 from automojo.landscaping.coordinators.ssh.sshdevice import SshDevice
+from automojo.landscaping.protocolextensions.sshprotocolextension import SshProtocolExtension
 
 if TYPE_CHECKING:
     from automojo.landscaping.landscape import Landscape
@@ -87,14 +88,14 @@ class SshCoordinator(CoordinatorBase):
         coord_ref = weakref.ref(self)
         device_ref = weakref.ref(device)
 
-        ssh_agent = SshAgent(host, device.ssh_credential)
-        ssh_agent.initialize(coord_ref, device_ref, host, host, device_info)
-
+        ssh_ext = SshProtocolExtension(host, device.ssh_credential)
+        ssh_ext.initialize(coord_ref, device_ref, host, host, device_info)
+        
         with self.begin_locked_coordinator_scope() as locked:
-            self._cl_children[host] = ssh_agent
-            self._cl_ip_to_host_lookup[ssh_agent.ipaddr] = host
+            self._cl_children[host] = ssh_ext
+            self._cl_ip_to_host_lookup[ssh_ext.ipaddr] = host
 
-        device.attach_extension("network/ssh", ssh_agent)
+        device.attach_extension("network/ssh", ssh_ext)
 
         return fid, device
 
