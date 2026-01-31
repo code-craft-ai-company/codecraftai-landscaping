@@ -58,6 +58,13 @@ class ProtocolExtension:
         return dev
 
     @property
+    def basedevice(self) -> Union["LandscapeDevice", "LandscapeService"]:
+        """
+            Returns a reference to the base :class:`LandscapeDevice` or :class:`LandscapeService` that this extension id attached to.
+        """
+        return self.extends
+
+    @property
     def coordinator(self) -> "CoordinatorBase":
         """
             Returns a reference to the coordinator that created the :class:`LandscapeDevice`.

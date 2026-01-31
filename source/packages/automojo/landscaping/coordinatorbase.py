@@ -73,10 +73,20 @@ class CoordinatorBase:
 
         self._coord_lock.acquire()
         try:
-            chlist = [c for c in self._cl_children.values()]
+            chlist = [c.basedevice for c in self._cl_children.values()]
         finally:
             self._coord_lock.release()
 
+        return chlist
+
+    @property
+    def children_as_extension(self) -> List[object]:
+        """
+            Returns a list of the children as extensions.
+        """
+        chlist = []
+        with self._coord_lock:
+             chlist = [c for c in self._cl_children.values()]
         return chlist
 
     @property
