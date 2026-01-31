@@ -12,7 +12,10 @@ __credits__ = []
 
 from typing import Optional, Union
 
+import socket
 import weakref
+
+from automojo.errors.exceptions import ConfigurationError
 
 from automojo.landscaping.protocolextensions.protocolextension import ProtocolExtension
 
@@ -43,8 +46,13 @@ class SshProtocolExtension(SshAgent, ProtocolExtension):
             :param look_for_keys: Indicates if agent keys should be used.
             :param aspects: Command aspects controlling execution behavior.
         """
-        SshAgent.__init__(self, host, primary_credential, users=users, port=port, jump=jump, pty_params=pty_params,
-                          called_id=called_id, look_for_keys=look_for_keys, aspects=aspects)
+        try:
+            SshAgent.__init__(self, host, primary_credential, users=users, port=port, jump=jump, pty_params=pty_params,
+                              called_id=called_id, look_for_keys=look_for_keys, aspects=aspects)
+        except (socket.gaierror, OSError) as exc:
+            errmsg = f"Error initializing SshProtocolExtension for host={host}: {exc}"
+            raise ConfigurationError(errmsg) from exc
+
         ProtocolExtension.__init__(self)
         return
     
