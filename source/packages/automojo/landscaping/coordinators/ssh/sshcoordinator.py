@@ -100,7 +100,11 @@ class SshCoordinator(CoordinatorBase):
         users = None
         users_names = device_info.get("users", None)
         if users_names is not None:
-            users = landscape.credential_manager.lookup_multiple_credentials(users_names)
+            users_result = landscape.credential_manager.lookup_multiple_credentials(users_names)
+            if isinstance(users_result, list):
+                users = {u.identifier: u for u in users_result}
+            else:
+                users = users_result
 
         jump = device_info.get("jump", None)
         port = int(device_info.get("port", 22))
