@@ -486,7 +486,7 @@ class LandscapeDevice(FeatureAttachedObject):
                 ipaddr = socket.gethostbyname(self._host)
                 self._configured_ipaddr = ipaddr
             except (socket.gaierror, OSError):
-                errmsg = "Unable to resolve ipaddr for host={self._host}, contact information for devices must be valid."
+                errmsg = f"Unable to resolve ipaddr for host={self._host}, contact information for devices must be valid."
                 self.logger.error(errmsg)
                 raise ConfigurationError(errmsg)
         else:
@@ -506,7 +506,7 @@ class LandscapeDevice(FeatureAttachedObject):
         # being raised if we dont have an IP
         try:
             ipaddr = self._resolve_ipaddress()
-        except RuntimeError:
+        except (RuntimeError, ConfigurationError):
             pass
 
         html_repr_lines = [
@@ -534,7 +534,7 @@ class LandscapeDevice(FeatureAttachedObject):
         # being raised if we dont have an IP
         try:
             ipaddr = self._resolve_ipaddress()
-        except RuntimeError:
+        except (RuntimeError, ConfigurationError):
             pass
 
         devstr = "<{} type={} identity={} ip={} >".format(thisType.__name__, self._device_type, self.identity, ipaddr)
