@@ -506,7 +506,7 @@ class LandscapeDevice(FeatureAttachedObject):
         # being raised if we dont have an IP
         try:
             ipaddr = self._resolve_ipaddress()
-        except (ConfigurationError, RuntimeError):
+        except RuntimeError:
             pass
 
         html_repr_lines = [
@@ -534,7 +534,7 @@ class LandscapeDevice(FeatureAttachedObject):
         # being raised if we dont have an IP
         try:
             ipaddr = self._resolve_ipaddress()
-        except (ConfigurationError, RuntimeError):
+        except RuntimeError:
             pass
 
         devstr = "<{} type={} identity={} ip={} >".format(thisType.__name__, self._device_type, self.identity, ipaddr)
