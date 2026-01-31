@@ -64,9 +64,16 @@ class SshCoordinator(CoordinatorBase):
         """
         super().__init__(lscape, *args, **kwargs)
 
-        self._cl_upnp_hint_to_ip_lookup: Dict[str, str] = {}
         self._cl_ip_to_host_lookup: Dict[str, str] = {}
         return
+
+    @property
+    def children(self) -> List[SshDevice]:
+        """
+            Returns a list of the devices created by the coordinator and registered by the coordinator with the Landscape object.
+        """
+        chlist = super().children
+        return chlist
 
     def activate(self, activation_params: LandscapeActivationParams):
         """
@@ -81,6 +88,7 @@ class SshCoordinator(CoordinatorBase):
         """
         host = device_info["host"]
         dev_type = device_info["deviceType"]
+        
         fid = FriendlyIdentifier(host, host)
 
         device = SshDevice(landscape, self, fid, dev_type, device_info)
@@ -88,11 +96,18 @@ class SshCoordinator(CoordinatorBase):
         coord_ref = weakref.ref(self)
         device_ref = weakref.ref(device)
 
-        ssh_ext = SshProtocolExtension(host, device.ssh_credential)
+        users = None
+        users_names = device_info.get("users", None)
+        if users_names is not None:
+            users = landscape.credential_manager.lookup_multiple_credentials(users_names)
+
+        jump = device_info.get("jump", None)
+
+        ssh_ext = SshProtocolExtension(host, device.ssh_credential, users=users, jump=jump)
         ssh_ext.initialize(coord_ref, device_ref, host, host, device_info)
         
         with self.begin_locked_coordinator_scope() as locked:
-            self._cl_children[host] = ssh_ext
+            self._cl_children[host] = device
             self._cl_ip_to_host_lookup[ssh_ext.ipaddr] = host
 
         device.attach_extension("network/ssh", ssh_ext)
@@ -108,7 +123,8 @@ class SshCoordinator(CoordinatorBase):
 
         cmd: str = "echo 'It Works'"
 
-        for agent in self.children_as_extension:
+        for device in self.children:
+            agent = device.ssh
             host = agent.host
             ipaddr = agent.ipaddr
             try:
@@ -133,7 +149,7 @@ class SshCoordinator(CoordinatorBase):
         self._coord_lock.acquire()
         try:
             if host in self._cl_children:
-                device = self._cl_children[host].basedevice
+                device = self._cl_children[host]
         finally:
             self._coord_lock.release()
 
@@ -156,7 +172,7 @@ class SshCoordinator(CoordinatorBase):
                 if ip in self._cl_ip_to_host_lookup:
                     host = self._cl_ip_to_host_lookup[ip]
                     if host in self._cl_children:
-                        device = self._cl_children[host].basedevice
+                        device = self._cl_children[host]
         finally:
             self._coord_lock.release()
 
@@ -178,7 +194,8 @@ class SshCoordinator(CoordinatorBase):
         """
         results = []
 
-        for agent in self.children_as_extension:
+        for device in self.children:
+            agent = device.ssh
             host = agent.host
             ipaddr = agent.ipaddr
             try:
