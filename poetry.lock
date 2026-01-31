@@ -132,6 +132,7 @@ develop = false
 [package.dependencies]
 automojo-credentials = {git = "https://github.com/automationmojo/automojo-credentials.git", branch = "main"}
 automojo-networking = {git = "https://github.com/automationmojo/automojo-networking.git", branch = "main"}
+automojo-restclient-base = {git = "https://github.com/automationmojo/automojo-restclient-base.git", branch = "main"}
 automojo-testbase = {git = "https://github.com/automationmojo/automojo-testbase.git", branch = "main"}
 automojo-waiting = {git = "https://github.com/automationmojo/automojo-waiting.git", branch = "main"}
 automojo-xmodules = {git = "https://github.com/automationmojo/automojo-xmodules.git", branch = "main"}
@@ -145,7 +146,7 @@ rpyc = "^6.0.1"
 type = "git"
 url = "https://github.com/automationmojo/automojo-interop.git"
 reference = "main"
-resolved_reference = "6d92f6eddb5f9b8d2c72868c8ce036697ea77470"
+resolved_reference = "6e693a650cc7b755f6047e12761cb16f7368ac32"
 
 [[package]]
 name = "automojo-networking"
@@ -167,6 +168,29 @@ type = "git"
 url = "https://github.com/automationmojo/automojo-networking.git"
 reference = "main"
 resolved_reference = "4e7c32febe169d5afc8369c571c5091715e01391"
+
+[[package]]
+name = "automojo-restclient-base"
+version = "0.0.1"
+description = "Automation Mojo - Rest Client Base"
+category = "main"
+optional = false
+python-versions = ">=3.10,<4.0"
+files = []
+develop = false
+
+[package.dependencies]
+automojo-credentials = {git = "https://github.com/automationmojo/automojo-credentials.git", branch = "main"}
+automojo-errors = {git = "https://github.com/automationmojo/automojo-errors.git", branch = "main"}
+automojo-testbase = {git = "https://github.com/automationmojo/automojo-testbase.git", branch = "main"}
+pyyaml = "^6.0.3"
+requests = "^2.32.5"
+
+[package.source]
+type = "git"
+url = "https://github.com/automationmojo/automojo-restclient-base.git"
+reference = "main"
+resolved_reference = "aedf85cc41b1b80f91d33bfea025f22d18fb952f"
 
 [[package]]
 name = "automojo-runtime"

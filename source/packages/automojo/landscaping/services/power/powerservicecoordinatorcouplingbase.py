@@ -14,7 +14,7 @@ __credits__ = []
 
 from typing import Any, Dict, List, Tuple, TYPE_CHECKING
 
-from automojo.landscaping.coupling.coordinatorcoupling import CoordinatorCoupling
+from automojo.landscaping.services.servicecoordinatorcouplingbase import ServiceCoordinatorCouplingBase
 
 from automojo.landscaping.constants import StartupLevel
 
@@ -24,14 +24,14 @@ if TYPE_CHECKING:
 
 
 
-class PowerCoordinatorCouplingBase(CoordinatorCoupling):
+class PowerServiceCoordinatorCouplingBase(ServiceCoordinatorCouplingBase):
     """
-        The PowerCoordinatorCoupling handle the requirement registration for the SSH coordinator.
+        The PowerCoordinatorCouplingBase handle the requirement registration for coupling coordinator.
     """
 
-    integration_root: str = "apod"
-    integration_section: str = "power"
-    integration_leaf: str = "powerType"
+    integration_root: str = "infrastructure"
+    integration_section: str = "services"
+    integration_leaf: str = "serviceType"
 
     COORDINATOR_TYPE = None
 
@@ -39,7 +39,7 @@ class PowerCoordinatorCouplingBase(CoordinatorCoupling):
 
     def __init__(self, *args, **kwargs):
         """
-            The default contructor for an :class:`PowerCoordinatorIntegration`.
+            The default contructor for an :class:`PowerCoordinatorCouplingBase`.
         """
         super().__init__(*args, **kwargs)
         return
