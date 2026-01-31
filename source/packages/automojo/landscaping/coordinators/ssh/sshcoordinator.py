@@ -17,6 +17,7 @@ import os
 import pprint
 import weakref
 
+from automojo.errors.exceptions import ConfigurationError
 from automojo.interop.protocols.ssh.sshagent import SshAgent
 
 from automojo.landscaping.friendlyidentifier import FriendlyIdentifier
@@ -103,6 +104,12 @@ class SshCoordinator(CoordinatorBase):
 
         jump = device_info.get("jump", None)
         port = int(device_info.get("port", 22))
+
+        if device.ssh_credential is None:
+            errmsg = format_ssh_device_configuration_error(
+                f"The device '{host}' must have at least one SSH credential assigned.", device_info
+            )
+            raise ConfigurationError(errmsg)
 
         ssh_ext = SshProtocolExtension(host, device.ssh_credential, users=users, port=port, jump=jump)
         ssh_ext.initialize(coord_ref, device_ref, host, host, device_info)
