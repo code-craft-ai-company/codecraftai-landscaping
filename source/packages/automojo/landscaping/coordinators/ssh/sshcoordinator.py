@@ -102,8 +102,9 @@ class SshCoordinator(CoordinatorBase):
             users = landscape.credential_manager.lookup_multiple_credentials(users_names)
 
         jump = device_info.get("jump", None)
+        port = int(device_info.get("port", 22))
 
-        ssh_ext = SshProtocolExtension(host, device.ssh_credential, users=users, jump=jump)
+        ssh_ext = SshProtocolExtension(host, device.ssh_credential, users=users, port=port, jump=jump)
         ssh_ext.initialize(coord_ref, device_ref, host, host, device_info)
         
         with self.begin_locked_coordinator_scope() as locked:
