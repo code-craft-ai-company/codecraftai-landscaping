@@ -22,6 +22,7 @@ from automojo.interop.protocols.ssh.sshagent import SshAgent
 
 from automojo.landscaping.friendlyidentifier import FriendlyIdentifier
 from automojo.landscaping.coordinatorbase import CoordinatorBase
+from automojo.landscaping.includefilters import IncludeServiceByName
 from automojo.landscaping.landscapeparameters import LandscapeActivationParams
 from automojo.landscaping.landscapedevice import LandscapeDevice
 from automojo.landscaping.coordinators.ssh.sshdevice import SshDevice
@@ -81,6 +82,19 @@ class SshCoordinator(CoordinatorBase):
             Called by the :class:`LandscapeOperationalLayer` in order for the coordinator to be able to
             potentially enhanced devices.
         """
+        lscape = self.landscape
+
+        for device in self.children:
+            if device.is_configured_for_power:
+                power_config = device.device_config["features"]["power"]
+                server = power_config["server"]
+
+                service_list = lscape.layer_integration.get_services(include_filters=[IncludeServiceByName(server)])
+                if not service_list:
+                    errmsg = format_ssh_device_configuration_error(
+                        f"The device '{device.host}' is configured for power, but the service '{server}' could not be found.", device.device_config
+                    )
+                    raise ConfigurationError(errmsg)
         return
 
     def create_landscape_device(self, landscape: "Landscape", device_info: Dict[str, Any]) -> Tuple[FriendlyIdentifier, SshDevice]:
@@ -110,6 +124,15 @@ class SshCoordinator(CoordinatorBase):
                 f"The device '{host}' must have at least one SSH credential assigned.", device_info
             )
             raise ConfigurationError(errmsg)
+
+        features = device_info.get("features", {})
+        if "power" in features:
+            power_config = features["power"]
+            if "server" not in power_config or "outlet" not in power_config:
+                errmsg = format_ssh_device_configuration_error(
+                    f"The device '{host}' is configured for power, but the 'server' and 'outlet' must be specified.", device_info
+                )
+                raise ConfigurationError(errmsg)
 
         ssh_ext = SshProtocolExtension(host, device.ssh_credential, users=users, port=port, jump=jump)
         ssh_ext.initialize(coord_ref, device_ref, host, host, device_info)
