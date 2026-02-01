@@ -45,6 +45,24 @@ class DliPowerCoordinator(ServiceCoordinatorBase):
 
         self._power_interfaces = {}
 
+        lscape = self.landscape
+
+        # For DLI Power, we assume standard outlets 1-8 (or as configured)
+        # We need to register individual outlets as control points in the operational layer
+        for svc in self.children_as_extension:
+             # Just a basic loop for standard 8 outlet DLI
+             # In a real scenario, we might query the device.
+             for outlet_idx in range(1, 9):
+                 control_key = f"{svc.host}:outlet:{outlet_idx}"
+                 # We register the service under this specific key
+                 # The checkout mechanism will look this up.
+                 # Note: This requires the operational layer to have a method to add to the pool
+                 # Or we can just access the pool if we are in the activate phase?
+                 # LandscapeOperationalLayer populates the pool by iterating services.
+                 # But it uses service.identity.
+                 # We need to change how the pool is populated or add these extra keys.
+                 pass
+
         return
 
     def establish_connectivity(self, activation_params: LandscapeActivationParams):

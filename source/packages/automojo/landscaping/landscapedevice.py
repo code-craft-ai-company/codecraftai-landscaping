@@ -347,11 +347,9 @@ class LandscapeDevice(FeatureAttachedObject):
         self.landscape.checkin_device(self)
         return
 
-    def enhance(self):
+    def attach_to_power(self):
         """
-            Called to allow a device to enhance its metadata past what is declared in the
-            configuration file.  For device that only have a hint, this might trigger a
-            discovery process which will result in determining connectivity with the device.
+            Called to allow a device to attach to the power management resources.
         """
         if self.is_configured_for_power:
             power_config = self._features["power"]
@@ -360,7 +358,7 @@ class LandscapeDevice(FeatureAttachedObject):
             from automojo.errors.exceptions import CheckoutError
 
             try:
-                power_svc = self.landscape.checkout_control_point(**power_config)
+                power_svc = self.landscape.checkout_control_point("power", **power_config)
 
                 if power_svc.service_type == "network/power/dli-power":
                     host = power_svc.host
@@ -399,6 +397,14 @@ class LandscapeDevice(FeatureAttachedObject):
                 server_name = power_config.get("server", "unknown")
                 self.logger.warn(f"Enhance: Power service '{server_name}' could not be checked out for device '{self.friendly_id}'.")
 
+        return
+
+    def enhance(self):
+        """
+            Called to allow a device to enhance its metadata past what is declared in the
+            configuration file.  For device that only have a hint, this might trigger a
+            discovery process which will result in determining connectivity with the device.
+        """
         return
 
     def get_credentials_by_category(self, category: str):

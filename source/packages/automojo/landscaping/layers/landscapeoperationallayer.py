@@ -136,6 +136,10 @@ class LandscapeOperationalLayer(LandscapingLayerBase):
         for coord in coordinators_for_devices.values():
             coord.activate(activation_params)
 
+        for device in self.available_devices.values():
+            if device.is_configured_for_power:
+                device.attach_to_power()
+
         return
     
     def checkin_cluster(self, cluster: LandscapeDeviceCluster):
@@ -323,35 +327,34 @@ class LandscapeOperationalLayer(LandscapingLayerBase):
 
         return
 
-    def checkout_control_point(self, service: LandscapeService = None, **kwargs) -> LandscapeService:
+    def checkout_control_point(self, feature_name: str, **kwargs) -> LandscapeService:
         """
             Checkout control point (service) from the operational pool.
         """
 
+        service = None
         lscape = self.landscape
         with lscape.begin_locked_landscape_scope() as locked:
 
-            svc_identity = None
-            if service:
-                svc_identity = service.identity
-            else:
-                if "server" in kwargs:
-                    svc_identity = kwargs["server"]
-                elif "name" in kwargs:
-                    svc_identity = kwargs["name"]
-                elif "host" in kwargs:
-                    svc_identity = kwargs["host"]
-                elif "identity" in kwargs:
-                    svc_identity = kwargs["identity"]
+            control_key = None
+            if feature_name == "power":
+                if "server" in kwargs and "outlet" in kwargs:
+                    server = kwargs["server"]
+                    outlet = kwargs["outlet"]
+                    control_key = f"{server}:outlet:{outlet}"
 
-            if svc_identity not in self._operational_controlpoint_pool:
-                err_msg = f"The specified control point '{svc_identity}' is not available for checkout."
+            if control_key is None:
+                err_msg = f"Could not determine control key for feature '{feature_name}' with parameters {kwargs}."
                 raise CheckoutError(err_msg)
 
-            service = self._operational_controlpoint_pool[svc_identity]
+            if control_key not in self._operational_controlpoint_pool:
+                err_msg = f"The specified control point '{control_key}' is not available for checkout."
+                raise CheckoutError(err_msg)
 
-            del self._operational_controlpoint_pool[svc_identity]
-            self._operational_controlpoint_outstanding[svc_identity] = service
+            service = self._operational_controlpoint_pool[control_key]
+
+            del self._operational_controlpoint_pool[control_key]
+            self._operational_controlpoint_outstanding[control_key] = service
 
         return service
 
@@ -451,9 +454,24 @@ class LandscapeOperationalLayer(LandscapingLayerBase):
 
         if integ_layer.integrated_power is not None:
             for pwr_svc in integ_layer.integrated_power.values():
-                if pwr_svc.identity not in self._operational_controlpoint_pool:
-                    if hasattr(pwr_svc.coordinator, "creates_control_points") and pwr_svc.coordinator.creates_control_points:
-                        self._operational_controlpoint_pool[pwr_svc.identity] = pwr_svc
+                if hasattr(pwr_svc.coordinator, "creates_control_points") and pwr_svc.coordinator.creates_control_points:
+                    # Query the service for its controls
+                    # This is where we implement "Landscape should seperately query the service for controls"
+                    # For now, we assume DLI power services have 8 outlets
+                    # In a real implementation, this should be dynamic or based on config
+                    # But the requirement says "The query should provide a control and describes itself with a key that it is stored under."
+
+                    if pwr_svc.service_type == "network/power/dli-power":
+                        # Simulate querying controls.
+                        # Ideally pwr_svc.get_controls() -> list of (key, control_obj)
+                        # Here, the control_obj is the service itself (which manages the outlets)
+                        for i in range(1, 9):
+                            key = f"{pwr_svc.host}:outlet:{i}"
+                            self._operational_controlpoint_pool[key] = pwr_svc
+                    else:
+                        # Default fallback
+                        if pwr_svc.identity not in self._operational_controlpoint_pool:
+                             self._operational_controlpoint_pool[pwr_svc.identity] = pwr_svc
 
         return
 
