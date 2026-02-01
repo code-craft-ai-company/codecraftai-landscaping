@@ -364,6 +364,23 @@ class LandscapeDevice(FeatureAttachedObject):
 
         return
 
+    def attach_to_serial(self):
+        """
+            Called to allow a device to attach to the serial connectivity resources.
+        """
+        if self.is_configured_for_serial:
+            serial_config = self._features["serial"]
+
+            serial_ext = self.landscape.checkout_control_point("serial", **serial_config)
+
+            # The extension is already created and initialized by the coordinator
+            # We just need to update the reference to the device it is extending
+            serial_ext.update_extends_ref(weakref.ref(self))
+
+            self.attach_extension("serial", serial_ext)
+
+        return
+
     def enhance(self):
         """
             Called to allow a device to enhance its metadata past what is declared in the

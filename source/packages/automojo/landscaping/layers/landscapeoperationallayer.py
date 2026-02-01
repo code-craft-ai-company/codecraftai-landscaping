@@ -125,6 +125,10 @@ class LandscapeOperationalLayer(LandscapingLayerBase):
 
         layer_integ = lscape.layer_integration
 
+        coordinators_for_services = layer_integ.coordinators_for_services
+        for coord in coordinators_for_services.values():
+            coord.activate(activation_params)
+
         coordinators_for_power = layer_integ.coordinators_for_power
         for coord in coordinators_for_power.values():
             coord.activate(activation_params)
@@ -133,13 +137,19 @@ class LandscapeOperationalLayer(LandscapingLayerBase):
         for coord in coordinators_for_serial.values():
             coord.activate(activation_params)
 
-        coordinators_for_devices = layer_integ.coordinators_for_devices
-        for coord in coordinators_for_devices.values():
-            coord.activate(activation_params)
+        self._initialize_operational_pools()
 
         for device in self.available_devices.values():
             if device.is_configured_for_power:
                 device.attach_to_power()
+
+            if device.is_configured_for_serial:
+                if hasattr(device, "attach_to_serial"):
+                    device.attach_to_serial()
+
+        coordinators_for_devices = layer_integ.coordinators_for_devices
+        for coord in coordinators_for_devices.values():
+            coord.activate(activation_params)
 
         return
     
@@ -351,6 +361,15 @@ class LandscapeOperationalLayer(LandscapingLayerBase):
                     control_key = f"{feature_name}: {' '.join(param_parts)}"
 
             if control_key is None:
+                # Generic fallback for other features like serial
+                if len(kwargs) > 0:
+                    param_parts = []
+                    for k, v in sorted(kwargs.items()):
+                        param_parts.append(f"{k}={repr(v)}")
+
+                    control_key = f"{feature_name}: {' '.join(param_parts)}"
+
+            if control_key is None:
                 err_msg = f"Could not determine control key for feature '{feature_name}' with parameters {kwargs}."
                 raise CheckoutError(err_msg)
 
@@ -450,23 +469,7 @@ class LandscapeOperationalLayer(LandscapingLayerBase):
         if topology_info is not None:
             self._create_clusters(integ_layer, topology_info)
 
-        self._operational_device_pool = integ_layer.integrated_devices
         self._operational_clusters_pool = self._operational_clusters.copy()
-
-        self._operational_controlpoint_pool = {}
-
-        for svc in integ_layer.integrated_services.values():
-            if hasattr(svc.coordinator, "creates_control_extensions") and svc.coordinator.creates_control_extensions:
-                extensions = svc.coordinator.get_control_extensions()
-                for key, ext in extensions:
-                    self._operational_controlpoint_pool[key] = ext
-
-        if integ_layer.integrated_power is not None:
-            for pwr_svc in integ_layer.integrated_power.values():
-                if hasattr(pwr_svc.coordinator, "creates_control_extensions") and pwr_svc.coordinator.creates_control_extensions:
-                    extensions = pwr_svc.coordinator.get_control_extensions()
-                    for key, ext in extensions:
-                        self._operational_controlpoint_pool[key] = ext
 
         return
 
@@ -547,4 +550,30 @@ class LandscapeOperationalLayer(LandscapingLayerBase):
 
                     self._operational_clusters[cname] = cluster
         
+        return
+
+    def _initialize_operational_pools(self):
+        """
+            Initializes the operational pools from the integration layer.
+        """
+        lscape = self.landscape
+        integ_layer = lscape.layer_integration
+
+        self._operational_device_pool = integ_layer.integrated_devices.copy()
+
+        self._operational_controlpoint_pool = {}
+
+        for svc in integ_layer.integrated_services.values():
+            if hasattr(svc.coordinator, "creates_control_extensions") and svc.coordinator.creates_control_extensions:
+                extensions = svc.coordinator.get_control_extensions()
+                for key, ext in extensions:
+                    self._operational_controlpoint_pool[key] = ext
+
+        if integ_layer.integrated_power is not None:
+            for pwr_svc in integ_layer.integrated_power.values():
+                if hasattr(pwr_svc.coordinator, "creates_control_extensions") and pwr_svc.coordinator.creates_control_extensions:
+                    extensions = pwr_svc.coordinator.get_control_extensions()
+                    for key, ext in extensions:
+                        self._operational_controlpoint_pool[key] = ext
+
         return
