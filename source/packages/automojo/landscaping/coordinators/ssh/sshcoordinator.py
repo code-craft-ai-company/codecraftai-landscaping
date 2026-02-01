@@ -207,7 +207,7 @@ class SshCoordinator(CoordinatorBase):
             host = agent.host
             ipaddr = agent.ipaddr
             try:
-                status, stdout, stderr = agent.run_cmd(cmd)
+                status, stdout, stderr = agent.run_cmd(cmd, user=user)
                 results.append((host, ipaddr, status, stdout, stderr, None))
             except Exception as xcpt: # pylint: disable=broad-except
                 if raiseerror:
