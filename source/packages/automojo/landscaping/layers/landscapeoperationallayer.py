@@ -323,7 +323,7 @@ class LandscapeOperationalLayer(LandscapingLayerBase):
 
         return
 
-    def checkout_control_point(self, service: LandscapeService):
+    def checkout_control_point(self, service: LandscapeService = None, **kwargs) -> LandscapeService:
         """
             Checkout control point (service) from the operational pool.
         """
@@ -331,16 +331,29 @@ class LandscapeOperationalLayer(LandscapingLayerBase):
         lscape = self.landscape
         with lscape.begin_locked_landscape_scope() as locked:
 
-            svc_identity = service.identity
+            svc_identity = None
+            if service:
+                svc_identity = service.identity
+            else:
+                if "server" in kwargs:
+                    svc_identity = kwargs["server"]
+                elif "name" in kwargs:
+                    svc_identity = kwargs["name"]
+                elif "host" in kwargs:
+                    svc_identity = kwargs["host"]
+                elif "identity" in kwargs:
+                    svc_identity = kwargs["identity"]
 
             if svc_identity not in self._operational_controlpoint_pool:
                 err_msg = f"The specified control point '{svc_identity}' is not available for checkout."
                 raise CheckoutError(err_msg)
 
+            service = self._operational_controlpoint_pool[svc_identity]
+
             del self._operational_controlpoint_pool[svc_identity]
             self._operational_controlpoint_outstanding[svc_identity] = service
 
-        return
+        return service
 
     def establish_connectivity(self, activation_params: LandscapeActivationParams):
         """

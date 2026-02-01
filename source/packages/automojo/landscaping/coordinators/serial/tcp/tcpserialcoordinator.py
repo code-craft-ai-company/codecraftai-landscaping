@@ -19,6 +19,7 @@ from automojo.landscaping.coordinatorbase import CoordinatorBase
 from automojo.landscaping.friendlyidentifier import FriendlyIdentifier
 from automojo.landscaping.landscapeparameters import LandscapeActivationParams
 from automojo.landscaping.landscapedevice import LandscapeDevice
+from automojo.landscaping.coordinators.serial.tcp.tcpserialdevice import TcpSerialDevice
 
 from automojo.interop.protocols.serial.tcpserialagent import TcpSerialAgent
 
@@ -47,9 +48,11 @@ class TcpSerialCoordinator(CoordinatorBase):
             Called by the :class:`LandscapeOperationalLayer` in order for the coordinator to be able to
             potentially enhanced devices.
         """
+        for device in self.children:
+            device.enhance()
         return
 
-    def create_landscape_device(self, landscape: "Landscape", device_info: Dict[str, Any]) -> Tuple[FriendlyIdentifier, TcpSerialAgent]:
+    def create_landscape_device(self, landscape: "Landscape", device_info: Dict[str, Any]) -> Tuple[FriendlyIdentifier, TcpSerialDevice]:
         """
             Called to declare a declared landscape device for a given coordinator.
         """
@@ -64,18 +67,18 @@ class TcpSerialCoordinator(CoordinatorBase):
 
         fid = FriendlyIdentifier(host, host)
 
-        device = TcpSerialAgent(landscape, self, fid, dev_type, device_info)
+        device = TcpSerialDevice(landscape, self, fid, dev_type, device_info)
         
         coord_ref = weakref.ref(self)
         device_ref = weakref.ref(device)
 
-        ssh_agent = TcpSerialAgent(host, port=port)
+        serial_agent = TcpSerialAgent(host, port=port)
 
         with self.begin_locked_coordinator_scope() as locked:
             self._cl_children[host] = device
             self._cl_ip_to_host_lookup[device.ipaddr] = host
 
-        device.attach_extension("network/ssh", ssh_agent)
+        device.attach_extension("network/ssh", serial_agent)
 
         return fid, device
 

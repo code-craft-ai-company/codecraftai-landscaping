@@ -67,10 +67,3 @@ class TcpSerialDevice(LandscapeDevice):
         ext = self._extensions["network/ssh"]
         return ext
 
-    def enhance(self):
-        """
-            Called to allow a device to enhance its metadata past what is declared in the
-            configuration file.  For device that only have a hint, this might trigger a
-            discovery process which will result in determining connectivity with the device.
-        """
-        return

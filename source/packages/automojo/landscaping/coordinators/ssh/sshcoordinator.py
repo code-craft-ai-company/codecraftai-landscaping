@@ -85,6 +85,8 @@ class SshCoordinator(CoordinatorBase):
         lscape = self.landscape
 
         for device in self.children:
+            device.enhance()
+
             if device.is_configured_for_power:
                 power_config = device.device_config["features"]["power"]
                 server = power_config["server"]
