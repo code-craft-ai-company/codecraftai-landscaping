@@ -17,7 +17,7 @@ import weakref
 
 from automojo.errors.exceptions import ConfigurationError
 
-from automojo.landscaping.protocolextensions.protocolextension import ProtocolExtension
+from automojo.landscaping.protocolextensions import ProtocolExtension
 
 from automojo.credentials.sshcredential import SshCredential
 
