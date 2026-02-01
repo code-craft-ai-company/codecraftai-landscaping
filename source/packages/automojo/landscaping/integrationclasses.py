@@ -10,7 +10,7 @@ __copyright__ = "Copyright 2025, Automation Mojo LLC"
 __credits__ = []
 
 
-INTEGRATION_CLASS_NETWORK_DLIPOWER = "network/dlipower"
+INTEGRATION_CLASS_NETWORK_DLIPOWER = "network/power/dli-power"
 INTEGRATION_CLASS_NETWORK_MDNS = "network/mdns"
 INTEGRATION_CLASS_NETWORK_SSH = "network/ssh"
 INTEGRATION_CLASS_NETWORK_TCPSERIAL = "network/tcpserial"

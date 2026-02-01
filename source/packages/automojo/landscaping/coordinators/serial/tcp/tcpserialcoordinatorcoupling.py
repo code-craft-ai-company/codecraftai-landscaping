@@ -16,7 +16,7 @@ from typing import Any, Dict, List, Tuple, TYPE_CHECKING
 
 from automojo.landscaping.coupling.coordinatorcoupling import CoordinatorCoupling
 from automojo.landscaping.integrationclasses import INTEGRATION_CLASS_NETWORK_TCPSERIAL
-from automojo.landscaping.coordinators.ssh.sshcoordinator import SshCoordinator
+from automojo.landscaping.coordinators.serial.tcp.tcpserialcoordinator import TcpSerialCoordinator
 
 from automojo.landscaping.constants import StartupLevel
 
@@ -96,7 +96,7 @@ class TcpSerialCoordinatorCoupling(CoordinatorCoupling):
         """
             This API is called so that the landscape can create a coordinator for a given integration role.
         """
-        cls.coordinator = SshCoordinator(landscape)
+        cls.coordinator = TcpSerialCoordinator(landscape)
         return cls.coordinator
 
     @classmethod

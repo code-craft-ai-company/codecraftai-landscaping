@@ -453,10 +453,28 @@ class LandscapeIntegrationLayer(LandscapingLayerBase):
 
         if len(power_configs) > 0:
             lscape = self.landscape
+            requested_coupling_table = self._requested_integration_couplings
+
+            if self._integrated_power is None:
+                self._integrated_power = {}
 
             for pwr_config_info in power_configs:
                 power_type = pwr_config_info["powerType"]
                 power_integ_key = f"apod:power:powerType:{power_type}"
+
+                if power_integ_key in requested_coupling_table:
+                    coord_coupling: CoordinatorCoupling = requested_coupling_table[power_integ_key]
+
+                    coordinator = None
+                    if power_integ_key in self._coordinators_for_power:
+                        coordinator = self._coordinators_for_power[power_integ_key]
+                    else:
+                        coordinator = coord_coupling.create_coordinator(lscape)
+                        self._coordinators_for_power[power_integ_key] = coordinator
+
+                    friendly_id, lsdevice = coordinator.create_landscape_service(lscape, pwr_config_info)
+
+                    self._integrated_power[friendly_id.identity] = lsdevice
 
         return
 
@@ -471,10 +489,28 @@ class LandscapeIntegrationLayer(LandscapingLayerBase):
 
         if len(serial_configs) > 0:
             lscape = self.landscape
+            requested_coupling_table = self._requested_integration_couplings
+
+            if self._integrated_serial is None:
+                self._integrated_serial = {}
 
             for serial_config_info in serial_configs:
                 serial_type = serial_config_info["serialType"]
                 serial_integ_key = f"apod:serial:serialType:{serial_type}"
+
+                if serial_integ_key in requested_coupling_table:
+                    coord_coupling: CoordinatorCoupling = requested_coupling_table[serial_integ_key]
+
+                    coordinator = None
+                    if serial_integ_key in self._coordinators_for_serial:
+                        coordinator = self._coordinators_for_serial[serial_integ_key]
+                    else:
+                        coordinator = coord_coupling.create_coordinator(lscape)
+                        self._coordinators_for_serial[serial_integ_key] = coordinator
+
+                    friendly_id, lsdevice = coordinator.create_landscape_device(lscape, serial_config_info)
+
+                    self._integrated_serial[friendly_id.identity] = lsdevice
 
         return
 
