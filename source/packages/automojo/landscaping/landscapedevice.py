@@ -29,7 +29,7 @@ from automojo.credentials.basecredential import BaseCredential
 from automojo.credentials.sshcredential import SshCredential
 from automojo.interop.interfaces.isystemcontext import ISystemContext
 from automojo.landscaping.friendlyidentifier import FriendlyIdentifier
-from automojo.landscaping.protocolextensions.protocolextension import ProtocolExtension
+from automojo.landscaping.extensions.protocol.protocolextension import ProtocolExtension
 from automojo.xmodules.xthreading.lockscopes import LockedScope, UnLockedScope
 
 from automojo.testbase.features import FeatureAttachedObject
@@ -353,6 +353,58 @@ class LandscapeDevice(FeatureAttachedObject):
             configuration file.  For device that only have a hint, this might trigger a
             discovery process which will result in determining connectivity with the device.
         """
+        if self.is_configured_for_power:
+            power_config = self._features["power"]
+
+            server_name = power_config.get("server")
+            if server_name:
+                from automojo.landscaping.includefilters import IncludeServiceByName
+
+                services = self.landscape.get_services(include_filters=[IncludeServiceByName(server_name)])
+
+                if len(services) > 0:
+                    power_svc = services[0]
+
+                    if power_svc.service_type == "network/power/dli-power":
+                        from automojo.landscaping.extensions.control.dlipowercontrolextension import DliPowerControlExtension
+
+                        host = power_svc.host
+
+                        credential = None
+                        for cred in power_svc.credentials.values():
+                            if "basic" in cred.categories:
+                                credential = cred
+                                break
+
+                        if credential:
+                            port = 80
+                            if "port" in power_svc.service_config:
+                                port = power_svc.service_config["port"]
+
+                            ext = DliPowerControlExtension(host, port, credential)
+
+                            coord_ref = None
+                            if self.coordinator is not None:
+                                coord_ref = weakref.ref(self.coordinator)
+
+                            ext.initialize(
+                                coord_ref,
+                                weakref.ref(self),
+                                "power",
+                                host,
+                                power_config
+                            )
+
+                            self.attach_extension("power", ext)
+                        else:
+                            self.logger.error(f"Power service '{server_name}' found but no 'basic' credential available.")
+                    else:
+                        self.logger.warn(f"Enhance: Power service '{server_name}' has unknown type '{power_svc.service_type}'.")
+                else:
+                    self.logger.warn(f"Enhance: Power service '{server_name}' not found for device '{self.friendly_id}'.")
+            else:
+                 self.logger.warn(f"Enhance: Power feature configured but 'server' missing in config for device '{self.friendly_id}'.")
+
         return
 
     def get_credentials_by_category(self, category: str):

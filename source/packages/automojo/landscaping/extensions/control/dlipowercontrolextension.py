@@ -18,27 +18,28 @@ from automojo.credentials.basiccredential import BasicCredential
 
 from automojo.landscaping.extensions.control.controlextension import ControlExtension
 
-from automojo.interop.aspects import AspectsCmd, DEFAULT_CMD_ASPECTS
-
+from automojo.interop.protocols.power.dlipower.dlipowerclient import AspectsRest, DEFAULT_REST_ASPECTS, DliPowerRestClient
 from automojo.interop.protocols.power.dlipower.dlipoweroutletcontrol import DliPowerOutletControl
+from automojo.landscaping.extensions.protocol.protocolextension import ProtocolExtension
 
-class DliPowerControlExtension(DliPowerOutletControl, ControlExtension):
+class DliPowerControlExtension(DliPowerOutletControl, DliPowerRestClient, ProtocolExtension, ControlExtension):
     """
         Serial agent integrated as a protocol extension for a landscape device.
     """
 
-    def __init__(self, host: str, port: int, credential: BasicCredential, called_id: Optional[str]=None, aspects: AspectsCmd = DEFAULT_CMD_ASPECTS):
+    def __init__(self, host: str, port: int, credential: BasicCredential, called_id: Optional[str]=None, aspects: AspectsRest = DEFAULT_REST_ASPECTS):
         """
-            Constructs an :class:`TcpSerialProtocolExtension` instance.
+            Constructs an :class:`DliPowerControlExtension` instance.
 
-            :param host: Host name or IP address for the TCP serial port connection.
-            :param port: TCP serial port to connect to.
+            :param host: Host name or IP address for the power connection.
+            :param port: TCP port to connect to.
             :param credential: The authentication credential for working with the power device.
             :param called_id: Identifier used when logging sessions.
             :param aspects: Command aspects controlling execution behavior.
         """
-        DliPowerAgent.__init__(self, host, port, called_id=called_id, aspects=aspects)
+        DliPowerRestClient.__init__(self, host, credential, port=port, aspects=aspects)
         ProtocolExtension.__init__(self)
+        ControlExtension.__init__(self)
         return
     
     def initialize(self, coord_ref: weakref.ReferenceType, basedevice_ref: weakref.ReferenceType, extid: str, location: str, configinfo: dict):
