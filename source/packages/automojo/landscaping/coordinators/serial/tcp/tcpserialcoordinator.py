@@ -55,7 +55,13 @@ class TcpSerialCoordinator(CoordinatorBase):
         """
         host = device_info["host"]
         port = device_info["port"]
-        dev_type = device_info["deviceType"]
+
+        dev_type = None
+        if "deviceType" in device_info:
+            dev_type = device_info["deviceType"]
+        elif "serialType" in device_info:
+            dev_type = device_info["serialType"]
+
         fid = FriendlyIdentifier(host, host)
 
         device = TcpSerialAgent(landscape, self, fid, dev_type, device_info)
