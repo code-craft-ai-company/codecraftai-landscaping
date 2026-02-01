@@ -354,20 +354,13 @@ class LandscapeDevice(FeatureAttachedObject):
         if self.is_configured_for_power:
             power_config = self._features["power"]
 
-            from automojo.errors.exceptions import CheckoutError
+            power_ext = self.landscape.checkout_control_point("power", **power_config)
 
-            try:
-                power_ext = self.landscape.checkout_control_point("power", **power_config)
+            # The extension is already created and initialized by the coordinator
+            # We just need to update the reference to the device it is extending
+            power_ext.update_extends_ref(weakref.ref(self))
 
-                # The extension is already created and initialized by the coordinator
-                # We just need to update the reference to the device it is extending
-                power_ext.update_extends_ref(weakref.ref(self))
-
-                self.attach_extension("power", power_ext)
-
-            except CheckoutError:
-                server_name = power_config.get("server", "unknown")
-                self.logger.warn(f"Attach Power: Power service '{server_name}' could not be checked out for device '{self.friendly_id}'.")
+            self.attach_extension("power", power_ext)
 
         return
 
