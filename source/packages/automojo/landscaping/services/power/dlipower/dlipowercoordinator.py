@@ -13,11 +13,11 @@ __credits__ = []
 
 from typing import Union
 
-from automojo.landscaping.coordinatorbase import CoordinatorBase
+from automojo.landscaping.services.servicecoordinatorbase import ServiceCoordinatorBase
 from automojo.landscaping.landscapeparameters import LandscapeActivationParams
 from automojo.landscaping.landscapedevice import LandscapeDevice
 
-class DliPowerCoordinator(CoordinatorBase):
+class DliPowerCoordinator(ServiceCoordinatorBase):
     """
         The :class:`DliPowerCoordinator` creates a pool of agents that can be used to
         coordinate the interop activities of the automation process and remote SSH

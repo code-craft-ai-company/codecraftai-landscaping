@@ -449,7 +449,7 @@ class Landscape:
 
         try:
             for uidx in range(2, len(stack)):
-                caller_stack = inspect.stack()[uidx]
+                caller_stack = stack[uidx]
                 caller_func_name = caller_stack.frame.f_code.co_name
                 if caller_func_name != "__init__":
                     break

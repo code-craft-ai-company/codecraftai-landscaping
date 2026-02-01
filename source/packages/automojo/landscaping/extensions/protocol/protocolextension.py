@@ -1,5 +1,5 @@
 """
-    .. module:: landscapeprotocolextension
+    .. module:: protocolextension
     :platform: Darwin, Linux, Unix, Windows
     :synopsis: Module containing the :class:`ProtocolExtension` class which is used
     to attached protocol agents and interop capability to a :class:`LandscapeDevice`

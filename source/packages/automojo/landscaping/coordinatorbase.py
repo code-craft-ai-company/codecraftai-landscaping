@@ -58,6 +58,7 @@ class CoordinatorBase:
         self._cl_children = {}
 
         self._cl_expected_devices = []
+
         self._cl_found_devices = []
         self._cl_matched_devices = []
         self._cl_missing_devices = []
@@ -197,11 +198,7 @@ class CoordinatorBase:
         self._coord_lock.acquire()
         try:
             if key in self._cl_children:
-                item = self._cl_children[key]
-                if hasattr(item, "basedevice"):
-                    found = item.basedevice
-                else:
-                    found = item
+                found = self._cl_children[key]
         finally:
             self._coord_lock.release()
 

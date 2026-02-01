@@ -17,6 +17,7 @@ import os
 import pprint
 import weakref
 
+from automojo.errors.exceptions import ConfigurationError
 from automojo.interop.protocols.ssh.sshagent import SshAgent
 
 from automojo.landscaping.friendlyidentifier import FriendlyIdentifier
@@ -24,6 +25,7 @@ from automojo.landscaping.coordinatorbase import CoordinatorBase
 from automojo.landscaping.landscapeparameters import LandscapeActivationParams
 from automojo.landscaping.landscapedevice import LandscapeDevice
 from automojo.landscaping.coordinators.ssh.sshdevice import SshDevice
+from automojo.landscaping.protocolextensions.sshprotocolextension import SshProtocolExtension
 
 if TYPE_CHECKING:
     from automojo.landscaping.landscape import Landscape
@@ -63,9 +65,16 @@ class SshCoordinator(CoordinatorBase):
         """
         super().__init__(lscape, *args, **kwargs)
 
-        self._cl_upnp_hint_to_ip_lookup: Dict[str, str] = {}
         self._cl_ip_to_host_lookup: Dict[str, str] = {}
         return
+
+    @property
+    def children(self) -> List[SshDevice]:
+        """
+            Returns a list of the devices created by the coordinator and registered by the coordinator with the Landscape object.
+        """
+        chlist = super().children
+        return chlist
 
     def activate(self, activation_params: LandscapeActivationParams):
         """
@@ -80,6 +89,7 @@ class SshCoordinator(CoordinatorBase):
         """
         host = device_info["host"]
         dev_type = device_info["deviceType"]
+        
         fid = FriendlyIdentifier(host, host)
 
         device = SshDevice(landscape, self, fid, dev_type, device_info)
@@ -87,13 +97,28 @@ class SshCoordinator(CoordinatorBase):
         coord_ref = weakref.ref(self)
         device_ref = weakref.ref(device)
 
-        ssh_agent = SshAgent(host, device.ssh_credential)
+        users = None
+        users_names = device_info.get("users", None)
+        if users_names is not None:
+            users = landscape.credential_manager.lookup_multiple_credentials(users_names)
 
+        jump = device_info.get("jump", None)
+        port = int(device_info.get("port", 22))
+
+        if device.ssh_credential is None:
+            errmsg = format_ssh_device_configuration_error(
+                f"The device '{host}' must have at least one SSH credential assigned.", device_info
+            )
+            raise ConfigurationError(errmsg)
+
+        ssh_ext = SshProtocolExtension(host, device.ssh_credential, users=users, port=port, jump=jump)
+        ssh_ext.initialize(coord_ref, device_ref, host, host, device_info)
+        
         with self.begin_locked_coordinator_scope() as locked:
             self._cl_children[host] = device
-            self._cl_ip_to_host_lookup[device.ipaddr] = host
+            self._cl_ip_to_host_lookup[ssh_ext.ipaddr] = host
 
-        device.attach_extension("network/ssh", ssh_agent)
+        device.attach_extension("network/ssh", ssh_ext)
 
         return fid, device
 
@@ -182,7 +207,7 @@ class SshCoordinator(CoordinatorBase):
             host = agent.host
             ipaddr = agent.ipaddr
             try:
-                status, stdout, stderr = agent.run_cmd(cmd)
+                status, stdout, stderr = agent.run_cmd(cmd, user=user)
                 results.append((host, ipaddr, status, stdout, stderr, None))
             except Exception as xcpt: # pylint: disable=broad-except
                 if raiseerror:

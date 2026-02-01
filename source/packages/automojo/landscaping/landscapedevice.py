@@ -23,7 +23,7 @@ import weakref
 
 from datetime import datetime
 
-from automojo.errors.exceptions import AbstractMethodError, SemanticError
+from automojo.errors.exceptions import AbstractMethodError, ConfigurationError, SemanticError
 
 from automojo.credentials.basecredential import BaseCredential
 from automojo.credentials.sshcredential import SshCredential
@@ -466,8 +466,10 @@ class LandscapeDevice(FeatureAttachedObject):
             Verify the status of the specified device.
         """
 
-        for protocol, verify_status_callback in self._table_for_status_callbacks.items():
-            verify_status_callback()
+        with self.begin_locked_scope() as lk_locked:
+
+            for protocol, verify_status_callback in self._table_for_status_callbacks.items():
+                verify_status_callback()
 
         return
 
@@ -486,9 +488,10 @@ class LandscapeDevice(FeatureAttachedObject):
                 ipaddr = socket.gethostbyname(self._host)
                 self._configured_ipaddr = ipaddr
             except (socket.gaierror, OSError):
-                ipaddr = None
-
-        if ipaddr is None:
+                errmsg = f"Unable to resolve ipaddr for host={self._host}, contact information for devices must be valid."
+                self.logger.error(errmsg)
+                raise ConfigurationError(errmsg)
+        else:
             errmsg = f"_resolve_ipaddress: Unable to resolve IP address for dev {self}."
             raise RuntimeError(errmsg)
 

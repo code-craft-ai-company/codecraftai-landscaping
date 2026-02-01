@@ -444,8 +444,10 @@ class LandscapeService(FeatureAttachedObject):
             Verify the status of the specified device.
         """
 
-        for protocol, verify_status_callback in self._table_for_status_callbacks.items():
-            verify_status_callback()
+        with self.begin_locked_scope() as lk_locked:
+
+            for protocol, verify_status_callback in self._table_for_status_callbacks.items():
+                verify_status_callback()
 
         return
 

@@ -14,14 +14,16 @@ __credits__ = []
 
 from typing import Any, Dict, Optional, TYPE_CHECKING
 
+import weakref
+
 from automojo.credentials.basecredential import BaseCredential
 from automojo.landscaping.clients.clientcoordinatorbase import ClientCoordinatorBase
 
 from automojo.landscaping.clients.constants import INTEGRATION_CLASS_FOR_OSX_CLIENT
 from automojo.landscaping.clients.osx.osxclient import OsxClient
 
-from automojo.interop.protocols.ssh.sshagent import SshAgent
 from automojo.landscaping.integrationclasses import INTEGRATION_CLASS_NETWORK_SSH
+from automojo.landscaping.protocolextensions.sshprotocolextension import SshProtocolExtension
 
 if TYPE_CHECKING:
     from automojo.landscaping.landscape import Landscape
@@ -72,7 +74,13 @@ class OsxClientCoordinator(ClientCoordinatorBase):
             :param pty_params: Optional pseudo terminal parameters.
         """
 
-        ssh_agent = SshAgent(host, cred, users=users, port=port, pty_params=pty_params)
+        coord_ref = weakref.ref(self)
+        device_ref = weakref.ref(device)
 
-        device.attach_extension(INTEGRATION_CLASS_NETWORK_SSH, ssh_agent)
+        jump = device_info.get("jump", None)
+
+        ssh_ext = SshProtocolExtension(host, cred, users=users, port=port, jump=jump, pty_params=pty_params)
+        ssh_ext.initialize(coord_ref, device_ref, host, host, device_info)
+
+        device.attach_extension(INTEGRATION_CLASS_NETWORK_SSH, ssh_ext)
         return

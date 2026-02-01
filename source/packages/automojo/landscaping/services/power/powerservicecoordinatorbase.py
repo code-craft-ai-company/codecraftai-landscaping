@@ -15,30 +15,26 @@ from typing import Any, Dict, Union, TYPE_CHECKING
 
 from automojo.errors.exceptions import ConfigurationError
 
-from automojo.landscaping.coordinatorbase import CoordinatorBase
+from automojo.landscaping.services.servicecoordinatorbase import ServiceCoordinatorBase
 from automojo.landscaping.landscapeparameters import LandscapeActivationParams
 from automojo.landscaping.landscapedevice import LandscapeDevice
 
 if TYPE_CHECKING:
     from automojo.landscaping.landscape import Landscape
 
-class PowerCoordinatorBase(CoordinatorBase):
+class PowerServiceCoordinatorBase(ServiceCoordinatorBase):
     """
-        The :class:`DliPowerCoordinator` creates a pool of agents that can be used to
-        coordinate the interop activities of the automation process and remote SSH
-        nodes.
+        The :class:`PowerCoordinatorBase` creates a coordinator that can create power service nodes.
     """
     
     POWER_AGENT_TYPE = None
 
     def __init__(self, lscape: "Landscape", power_interfaces: Dict[str, Any], *args, **kwargs):
         """
-            Initializes the coordinator with a mapping of available power
-            interfaces.
+            Initializes the coordinator with a mapping of available power interfaces.
 
             :param lscape: The owning :class:`Landscape` instance.
-            :param power_interfaces: Dictionary of power interface objects keyed
-            by name.
+            :param power_interfaces: Dictionary of power interface objects keyed by name.
         """
         super().__init__(lscape, *args, **kwargs)
 
