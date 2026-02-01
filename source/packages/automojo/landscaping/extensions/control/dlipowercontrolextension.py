@@ -20,9 +20,9 @@ from automojo.landscaping.extensions.control.controlextension import ControlExte
 
 from automojo.interop.aspects import AspectsCmd, DEFAULT_CMD_ASPECTS
 
-from automojo.interop.protocols.power.dlipower.dlipoweragent import DliPowerAgent
+from automojo.interop.protocols.power.dlipower.dlipoweroutletcontrol import DliPowerOutletControl
 
-class DliPowerProtocolExtension(DliPowerAgent, ControlExtension):
+class DliPowerControlExtension(DliPowerOutletControl, ControlExtension):
     """
         Serial agent integrated as a protocol extension for a landscape device.
     """
