@@ -25,6 +25,7 @@ from automojo.landscaping.layers.landscapinglayerbase import LandscapingLayerBas
 from automojo.landscaping.layers.landscapeintegrationlayer import LandscapeIntegrationLayer
 from automojo.landscaping.landscapedevice import LandscapeDevice
 from automojo.landscaping.landscapedevicecluster import LandscapeDeviceCluster
+from automojo.landscaping.landscapeservice import LandscapeService
 from automojo.landscaping.clusters.nodecoordinatorbase import NodeCoordinatorBase
 
 from automojo.landscaping.landscapeparameters import (
@@ -57,6 +58,9 @@ class LandscapeOperationalLayer(LandscapingLayerBase):
         self._operational_device_pool: Dict[str, LandscapeDevice] = {}
         self._operational_device_outstanding: Dict[str, LandscapeDevice] = {}
 
+        self._operational_controlpoint_pool: Dict[str, LandscapeService] = {}
+        self._operational_controlpoint_outstanding: Dict[str, LandscapeService] = {}
+
         return
 
     @property
@@ -84,6 +88,19 @@ class LandscapeOperationalLayer(LandscapingLayerBase):
             device_table = self._operational_device_pool.copy()
         
         return device_table
+
+    @property
+    def available_control_points(self) -> Dict[str, LandscapeService]:
+        """
+            Provides a thread safe copy of control points available for checkout.
+        """
+        service_table = {}
+
+        lscape = self.landscape
+        with lscape.begin_locked_landscape_scope() as locked:
+            service_table = self._operational_controlpoint_pool.copy()
+
+        return service_table
 
     @property
     def operational_clusters(self) -> Dict[str, LandscapeDeviceCluster]:
@@ -190,7 +207,41 @@ class LandscapeOperationalLayer(LandscapingLayerBase):
                 raise CheckinError(err_msg)
             
             del self._operational_device_outstanding[dev_identity]
-            self._operational_device_outstanding[dev_identity] = device
+            self._operational_device_pool[dev_identity] = device
+
+        return
+
+    def checkin_control_point(self, service: LandscapeService):
+        """
+            Checkin control point (service) to the operational pool.
+        """
+
+        lscape = self.landscape
+        with lscape.begin_locked_landscape_scope() as locked:
+            svc_identity = service.identity
+
+            if svc_identity not in self._operational_controlpoint_outstanding:
+                err_msg_lines = [
+                    f"Checkin of control point '{svc_identity}' that was not previously checked out."
+                    "AVAILABLE POOL:"
+                ]
+
+                service_identity_list = [did for did in self._operational_controlpoint_pool.keys()]
+                service_identity_list.sort()
+                for did in service_identity_list:
+                    err_msg_lines.append(f"    {did}")
+
+                err_msg_lines.append("OUTSTANDING POOL:")
+                service_identity_list = [did for did in self._operational_controlpoint_outstanding.keys()]
+                service_identity_list.sort()
+                for did in service_identity_list:
+                    err_msg_lines.append(f"    {did}")
+
+                err_msg = os.linesep.join(err_msg_lines)
+                raise CheckinError(err_msg)
+
+            del self._operational_controlpoint_outstanding[svc_identity]
+            self._operational_controlpoint_pool[svc_identity] = service
 
         return
 
@@ -269,6 +320,25 @@ class LandscapeOperationalLayer(LandscapingLayerBase):
 
             del self._operational_device_pool[device_identity]
             self._operational_device_outstanding[device_identity] = device
+
+        return
+
+    def checkout_control_point(self, service: LandscapeService):
+        """
+            Checkout control point (service) from the operational pool.
+        """
+
+        lscape = self.landscape
+        with lscape.begin_locked_landscape_scope() as locked:
+
+            svc_identity = service.identity
+
+            if svc_identity not in self._operational_controlpoint_pool:
+                err_msg = f"The specified control point '{svc_identity}' is not available for checkout."
+                raise CheckoutError(err_msg)
+
+            del self._operational_controlpoint_pool[svc_identity]
+            self._operational_controlpoint_outstanding[svc_identity] = service
 
         return
 
@@ -359,6 +429,18 @@ class LandscapeOperationalLayer(LandscapingLayerBase):
 
         self._operational_device_pool = integ_layer.integrated_devices
         self._operational_clusters_pool = self._operational_clusters.copy()
+
+        self._operational_controlpoint_pool = {}
+
+        for svc in integ_layer.integrated_services.values():
+            if hasattr(svc.coordinator, "creates_control_points") and svc.coordinator.creates_control_points:
+                self._operational_controlpoint_pool[svc.identity] = svc
+
+        if integ_layer.integrated_power is not None:
+            for pwr_svc in integ_layer.integrated_power.values():
+                if pwr_svc.identity not in self._operational_controlpoint_pool:
+                    if hasattr(pwr_svc.coordinator, "creates_control_points") and pwr_svc.coordinator.creates_control_points:
+                        self._operational_controlpoint_pool[pwr_svc.identity] = pwr_svc
 
         return
 

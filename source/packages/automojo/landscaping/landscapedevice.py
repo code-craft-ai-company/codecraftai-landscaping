@@ -367,37 +367,45 @@ class LandscapeDevice(FeatureAttachedObject):
 
                     if power_svc.service_type == "network/power/dli-power":
                         from automojo.landscaping.extensions.control.dlipowercontrolextension import DliPowerControlExtension
+                        from automojo.errors.exceptions import CheckoutError
 
-                        host = power_svc.host
+                        try:
+                            if power_svc.coordinator.creates_control_points:
+                                self.landscape.checkout_control_point(power_svc)
 
-                        credential = None
-                        for cred in power_svc.credentials.values():
-                            if "basic" in cred.categories:
-                                credential = cred
-                                break
+                            host = power_svc.host
 
-                        if credential:
-                            port = 80
-                            if "port" in power_svc.service_config:
-                                port = power_svc.service_config["port"]
+                            credential = None
+                            for cred in power_svc.credentials.values():
+                                if "basic" in cred.categories:
+                                    credential = cred
+                                    break
 
-                            ext = DliPowerControlExtension(host, port, credential)
+                            if credential:
+                                port = 80
+                                if "port" in power_svc.service_config:
+                                    port = power_svc.service_config["port"]
 
-                            coord_ref = None
-                            if self.coordinator is not None:
-                                coord_ref = weakref.ref(self.coordinator)
+                                ext = DliPowerControlExtension(host, port, credential)
 
-                            ext.initialize(
-                                coord_ref,
-                                weakref.ref(self),
-                                "power",
-                                host,
-                                power_config
-                            )
+                                coord_ref = None
+                                if self.coordinator is not None:
+                                    coord_ref = weakref.ref(self.coordinator)
 
-                            self.attach_extension("power", ext)
-                        else:
-                            self.logger.error(f"Power service '{server_name}' found but no 'basic' credential available.")
+                                ext.initialize(
+                                    coord_ref,
+                                    weakref.ref(self),
+                                    "power",
+                                    host,
+                                    power_config
+                                )
+
+                                self.attach_extension("power", ext)
+                            else:
+                                self.logger.error(f"Power service '{server_name}' found but no 'basic' credential available.")
+
+                        except CheckoutError:
+                            self.logger.warn(f"Enhance: Power service '{server_name}' could not be checked out for device '{self.friendly_id}'.")
                     else:
                         self.logger.warn(f"Enhance: Power service '{server_name}' has unknown type '{power_svc.service_type}'.")
                 else:

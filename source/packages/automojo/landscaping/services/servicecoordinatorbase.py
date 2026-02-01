@@ -77,6 +77,13 @@ class ServiceCoordinatorBase(CoordinatorBase):
         self._cl_ip_to_host_lookup: Dict[str, str] = {}
         return
 
+    @property
+    def creates_control_points(self) -> bool:
+        """
+            Property that indicates if the service coordinator creates control points.
+        """
+        return False
+
     def activate(self, activation_params: LandscapeActivationParams):
         """
             Called by the :class:`LandscapeOperationalLayer` in order for the coordinator to be able to

@@ -25,6 +25,13 @@ class DliPowerCoordinator(ServiceCoordinatorBase):
     """
     # pylint: disable=attribute-defined-outside-init
 
+    @property
+    def creates_control_points(self) -> bool:
+        """
+            Property that indicates if the service coordinator creates control points.
+        """
+        return True
+
     def activate(self, activation_params: LandscapeActivationParams):
         """
             Called by the :class:`LandscapeOperationalLayer` in order for the coordinator to be able to
