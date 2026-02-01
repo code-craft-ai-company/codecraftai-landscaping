@@ -14,7 +14,7 @@ from typing import Optional, Union
 
 import weakref
 
-from automojo.landscaping.protocolextensions.protocolextension import ProtocolExtension
+from automojo.landscaping.extensions.protocol.protocolextension import ProtocolExtension
 
 from automojo.interop.aspects import AspectsCmd, DEFAULT_CMD_ASPECTS
 
