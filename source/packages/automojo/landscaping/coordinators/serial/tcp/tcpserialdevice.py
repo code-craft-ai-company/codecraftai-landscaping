@@ -64,6 +64,6 @@ class TcpSerialDevice(LandscapeDevice):
         """
             Returns the :class:`TcpSerialAgent` extension for this device.
         """
-        ext = self._extensions["network/ssh"]
+        ext = self._extensions["serial"]
         return ext
 

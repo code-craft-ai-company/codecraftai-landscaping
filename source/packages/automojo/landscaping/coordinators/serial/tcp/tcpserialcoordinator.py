@@ -21,7 +21,7 @@ from automojo.landscaping.landscapeparameters import LandscapeActivationParams
 from automojo.landscaping.landscapedevice import LandscapeDevice
 from automojo.landscaping.coordinators.serial.tcp.tcpserialdevice import TcpSerialDevice
 
-from automojo.interop.protocols.serial.tcpserialagent import TcpSerialAgent
+from automojo.landscaping.extensions.protocol.tcpserialprotocolextension import TcpSerialProtocolExtension
 
 if TYPE_CHECKING:
     from automojo.landscaping.landscape import Landscape
@@ -43,6 +43,13 @@ class TcpSerialCoordinator(CoordinatorBase):
         super().__init__(lscape, *args, **kwargs)
         return
 
+    @property
+    def creates_control_extensions(self) -> bool:
+        """
+            Returns a boolean indicating if this coordinator creates control extensions.
+        """
+        return True
+
     def activate(self, activation_params: LandscapeActivationParams):
         """
             Called by the :class:`LandscapeOperationalLayer` in order for the coordinator to be able to
@@ -51,6 +58,28 @@ class TcpSerialCoordinator(CoordinatorBase):
         for device in self.children:
             device.enhance()
         return
+
+    def get_control_extensions(self) -> Dict[str, Any]:
+        """
+            Returns a list of control extensions managed by this coordinator.
+        """
+        extensions = []
+
+        for device in self.children:
+            # We want to expose the serial extension of this device
+            if hasattr(device, "serial"):
+                ext = device.serial
+
+                dev_config = device.device_config
+
+                param_parts = []
+                for k, v in sorted(dev_config.items()):
+                    param_parts.append(f"{k}={repr(v)}")
+
+                key = f"serial: {' '.join(param_parts)}"
+                extensions.append((key, ext))
+
+        return extensions
 
     def create_landscape_device(self, landscape: "Landscape", device_info: Dict[str, Any]) -> Tuple[FriendlyIdentifier, TcpSerialDevice]:
         """
@@ -72,13 +101,14 @@ class TcpSerialCoordinator(CoordinatorBase):
         coord_ref = weakref.ref(self)
         device_ref = weakref.ref(device)
 
-        serial_agent = TcpSerialAgent(host, port=port)
+        serial_ext = TcpSerialProtocolExtension(host, port=port)
+        serial_ext.initialize(coord_ref, device_ref, host, host, device_info)
 
         with self.begin_locked_coordinator_scope() as locked:
             self._cl_children[host] = device
             self._cl_ip_to_host_lookup[device.ipaddr] = host
 
-        device.attach_extension("network/ssh", serial_agent)
+        device.attach_extension("serial", serial_ext)
 
         return fid, device
 
@@ -92,7 +122,7 @@ class TcpSerialCoordinator(CoordinatorBase):
         cmd: str = "echo 'It Works'"
 
         for device in self.children:
-            agent = device.ssh
+            agent = device.serial
             host = agent.host
             ipaddr = agent.ipaddr
             try:
@@ -137,10 +167,9 @@ class TcpSerialCoordinator(CoordinatorBase):
         self._coord_lock.acquire()
         try:
             if ip in self._cl_ip_to_host_lookup:
-                if ip in self._cl_ip_to_host_lookup:
-                    host = self._cl_ip_to_host_lookup[ip]
-                    if host in self._cl_children:
-                        device = self._cl_children[host]
+                host = self._cl_ip_to_host_lookup[ip]
+                if host in self._cl_children:
+                    device = self._cl_children[host]
         finally:
             self._coord_lock.release()
 
