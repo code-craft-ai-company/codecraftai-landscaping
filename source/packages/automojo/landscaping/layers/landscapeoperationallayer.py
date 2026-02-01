@@ -23,6 +23,7 @@ from automojo.interfaces.iincludefilter import IIncludeFilter
 
 from automojo.landscaping.layers.landscapinglayerbase import LandscapingLayerBase
 from automojo.landscaping.layers.landscapeintegrationlayer import LandscapeIntegrationLayer
+from automojo.landscaping.extensions.control.controlextension import ControlExtension
 from automojo.landscaping.landscapedevice import LandscapeDevice
 from automojo.landscaping.landscapedevicecluster import LandscapeDeviceCluster
 from automojo.landscaping.landscapeservice import LandscapeService
@@ -58,8 +59,8 @@ class LandscapeOperationalLayer(LandscapingLayerBase):
         self._operational_device_pool: Dict[str, LandscapeDevice] = {}
         self._operational_device_outstanding: Dict[str, LandscapeDevice] = {}
 
-        self._operational_controlpoint_pool: Dict[str, LandscapeService] = {}
-        self._operational_controlpoint_outstanding: Dict[str, LandscapeService] = {}
+        self._operational_controlpoint_pool: Dict[str, ControlExtension] = {}
+        self._operational_controlpoint_outstanding: Dict[str, ControlExtension] = {}
 
         return
 
@@ -90,7 +91,7 @@ class LandscapeOperationalLayer(LandscapingLayerBase):
         return device_table
 
     @property
-    def available_control_points(self) -> Dict[str, LandscapeService]:
+    def available_control_points(self) -> Dict[str, ControlExtension]:
         """
             Provides a thread safe copy of control points available for checkout.
         """
@@ -215,18 +216,16 @@ class LandscapeOperationalLayer(LandscapingLayerBase):
 
         return
 
-    def checkin_control_point(self, service: LandscapeService):
+    def checkin_control_point(self, extension: ControlExtension, control_key: str):
         """
-            Checkin control point (service) to the operational pool.
+            Checkin control point (extension) to the operational pool.
         """
 
         lscape = self.landscape
         with lscape.begin_locked_landscape_scope() as locked:
-            svc_identity = service.identity
-
-            if svc_identity not in self._operational_controlpoint_outstanding:
+            if control_key not in self._operational_controlpoint_outstanding:
                 err_msg_lines = [
-                    f"Checkin of control point '{svc_identity}' that was not previously checked out."
+                    f"Checkin of control point '{control_key}' that was not previously checked out."
                     "AVAILABLE POOL:"
                 ]
 
@@ -244,8 +243,8 @@ class LandscapeOperationalLayer(LandscapingLayerBase):
                 err_msg = os.linesep.join(err_msg_lines)
                 raise CheckinError(err_msg)
 
-            del self._operational_controlpoint_outstanding[svc_identity]
-            self._operational_controlpoint_pool[svc_identity] = service
+            del self._operational_controlpoint_outstanding[control_key]
+            self._operational_controlpoint_pool[control_key] = extension
 
         return
 
@@ -327,12 +326,12 @@ class LandscapeOperationalLayer(LandscapingLayerBase):
 
         return
 
-    def checkout_control_point(self, feature_name: str, **kwargs) -> LandscapeService:
+    def checkout_control_point(self, feature_name: str, **kwargs) -> ControlExtension:
         """
-            Checkout control point (service) from the operational pool.
+            Checkout control point (extension) from the operational pool.
         """
 
-        service = None
+        extension = None
         lscape = self.landscape
         with lscape.begin_locked_landscape_scope() as locked:
 
@@ -351,12 +350,12 @@ class LandscapeOperationalLayer(LandscapingLayerBase):
                 err_msg = f"The specified control point '{control_key}' is not available for checkout."
                 raise CheckoutError(err_msg)
 
-            service = self._operational_controlpoint_pool[control_key]
+            extension = self._operational_controlpoint_pool[control_key]
 
             del self._operational_controlpoint_pool[control_key]
-            self._operational_controlpoint_outstanding[control_key] = service
+            self._operational_controlpoint_outstanding[control_key] = extension
 
-        return service
+        return extension
 
     def establish_connectivity(self, activation_params: LandscapeActivationParams):
         """
@@ -450,28 +449,16 @@ class LandscapeOperationalLayer(LandscapingLayerBase):
 
         for svc in integ_layer.integrated_services.values():
             if hasattr(svc.coordinator, "creates_control_points") and svc.coordinator.creates_control_points:
-                self._operational_controlpoint_pool[svc.identity] = svc
+                extensions = svc.coordinator.get_control_extensions()
+                for key, ext in extensions:
+                    self._operational_controlpoint_pool[key] = ext
 
         if integ_layer.integrated_power is not None:
             for pwr_svc in integ_layer.integrated_power.values():
                 if hasattr(pwr_svc.coordinator, "creates_control_points") and pwr_svc.coordinator.creates_control_points:
-                    # Query the service for its controls
-                    # This is where we implement "Landscape should seperately query the service for controls"
-                    # For now, we assume DLI power services have 8 outlets
-                    # In a real implementation, this should be dynamic or based on config
-                    # But the requirement says "The query should provide a control and describes itself with a key that it is stored under."
-
-                    if pwr_svc.service_type == "network/power/dli-power":
-                        # Simulate querying controls.
-                        # Ideally pwr_svc.get_controls() -> list of (key, control_obj)
-                        # Here, the control_obj is the service itself (which manages the outlets)
-                        for i in range(1, 9):
-                            key = f"{pwr_svc.host}:outlet:{i}"
-                            self._operational_controlpoint_pool[key] = pwr_svc
-                    else:
-                        # Default fallback
-                        if pwr_svc.identity not in self._operational_controlpoint_pool:
-                             self._operational_controlpoint_pool[pwr_svc.identity] = pwr_svc
+                    extensions = pwr_svc.coordinator.get_control_extensions()
+                    for key, ext in extensions:
+                        self._operational_controlpoint_pool[key] = ext
 
         return
 

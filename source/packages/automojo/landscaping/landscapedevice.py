@@ -354,48 +354,20 @@ class LandscapeDevice(FeatureAttachedObject):
         if self.is_configured_for_power:
             power_config = self._features["power"]
 
-            from automojo.landscaping.extensions.control.dlipowercontrolextension import DliPowerControlExtension
             from automojo.errors.exceptions import CheckoutError
 
             try:
-                power_svc = self.landscape.checkout_control_point("power", **power_config)
+                power_ext = self.landscape.checkout_control_point("power", **power_config)
 
-                if power_svc.service_type == "network/power/dli-power":
-                    host = power_svc.host
+                # The extension is already created and initialized by the coordinator
+                # We just need to update the reference to the device it is extending
+                power_ext.update_extends_ref(weakref.ref(self))
 
-                    credential = None
-                    for cred in power_svc.credentials.values():
-                        if "basic" in cred.categories:
-                            credential = cred
-                            break
+                self.attach_extension("power", power_ext)
 
-                    if credential:
-                        port = 80
-                        if "port" in power_svc.service_config:
-                            port = power_svc.service_config["port"]
-
-                        ext = DliPowerControlExtension(host, port, credential)
-
-                        coord_ref = None
-                        if self.coordinator is not None:
-                            coord_ref = weakref.ref(self.coordinator)
-
-                        ext.initialize(
-                            coord_ref,
-                            weakref.ref(self),
-                            "power",
-                            host,
-                            power_config
-                        )
-
-                        self.attach_extension("power", ext)
-                    else:
-                        self.logger.error(f"Power service '{power_svc.friendly_id}' found but no 'basic' credential available.")
-                else:
-                    self.logger.warn(f"Enhance: Power service '{power_svc.friendly_id}' has unknown type '{power_svc.service_type}'.")
             except CheckoutError:
                 server_name = power_config.get("server", "unknown")
-                self.logger.warn(f"Enhance: Power service '{server_name}' could not be checked out for device '{self.friendly_id}'.")
+                self.logger.warn(f"Attach Power: Power service '{server_name}' could not be checked out for device '{self.friendly_id}'.")
 
         return
 

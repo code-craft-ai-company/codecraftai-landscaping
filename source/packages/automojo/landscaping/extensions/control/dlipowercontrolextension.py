@@ -18,26 +18,23 @@ from automojo.credentials.basiccredential import BasicCredential
 
 from automojo.landscaping.extensions.control.controlextension import ControlExtension
 
-from automojo.interop.protocols.power.dlipower.dlipowerclient import AspectsRest, DEFAULT_REST_ASPECTS, DliPowerRestClient
+from automojo.interop.protocols.power.dlipower.dlipowerclient import DliPowerRestClient
 from automojo.interop.protocols.power.dlipower.dlipoweroutletcontrol import DliPowerOutletControl
 from automojo.landscaping.extensions.protocol.protocolextension import ProtocolExtension
 
-class DliPowerControlExtension(DliPowerOutletControl, DliPowerRestClient, ProtocolExtension, ControlExtension):
+class DliPowerControlExtension(DliPowerOutletControl, ProtocolExtension, ControlExtension):
     """
-        Serial agent integrated as a protocol extension for a landscape device.
+        DLI Power agent integrated as a control extension for a landscape device.
     """
 
-    def __init__(self, host: str, port: int, credential: BasicCredential, called_id: Optional[str]=None, aspects: AspectsRest = DEFAULT_REST_ASPECTS):
+    def __init__(self, client: DliPowerRestClient, outlet_index: int):
         """
             Constructs an :class:`DliPowerControlExtension` instance.
 
-            :param host: Host name or IP address for the power connection.
-            :param port: TCP port to connect to.
-            :param credential: The authentication credential for working with the power device.
-            :param called_id: Identifier used when logging sessions.
-            :param aspects: Command aspects controlling execution behavior.
+            :param client: The DliPowerRestClient instance used for communication.
+            :param outlet_index: The index of the outlet to control.
         """
-        DliPowerRestClient.__init__(self, host, credential, port=port, aspects=aspects)
+        DliPowerOutletControl.__init__(self, client, outlet_index)
         ProtocolExtension.__init__(self)
         ControlExtension.__init__(self)
         return

@@ -25,6 +25,7 @@ from automojo.credentials.basecredential import BaseCredential
 from automojo.landscaping.friendlyidentifier import FriendlyIdentifier
 
 from automojo.landscaping.coordinatorbase import CoordinatorBase
+from automojo.landscaping.extensions.control.controlextension import ControlExtension
 from automojo.landscaping.landscapeparameters import LandscapeActivationParams
 from automojo.landscaping.landscapeservice import LandscapeService
 
@@ -83,6 +84,14 @@ class ServiceCoordinatorBase(CoordinatorBase):
             Property that indicates if the service coordinator creates control points.
         """
         return False
+
+    def get_control_extensions(self) -> List[Tuple[str, ControlExtension]]:
+        """
+            Returns a list of control extensions managed by this coordinator.
+
+            :returns: List of tuples containing (lookup_key, extension_object)
+        """
+        return []
 
     def activate(self, activation_params: LandscapeActivationParams):
         """
