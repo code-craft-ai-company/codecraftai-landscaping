@@ -30,9 +30,9 @@ class DliPowerCoordinator(ServiceCoordinatorBase):
     # pylint: disable=attribute-defined-outside-init
 
     @property
-    def creates_control_points(self) -> bool:
+    def creates_control_extensions(self) -> bool:
         """
-            Property that indicates if the service coordinator creates control points.
+            Property that indicates if the service coordinator creates control extensions.
         """
         return True
 
@@ -62,7 +62,9 @@ class DliPowerCoordinator(ServiceCoordinatorBase):
                 # For DLI Power, typically 8 outlets.
                 # In robust implementation, this might be configurable per device.
                 for outlet_idx in range(1, 9):
-                    control_key = f"{host}:outlet:{outlet_idx}"
+                    # control_key format: "power: outlet={outlet_idx} server='{host}'"
+                    # keys are sorted: outlet, server
+                    control_key = f"power: outlet={outlet_idx} server='{host}'"
 
                     ext = DliPowerControlExtension(client, outlet_idx)
 

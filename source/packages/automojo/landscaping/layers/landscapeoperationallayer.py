@@ -338,9 +338,17 @@ class LandscapeOperationalLayer(LandscapingLayerBase):
             control_key = None
             if feature_name == "power":
                 if "server" in kwargs and "outlet" in kwargs:
-                    server = kwargs["server"]
-                    outlet = kwargs["outlet"]
-                    control_key = f"{server}:outlet:{outlet}"
+                    # Format: power: outlet=0 server='someserver'
+                    # We sort keys to ensure deterministic order, but based on user request example "outlet" came before "server" or after?
+                    # User request: "power: server='someserver' outlet=0'"
+                    # But also: "f"{feature}: paramk=paramv paramk=paramv"" implies sorted or specific order.
+                    # I will use sorted keys to be consistent and deterministic.
+
+                    param_parts = []
+                    for k, v in sorted(kwargs.items()):
+                        param_parts.append(f"{k}={repr(v)}")
+
+                    control_key = f"{feature_name}: {' '.join(param_parts)}"
 
             if control_key is None:
                 err_msg = f"Could not determine control key for feature '{feature_name}' with parameters {kwargs}."
@@ -448,14 +456,14 @@ class LandscapeOperationalLayer(LandscapingLayerBase):
         self._operational_controlpoint_pool = {}
 
         for svc in integ_layer.integrated_services.values():
-            if hasattr(svc.coordinator, "creates_control_points") and svc.coordinator.creates_control_points:
+            if hasattr(svc.coordinator, "creates_control_extensions") and svc.coordinator.creates_control_extensions:
                 extensions = svc.coordinator.get_control_extensions()
                 for key, ext in extensions:
                     self._operational_controlpoint_pool[key] = ext
 
         if integ_layer.integrated_power is not None:
             for pwr_svc in integ_layer.integrated_power.values():
-                if hasattr(pwr_svc.coordinator, "creates_control_points") and pwr_svc.coordinator.creates_control_points:
+                if hasattr(pwr_svc.coordinator, "creates_control_extensions") and pwr_svc.coordinator.creates_control_extensions:
                     extensions = pwr_svc.coordinator.get_control_extensions()
                     for key, ext in extensions:
                         self._operational_controlpoint_pool[key] = ext

@@ -79,9 +79,9 @@ class ServiceCoordinatorBase(CoordinatorBase):
         return
 
     @property
-    def creates_control_points(self) -> bool:
+    def creates_control_extensions(self) -> bool:
         """
-            Property that indicates if the service coordinator creates control points.
+            Property that indicates if the service coordinator creates control extensions.
         """
         return False
 
