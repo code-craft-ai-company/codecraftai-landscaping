@@ -34,8 +34,6 @@ class TcpSerialCoordinator(CoordinatorBase):
     """
     # pylint: disable=attribute-defined-outside-init
 
-    creates_control_extensions = True
-
     def __init__(self, lscape: "Landscape", *args, **kwargs):
         """
             Constructs a new :class:`TcpSerialCoordinator` instance.
@@ -44,6 +42,13 @@ class TcpSerialCoordinator(CoordinatorBase):
         """
         super().__init__(lscape, *args, **kwargs)
         return
+
+    @property
+    def creates_control_extensions(self) -> bool:
+        """
+            Returns a boolean indicating if this coordinator creates control extensions.
+        """
+        return True
 
     def activate(self, activation_params: LandscapeActivationParams):
         """
