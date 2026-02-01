@@ -576,4 +576,11 @@ class LandscapeOperationalLayer(LandscapingLayerBase):
                     for key, ext in extensions:
                         self._operational_controlpoint_pool[key] = ext
 
+        coordinators_for_serial = integ_layer.coordinators_for_serial
+        for serial_coord in coordinators_for_serial.values():
+            if hasattr(serial_coord, "creates_control_extensions") and serial_coord.creates_control_extensions:
+                extensions = serial_coord.get_control_extensions()
+                for key, ext in extensions:
+                    self._operational_controlpoint_pool[key] = ext
+
         return
