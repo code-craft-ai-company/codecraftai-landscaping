@@ -359,6 +359,13 @@ class Landscape:
         self.layer_operational.checkin_device(device)
         return
 
+    def checkin_control_point(self, service: LandscapeService):
+        """
+            Checkin control point (service) to the operational pool.
+        """
+        self.layer_operational.checkin_control_point(service)
+        return
+
     def checkout_cluster(self, cluster: LandscapeDeviceCluster):
         """
             Checkout clusters and associated devices from the operational pool.
@@ -372,6 +379,13 @@ class Landscape:
         """
         self.layer_operational.checkout_device(device)
         return
+
+    def checkout_control_point(self, service: LandscapeService = None, **kwargs) -> LandscapeService:
+        """
+            Checkout control point (service) from the operational pool.
+        """
+        service = self.layer_operational.checkout_control_point(service=service, **kwargs)
+        return service
 
     def get_cluster_by_name(self, cluster_name: str) -> Union[LandscapeDeviceCluster, None]:
         """

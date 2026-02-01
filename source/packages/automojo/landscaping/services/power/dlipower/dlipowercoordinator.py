@@ -11,11 +11,15 @@ __copyright__ = "Copyright 2025, Automation Mojo LLC"
 __credits__ = []
 
 
-from typing import Union
+from typing import List, Tuple, Union
+import weakref
 
 from automojo.landscaping.services.servicecoordinatorbase import ServiceCoordinatorBase
 from automojo.landscaping.landscapeparameters import LandscapeActivationParams
 from automojo.landscaping.landscapedevice import LandscapeDevice
+from automojo.landscaping.extensions.control.controlextension import ControlExtension
+from automojo.landscaping.extensions.control.dlipowercontrolextension import DliPowerControlExtension
+from automojo.interop.protocols.power.dlipower.dlipowerclient import DliPowerRestClient
 
 class DliPowerCoordinator(ServiceCoordinatorBase):
     """
@@ -24,6 +28,64 @@ class DliPowerCoordinator(ServiceCoordinatorBase):
         nodes.
     """
     # pylint: disable=attribute-defined-outside-init
+
+    @property
+    def creates_control_extensions(self) -> bool:
+        """
+            Property that indicates if the service coordinator creates control extensions.
+        """
+        return True
+
+    def get_control_extensions(self) -> List[Tuple[str, ControlExtension]]:
+        """
+            Returns a list of control extensions managed by this coordinator.
+        """
+        extensions = []
+
+        for svc in self.children_as_extension:
+            host = svc.host
+
+            credential = None
+            for cred in svc.credentials.values():
+                if "basic" in cred.categories:
+                    credential = cred
+                    break
+
+            if credential:
+                port = 80
+                if "port" in svc.service_config:
+                    port = svc.service_config["port"]
+
+                # Create the shared client for this service
+                client = DliPowerRestClient(host, credential, port=port)
+
+                # For DLI Power, typically 8 outlets.
+                # In robust implementation, this might be configurable per device.
+                for outlet_idx in range(1, 9):
+                    # control_key format: "power: outlet={outlet_idx} server='{host}'"
+                    # keys are sorted: outlet, server
+                    control_key = f"power: outlet={outlet_idx} server='{host}'"
+
+                    ext = DliPowerControlExtension(client, outlet_idx)
+
+                    coord_ref = weakref.ref(self)
+
+                    # Pre-initialize with service info
+                    # Note: basedevice_ref is None until attached to a device
+                    ext.initialize(
+                        coord_ref,
+                        None,
+                        "power",
+                        host,
+                        {"server": host, "outlet": outlet_idx}
+                    )
+
+                    extensions.append((control_key, ext))
+            else:
+                # Log warning?
+                pass
+
+        return extensions
 
     def activate(self, activation_params: LandscapeActivationParams):
         """

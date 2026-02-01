@@ -27,7 +27,7 @@ from automojo.errors.exceptions import SemanticError
 from automojo.credentials.basecredential import BaseCredential
 from automojo.credentials.sshcredential import SshCredential
 from automojo.landscaping.friendlyidentifier import FriendlyIdentifier
-from automojo.landscaping.protocolextensions.protocolextension import ProtocolExtension
+from automojo.landscaping.extensions.protocol.protocolextension import ProtocolExtension
 from automojo.xmodules.xthreading.lockscopes import LockedScope, UnLockedScope
 
 from automojo.testbase.features import FeatureAttachedObject

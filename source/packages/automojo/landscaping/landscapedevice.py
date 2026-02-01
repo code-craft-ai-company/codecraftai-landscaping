@@ -29,7 +29,7 @@ from automojo.credentials.basecredential import BaseCredential
 from automojo.credentials.sshcredential import SshCredential
 from automojo.interop.interfaces.isystemcontext import ISystemContext
 from automojo.landscaping.friendlyidentifier import FriendlyIdentifier
-from automojo.landscaping.protocolextensions.protocolextension import ProtocolExtension
+from automojo.landscaping.extensions.protocol.protocolextension import ProtocolExtension
 from automojo.xmodules.xthreading.lockscopes import LockedScope, UnLockedScope
 
 from automojo.testbase.features import FeatureAttachedObject
@@ -345,6 +345,23 @@ class LandscapeDevice(FeatureAttachedObject):
             Method that makes it convenient to checkin a device.
         """
         self.landscape.checkin_device(self)
+        return
+
+    def attach_to_power(self):
+        """
+            Called to allow a device to attach to the power management resources.
+        """
+        if self.is_configured_for_power:
+            power_config = self._features["power"]
+
+            power_ext = self.landscape.checkout_control_point("power", **power_config)
+
+            # The extension is already created and initialized by the coordinator
+            # We just need to update the reference to the device it is extending
+            power_ext.update_extends_ref(weakref.ref(self))
+
+            self.attach_extension("power", power_ext)
+
         return
 
     def enhance(self):

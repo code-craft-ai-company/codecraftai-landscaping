@@ -25,6 +25,7 @@ from automojo.credentials.basecredential import BaseCredential
 from automojo.landscaping.friendlyidentifier import FriendlyIdentifier
 
 from automojo.landscaping.coordinatorbase import CoordinatorBase
+from automojo.landscaping.extensions.control.controlextension import ControlExtension
 from automojo.landscaping.landscapeparameters import LandscapeActivationParams
 from automojo.landscaping.landscapeservice import LandscapeService
 
@@ -76,6 +77,21 @@ class ServiceCoordinatorBase(CoordinatorBase):
         self._cl_upnp_hint_to_ip_lookup: Dict[str, str] = {}
         self._cl_ip_to_host_lookup: Dict[str, str] = {}
         return
+
+    @property
+    def creates_control_extensions(self) -> bool:
+        """
+            Property that indicates if the service coordinator creates control extensions.
+        """
+        return False
+
+    def get_control_extensions(self) -> List[Tuple[str, ControlExtension]]:
+        """
+            Returns a list of control extensions managed by this coordinator.
+
+            :returns: List of tuples containing (lookup_key, extension_object)
+        """
+        return []
 
     def activate(self, activation_params: LandscapeActivationParams):
         """

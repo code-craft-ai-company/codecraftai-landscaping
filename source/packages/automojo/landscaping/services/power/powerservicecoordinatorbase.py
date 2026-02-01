@@ -41,6 +41,13 @@ class PowerServiceCoordinatorBase(ServiceCoordinatorBase):
         self._power_interfaces = power_interfaces
         return
 
+    @property
+    def creates_control_extensions(self) -> bool:
+        """
+            Property that indicates if the service coordinator creates control extensions.
+        """
+        return True
+
     def activate(self, activation_params: LandscapeActivationParams):
         """
             Called by the :class:`LandscapeOperationalLayer` in order for the coordinator to be able to

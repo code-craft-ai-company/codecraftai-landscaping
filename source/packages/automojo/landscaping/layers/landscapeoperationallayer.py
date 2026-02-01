@@ -23,8 +23,10 @@ from automojo.interfaces.iincludefilter import IIncludeFilter
 
 from automojo.landscaping.layers.landscapinglayerbase import LandscapingLayerBase
 from automojo.landscaping.layers.landscapeintegrationlayer import LandscapeIntegrationLayer
+from automojo.landscaping.extensions.control.controlextension import ControlExtension
 from automojo.landscaping.landscapedevice import LandscapeDevice
 from automojo.landscaping.landscapedevicecluster import LandscapeDeviceCluster
+from automojo.landscaping.landscapeservice import LandscapeService
 from automojo.landscaping.clusters.nodecoordinatorbase import NodeCoordinatorBase
 
 from automojo.landscaping.landscapeparameters import (
@@ -57,6 +59,9 @@ class LandscapeOperationalLayer(LandscapingLayerBase):
         self._operational_device_pool: Dict[str, LandscapeDevice] = {}
         self._operational_device_outstanding: Dict[str, LandscapeDevice] = {}
 
+        self._operational_controlpoint_pool: Dict[str, ControlExtension] = {}
+        self._operational_controlpoint_outstanding: Dict[str, ControlExtension] = {}
+
         return
 
     @property
@@ -84,6 +89,19 @@ class LandscapeOperationalLayer(LandscapingLayerBase):
             device_table = self._operational_device_pool.copy()
         
         return device_table
+
+    @property
+    def available_control_points(self) -> Dict[str, ControlExtension]:
+        """
+            Provides a thread safe copy of control points available for checkout.
+        """
+        service_table = {}
+
+        lscape = self.landscape
+        with lscape.begin_locked_landscape_scope() as locked:
+            service_table = self._operational_controlpoint_pool.copy()
+
+        return service_table
 
     @property
     def operational_clusters(self) -> Dict[str, LandscapeDeviceCluster]:
@@ -118,6 +136,10 @@ class LandscapeOperationalLayer(LandscapingLayerBase):
         coordinators_for_devices = layer_integ.coordinators_for_devices
         for coord in coordinators_for_devices.values():
             coord.activate(activation_params)
+
+        for device in self.available_devices.values():
+            if device.is_configured_for_power:
+                device.attach_to_power()
 
         return
     
@@ -190,7 +212,39 @@ class LandscapeOperationalLayer(LandscapingLayerBase):
                 raise CheckinError(err_msg)
             
             del self._operational_device_outstanding[dev_identity]
-            self._operational_device_outstanding[dev_identity] = device
+            self._operational_device_pool[dev_identity] = device
+
+        return
+
+    def checkin_control_point(self, extension: ControlExtension, control_key: str):
+        """
+            Checkin control point (extension) to the operational pool.
+        """
+
+        lscape = self.landscape
+        with lscape.begin_locked_landscape_scope() as locked:
+            if control_key not in self._operational_controlpoint_outstanding:
+                err_msg_lines = [
+                    f"Checkin of control point '{control_key}' that was not previously checked out."
+                    "AVAILABLE POOL:"
+                ]
+
+                service_identity_list = [did for did in self._operational_controlpoint_pool.keys()]
+                service_identity_list.sort()
+                for did in service_identity_list:
+                    err_msg_lines.append(f"    {did}")
+
+                err_msg_lines.append("OUTSTANDING POOL:")
+                service_identity_list = [did for did in self._operational_controlpoint_outstanding.keys()]
+                service_identity_list.sort()
+                for did in service_identity_list:
+                    err_msg_lines.append(f"    {did}")
+
+                err_msg = os.linesep.join(err_msg_lines)
+                raise CheckinError(err_msg)
+
+            del self._operational_controlpoint_outstanding[control_key]
+            self._operational_controlpoint_pool[control_key] = extension
 
         return
 
@@ -271,6 +325,45 @@ class LandscapeOperationalLayer(LandscapingLayerBase):
             self._operational_device_outstanding[device_identity] = device
 
         return
+
+    def checkout_control_point(self, feature_name: str, **kwargs) -> ControlExtension:
+        """
+            Checkout control point (extension) from the operational pool.
+        """
+
+        extension = None
+        lscape = self.landscape
+        with lscape.begin_locked_landscape_scope() as locked:
+
+            control_key = None
+            if feature_name == "power":
+                if "server" in kwargs and "outlet" in kwargs:
+                    # Format: power: outlet=0 server='someserver'
+                    # We sort keys to ensure deterministic order, but based on user request example "outlet" came before "server" or after?
+                    # User request: "power: server='someserver' outlet=0'"
+                    # But also: "f"{feature}: paramk=paramv paramk=paramv"" implies sorted or specific order.
+                    # I will use sorted keys to be consistent and deterministic.
+
+                    param_parts = []
+                    for k, v in sorted(kwargs.items()):
+                        param_parts.append(f"{k}={repr(v)}")
+
+                    control_key = f"{feature_name}: {' '.join(param_parts)}"
+
+            if control_key is None:
+                err_msg = f"Could not determine control key for feature '{feature_name}' with parameters {kwargs}."
+                raise CheckoutError(err_msg)
+
+            if control_key not in self._operational_controlpoint_pool:
+                err_msg = f"The specified control point '{control_key}' is not available for checkout."
+                raise CheckoutError(err_msg)
+
+            extension = self._operational_controlpoint_pool[control_key]
+
+            del self._operational_controlpoint_pool[control_key]
+            self._operational_controlpoint_outstanding[control_key] = extension
+
+        return extension
 
     def establish_connectivity(self, activation_params: LandscapeActivationParams):
         """
@@ -359,6 +452,21 @@ class LandscapeOperationalLayer(LandscapingLayerBase):
 
         self._operational_device_pool = integ_layer.integrated_devices
         self._operational_clusters_pool = self._operational_clusters.copy()
+
+        self._operational_controlpoint_pool = {}
+
+        for svc in integ_layer.integrated_services.values():
+            if hasattr(svc.coordinator, "creates_control_extensions") and svc.coordinator.creates_control_extensions:
+                extensions = svc.coordinator.get_control_extensions()
+                for key, ext in extensions:
+                    self._operational_controlpoint_pool[key] = ext
+
+        if integ_layer.integrated_power is not None:
+            for pwr_svc in integ_layer.integrated_power.values():
+                if hasattr(pwr_svc.coordinator, "creates_control_extensions") and pwr_svc.coordinator.creates_control_extensions:
+                    extensions = pwr_svc.coordinator.get_control_extensions()
+                    for key, ext in extensions:
+                        self._operational_controlpoint_pool[key] = ext
 
         return
 
