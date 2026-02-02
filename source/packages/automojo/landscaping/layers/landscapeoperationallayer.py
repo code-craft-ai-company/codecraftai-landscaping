@@ -139,19 +139,18 @@ class LandscapeOperationalLayer(LandscapingLayerBase):
 
         self._initialize_operational_pools()
 
-        self.establish_connectivity(activation_params)
-
         for device in self.available_devices.values():
             if device.is_configured_for_power:
                 device.attach_to_power()
 
             if device.is_configured_for_serial:
-                if hasattr(device, "attach_to_serial"):
-                    device.attach_to_serial()
+                device.attach_to_serial()
 
         coordinators_for_devices = layer_integ.coordinators_for_devices
         for coord in coordinators_for_devices.values():
             coord.activate(activation_params)
+
+        self.establish_connectivity(activation_params)
 
         return
     
