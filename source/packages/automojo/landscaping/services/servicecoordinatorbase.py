@@ -222,7 +222,7 @@ class ServiceCoordinatorBase(CoordinatorBase):
 
         cmd: str = "echo 'It Works'"
 
-        for agent in self.children_as_extension:
+        for agent in self.get_children_as_extension():
             host = agent.host
             ipaddr = agent.ipaddr
             try:

@@ -116,6 +116,9 @@ class LandscapeDevice(FeatureAttachedObject):
         if "ipaddr" in device_config:
             self._configured_ipaddr = device_config["ipaddr"]
 
+        if self._configured_ipaddr is None and self._host is not None:
+             self._resolve_ipaddress()
+
         credmgr = lscape.credential_manager
 
         if "credentials" in device_config:
@@ -536,14 +539,8 @@ class LandscapeDevice(FeatureAttachedObject):
             HTML representation used in interactive notebooks.
         """
         ipaddr = "unknown"
-
-        # Note: We may not have an assigned IP address, a repr function
-        # should never raise an exception so guard against a RuntimeException
-        # being raised if we dont have an IP
-        try:
-            ipaddr = self._resolve_ipaddress()
-        except RuntimeError:
-            pass
+        if self._configured_ipaddr is not None:
+            ipaddr = self._configured_ipaddr
 
         html_repr_lines = [
             "<h1>LandscapeDevice</h1>",
@@ -564,14 +561,8 @@ class LandscapeDevice(FeatureAttachedObject):
         thisType = type(self)
 
         ipaddr = "unknown"
-
-        # Note: We may not have an assigned IP address, a repr function
-        # should never raise an exception so guard against a RuntimeException
-        # being raised if we dont have an IP
-        try:
-            ipaddr = self._resolve_ipaddress()
-        except RuntimeError:
-            pass
+        if self._configured_ipaddr is not None:
+            ipaddr = self._configured_ipaddr
 
         devstr = "<{} type={} identity={} ip={} >".format(thisType.__name__, self._device_type, self.identity, ipaddr)
 

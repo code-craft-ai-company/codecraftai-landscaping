@@ -26,7 +26,7 @@ from automojo.landscaping.includefilters import IncludeServiceByName
 from automojo.landscaping.landscapeparameters import LandscapeActivationParams
 from automojo.landscaping.landscapedevice import LandscapeDevice
 from automojo.landscaping.coordinators.ssh.sshdevice import SshDevice
-from automojo.landscaping.protocolextensions.sshprotocolextension import SshProtocolExtension
+from automojo.landscaping.extensions.protocol.sshprotocolextension import SshProtocolExtension
 
 if TYPE_CHECKING:
     from automojo.landscaping.landscape import Landscape

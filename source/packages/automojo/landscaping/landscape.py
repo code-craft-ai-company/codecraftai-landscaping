@@ -306,8 +306,6 @@ class Landscape:
                     # link up devices with dependent extensions
                     self._layer_operational.activate_coordinators(activation_params)
 
-                    self._layer_operational.establish_connectivity(activation_params)
-
                     self._layer_operational.overlay_toplogy(activation_params)
 
                     self._layer_operational.validate_features(activation_params)
