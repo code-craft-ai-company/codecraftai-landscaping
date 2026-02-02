@@ -17,12 +17,13 @@ from typing import Callable, Dict, Union, TYPE_CHECKING
 
 from automojo.xmodules.xlogging.enhancedloggers import getEnhancedLogger
 import os
+import socket
 import threading
 import weakref
 
 from datetime import datetime
 
-from automojo.errors.exceptions import SemanticError
+from automojo.errors.exceptions import ConfigurationError, SemanticError
 
 from automojo.credentials.basecredential import BaseCredential
 from automojo.credentials.sshcredential import SshCredential
@@ -101,9 +102,16 @@ class LandscapeService(FeatureAttachedObject):
         if "features" in service_config:
              self._features = service_config["features"]
 
+        self._host = None
+        if "host" in service_config:
+            self._host = service_config["host"]
+
         self._configured_ipaddr = None
         if "ipaddr" in service_config:
             self._configured_ipaddr = service_config["ipaddr"]
+
+        if self._configured_ipaddr is None and self._host is not None:
+             self._resolve_ipaddress()
 
         credmgr = lscape.credential_manager
 
@@ -462,6 +470,14 @@ class LandscapeService(FeatureAttachedObject):
 
         if self._configured_ipaddr is not None:
             ipaddr = self._configured_ipaddr
+        elif self._host is not None:
+            try:
+                ipaddr = socket.gethostbyname(self._host)
+                self._configured_ipaddr = ipaddr
+            except (socket.gaierror, OSError):
+                errmsg = f"Unable to resolve ipaddr for host={self._host}, contact information for devices must be valid."
+                self.logger.error(errmsg)
+                raise ConfigurationError(errmsg)
         else:
             errmsg = f"_resolve_ipaddress: Unable to resolve IP address for dev {self}."
             raise RuntimeError(errmsg)

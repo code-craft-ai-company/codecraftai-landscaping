@@ -190,6 +190,11 @@ class ServiceCoordinatorBase(CoordinatorBase):
             # If we have an IP, we can add it to lookup, but service usually resolves IP dynamically
             # For now just tracking in children is enough for lookup_service_by_host
 
+            # Try to populate IP lookup if IP is available.
+            ipaddr = service.ipaddr
+            if ipaddr is not None:
+                self._cl_ip_to_host_lookup[ipaddr] = host
+
         return fid, service
 
     def create_ssh_agent(self, service: LandscapeService, service_info: Dict[str, Any], host: str, cred: BaseCredential,
