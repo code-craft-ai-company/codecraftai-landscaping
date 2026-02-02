@@ -86,7 +86,7 @@ class TcpSerialCoordinator(CoordinatorBase):
             Called to declare a declared landscape device for a given coordinator.
         """
         host = device_info["host"]
-        port = device_info["port"]
+        port = int(device_info["port"])
 
         dev_type = None
         if "deviceType" in device_info:
