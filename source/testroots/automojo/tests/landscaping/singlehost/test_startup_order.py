@@ -1,6 +1,6 @@
 
 from automojo.testbase import verification
-from automojo.testbase.mocking import Mock
+from automojo.testbase.mocking import Mock, Patch, PatchType
 from automojo.landscaping.layers.landscapeoperationallayer import LandscapeOperationalLayer
 
 class DummyContextManager:
@@ -33,7 +33,7 @@ def test_activate_coordinators_order() -> None:
 
     mock_lscape.layer_integration = mock_integ_layer
 
-    # Context Manager Mock using a helper class because automojo.testbase.mocking.Mock is not a context manager
+    # Context Manager Mock using a helper class
     mock_context_manager = DummyContextManager()
 
     mock_lscape.begin_locked_landscape_scope = Mock(return_value=mock_context_manager)
@@ -74,23 +74,29 @@ def test_activate_coordinators_order() -> None:
     # Initialize Layer
     layer = LandscapeOperationalLayer(mock_lscape)
 
-    # Inject 'establish_connectivity' mock
-    mock_establish_conn = Mock(side_effect=record_call("establish_conn"))
-    layer.establish_connectivity = mock_establish_conn
-
-    # Call the method
-    activation_params = Mock()
-    layer.activate_coordinators(activation_params)
-
-    # Verify Order
-    print(f"Call Order: {call_order}")
+    # Use Patch directly
+    establish_conn_patch = Patch(layer, 'establish_connectivity', PatchType.Instance)
 
     try:
-        conn_idx = call_order.index('establish_conn')
-        power_idx = call_order.index('attach_power')
-        dev_idx = call_order.index('dev_activate')
+        mock_establish_conn = establish_conn_patch.activate()
+        mock_establish_conn.configure(side_effect=record_call("establish_conn"))
 
-        verification.assert_greater(conn_idx, power_idx, "establish_connectivity should be called AFTER attach_to_power")
-        verification.assert_greater(conn_idx, dev_idx, "establish_connectivity should be called AFTER dev_activate")
-    except ValueError as e:
-        verification.assert_fail(f"Expected call missing from order list: {e}. Order was: {call_order}")
+        # Call the method
+        activation_params = Mock()
+        layer.activate_coordinators(activation_params)
+
+        # Verify Order
+        print(f"Call Order: {call_order}")
+
+        try:
+            conn_idx = call_order.index('establish_conn')
+            power_idx = call_order.index('attach_power')
+            dev_idx = call_order.index('dev_activate')
+
+            verification.assert_greater(conn_idx, power_idx, "establish_connectivity should be called AFTER attach_to_power")
+            verification.assert_greater(conn_idx, dev_idx, "establish_connectivity should be called AFTER dev_activate")
+        except ValueError as e:
+            verification.assert_fail(f"Expected call missing from order list: {e}. Order was: {call_order}")
+
+    finally:
+        establish_conn_patch.deactivate()
