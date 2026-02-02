@@ -11,6 +11,7 @@ __copyright__ = "Copyright 2025, Automation Mojo LLC"
 __credits__ = []
 
 
+import socket
 from typing import List, Tuple, Union
 import weakref
 
@@ -29,6 +30,14 @@ class DliPowerCoordinator(ServiceCoordinatorBase):
     """
     # pylint: disable=attribute-defined-outside-init
 
+    def __init__(self, lscape: "Landscape", *args, **kwargs):
+        """
+            Constructs a new :class:`DliPowerCoordinator` instance.
+        """
+        super().__init__(lscape, *args, **kwargs)
+        self._cl_control_extensions = {}
+        return
+
     @property
     def creates_control_extensions(self) -> bool:
         """
@@ -42,48 +51,57 @@ class DliPowerCoordinator(ServiceCoordinatorBase):
         """
         extensions = []
 
-        for svc in self.children:
-            host = svc.host
+        with self.begin_locked_coordinator_scope():
+            for svc in self._cl_children.values():
+                host = svc.host
 
-            credential = None
-            for cred in svc.credentials.values():
-                if "basic" in cred.categories:
-                    credential = cred
-                    break
+                credential = None
+                for cred in svc.credentials.values():
+                    if "basic" in cred.categories:
+                        credential = cred
+                        break
 
-            if credential:
-                port = 80
-                if "port" in svc.service_config:
-                    port = svc.service_config["port"]
+                if credential:
+                    port = 80
+                    if "port" in svc.service_config:
+                        port = svc.service_config["port"]
 
-                # Create the shared client for this service
-                client = DliPowerRestClient(host, credential, port=port)
+                    client = None
 
-                # For DLI Power, typically 8 outlets.
-                # In robust implementation, this might be configurable per device.
-                for outlet_idx in range(1, 9):
-                    # control_key format: "power: outlet={outlet_idx} server='{host}'"
-                    # keys are sorted: outlet, server
-                    control_key = f"power: outlet={outlet_idx} server={repr(host)}"
+                    # For DLI Power, typically 8 outlets.
+                    # In robust implementation, this might be configurable per device.
+                    for outlet_idx in range(1, 9):
+                        # control_key format: "power: outlet={outlet_idx} server='{host}'"
+                        # keys are sorted: outlet, server
+                        control_key = f"power: outlet={outlet_idx} server={repr(host)}"
 
-                    ext = DliPowerControlExtension(client, outlet_idx)
+                        if control_key in self._cl_control_extensions:
+                            ext = self._cl_control_extensions[control_key]
+                            extensions.append((control_key, ext))
+                        else:
+                            if client is None:
+                                # Create the shared client for this service
+                                client = DliPowerRestClient(host, credential, port=port)
 
-                    coord_ref = weakref.ref(self)
+                            ext = DliPowerControlExtension(client, outlet_idx)
 
-                    # Pre-initialize with service info
-                    # Note: basedevice_ref is None until attached to a device
-                    ext.initialize(
-                        coord_ref,
-                        None,
-                        "power",
-                        host,
-                        {"server": host, "outlet": outlet_idx}
-                    )
+                            coord_ref = weakref.ref(self)
 
-                    extensions.append((control_key, ext))
-            else:
-                # Log warning?
-                pass
+                            # Pre-initialize with service info
+                            # Note: basedevice_ref is None until attached to a device
+                            ext.initialize(
+                                coord_ref,
+                                None,
+                                "power",
+                                host,
+                                {"server": host, "outlet": outlet_idx}
+                            )
+
+                            self._cl_control_extensions[control_key] = ext
+                            extensions.append((control_key, ext))
+                else:
+                    # Log warning?
+                    pass
 
         return extensions
 
@@ -94,9 +112,10 @@ class DliPowerCoordinator(ServiceCoordinatorBase):
         """
         self._power_config = {}
 
-        for pcfg in self._coord_config:
-            cfgname = pcfg["name"]
-            self._power_config[cfgname] = pcfg
+        if self._coord_config is not None:
+            for pcfg in self._coord_config:
+                cfgname = pcfg["name"]
+                self._power_config[cfgname] = pcfg
 
         self._power_interfaces = {}
 
@@ -109,13 +128,21 @@ class DliPowerCoordinator(ServiceCoordinatorBase):
         """
         results = []
 
-        # DLI Power services don't support generic command execution via run_cmd.
-        # Connectivity verification should ideally happen via REST client, but here we iterate over services.
         for svc in self.children:
             host = svc.host
             ipaddr = svc.ipaddr
-            # Placeholder for connectivity check
-            results.append((host, ipaddr, True, "Connectivity assumed", None, None))
+
+            port = 80
+            if "port" in svc.service_config:
+                port = int(svc.service_config["port"])
+
+            try:
+                # Basic TCP connectivity check
+                with socket.create_connection((ipaddr, port), timeout=5):
+                    pass
+                results.append((host, ipaddr, True, "Connectivity established (TCP)", None, None))
+            except Exception as xcpt:
+                results.append((host, ipaddr, False, None, None, xcpt))
 
         return results
 
