@@ -395,21 +395,84 @@ class LandscapeOperationalLayer(LandscapingLayerBase):
 
         layer_integ = lscape.layer_integration
 
+        failures = []
+
         coordinators_for_services = layer_integ.coordinators_for_services
         for coord in coordinators_for_services.values():
-            coord.establish_connectivity(activation_params)
+            results = coord.establish_connectivity(activation_params)
+            for item in results:
+                host, ipaddr, status, stdout, stderr, exc = item
+                if exc is not None:
+                    failures.append(item)
+                elif status is not None:
+                    if isinstance(status, bool):
+                        if not status:
+                            failures.append(item)
+                    elif status != 0:
+                        failures.append(item)
 
         coordinators_for_power = layer_integ.coordinators_for_power
         for coord in coordinators_for_power.values():
-            coord.establish_connectivity(activation_params)
+            results = coord.establish_connectivity(activation_params)
+            for item in results:
+                host, ipaddr, status, stdout, stderr, exc = item
+                if exc is not None:
+                    failures.append(item)
+                elif status is not None:
+                    if isinstance(status, bool):
+                        if not status:
+                            failures.append(item)
+                    elif status != 0:
+                        failures.append(item)
 
         coordinators_for_serial = layer_integ.coordinators_for_serial
         for coord in coordinators_for_serial.values():
-            coord.establish_connectivity(activation_params)
+            results = coord.establish_connectivity(activation_params)
+            for item in results:
+                host, ipaddr, status, stdout, stderr, exc = item
+                if exc is not None:
+                    failures.append(item)
+                elif status is not None:
+                    if isinstance(status, bool):
+                        if not status:
+                            failures.append(item)
+                    elif status != 0:
+                        failures.append(item)
 
         coordinators_for_devices = layer_integ.coordinators_for_devices
         for coord in coordinators_for_devices.values():
-            coord.establish_connectivity(activation_params)
+            results = coord.establish_connectivity(activation_params)
+            for item in results:
+                host, ipaddr, status, stdout, stderr, exc = item
+                if exc is not None:
+                    failures.append(item)
+                elif status is not None:
+                    if isinstance(status, bool):
+                        if not status:
+                            failures.append(item)
+                    elif status != 0:
+                        failures.append(item)
+
+        if len(failures) > 0:
+            errmsg_lines = [
+                "Errors encountered while establishing connectivity with the landscape.",
+                "FAILURES:"
+            ]
+
+            for item in failures:
+                host, ipaddr, status, stdout, stderr, exc = item
+                if exc is not None:
+                    errmsg_lines.append(f"    Host: {host} IP: {ipaddr} Exception: {exc}")
+                else:
+                    errmsg_lines.append(f"    Host: {host} IP: {ipaddr} Status: {status} Stderr: {stderr}")
+
+            errmsg = os.linesep.join(errmsg_lines)
+
+            # If we are not allowing missing devices, then raise a RuntimeError
+            if not activation_params.allow_missing_devices:
+                raise RuntimeError(errmsg)
+            else:
+                self.logger.error(errmsg)
 
         return
     

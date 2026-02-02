@@ -317,6 +317,9 @@ class LandscapeDevice(FeatureAttachedObject):
         if ext_type not in self._extensions:
             self._extensions[ext_type] = extension
         else:
+            if self._extensions[ext_type] is extension:
+                return
+
             errmsg = f"attach_extension: called for pre-existing extension type '{ext_type}'."
             raise SemanticError(errmsg)
 
