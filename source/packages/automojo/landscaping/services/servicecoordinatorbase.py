@@ -79,20 +79,19 @@ class ServiceCoordinatorBase(CoordinatorBase):
         self._cl_ip_to_host_lookup: Dict[str, str] = {}
         return
 
-    @property
-    def children_as_extension(self) -> List[ProtocolExtension]:
+    def get_children_as_extension(self, integration_key: str = "network/ssh") -> List[ProtocolExtension]:
         """
             Returns a list of protocol extensions (agents) for the services managed by this coordinator.
-            Primarily returns SSH agents if available.
+
+            :param integration_key: The integration key to lookup the extension with. Defaults to "network/ssh".
         """
         extensions = []
         with self._coord_lock:
             for svc in self._cl_children.values():
                 if hasattr(svc, "extensions"):
-                    # Check for SSH extension
                     exts = svc.extensions
-                    if "network/ssh" in exts:
-                        extensions.append(exts["network/ssh"])
+                    if integration_key in exts:
+                        extensions.append(exts[integration_key])
         return extensions
 
     @property
@@ -293,7 +292,7 @@ class ServiceCoordinatorBase(CoordinatorBase):
         """
         results = []
 
-        for agent in self.children_as_extension:
+        for agent in self.get_children_as_extension():
             host = agent.host
             ipaddr = agent.ipaddr
             try:
