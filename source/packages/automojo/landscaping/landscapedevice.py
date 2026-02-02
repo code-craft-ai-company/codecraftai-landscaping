@@ -357,7 +357,14 @@ class LandscapeDevice(FeatureAttachedObject):
         if self.is_configured_for_power:
             power_config = self._features["power"]
 
-            power_ext = self.landscape.checkout_control_point("power", **power_config)
+            # We need to filter the configuration to only include the keys that are
+            # used to identify the power control point.  Extra keys in the configuration
+            # can cause the checkout key generation to fail to match the key registered
+            # by the coordinator.
+            server = power_config["server"]
+            outlet = int(power_config["outlet"])
+
+            power_ext = self.landscape.checkout_control_point("power", server=server, outlet=outlet)
 
             # The extension is already created and initialized by the coordinator
             # We just need to update the reference to the device it is extending
@@ -374,7 +381,14 @@ class LandscapeDevice(FeatureAttachedObject):
         if self.is_configured_for_serial:
             serial_config = self._features["serial"]
 
-            serial_ext = self.landscape.checkout_control_point("serial", **serial_config)
+            # We need to filter the configuration to only include the keys that are
+            # used to identify the serial control point.  Extra keys in the configuration
+            # can cause the checkout key generation to fail to match the key registered
+            # by the coordinator.
+            host = serial_config["host"]
+            port = int(serial_config["port"])
+
+            serial_ext = self.landscape.checkout_control_point("serial", host=host, port=port)
 
             # The extension is already created and initialized by the coordinator
             # We just need to update the reference to the device it is extending
