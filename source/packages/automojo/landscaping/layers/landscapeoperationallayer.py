@@ -40,7 +40,10 @@ if TYPE_CHECKING:
 
 class LandscapeOperationalLayer(LandscapingLayerBase):
     """
-        Layer that manages operational state for landscape devices.
+        Layer that manages operational state for landscape devices.  This layer operationalizes
+        the devices, services and controls.  This layer also initiates first contact with the
+        devices and services and validates that the configuration "contact" information provided
+        is valid and devices can be contacted.
     """
 
     def __init__(self, lscape: "Landscape"):

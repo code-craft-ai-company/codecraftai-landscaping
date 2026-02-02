@@ -48,9 +48,9 @@ APOD_RESERVED_SECTIONS = [
 
 class LandscapeConfigurationLayer(LandscapingLayerBase):
     """
-        The base class for all derived :class:`LandscapeDescription` objects.  The
-        :class:`LandscapeDescription` is used to load a description of the entities
-        and resources in the tests landscape that will be used by the tests.
+        The landscape layer responsible for working with the landscape and topology configurations.
+        Some tools might want to utilize the landscape by strictly working with the configuration
+        information without action creating devices, services or controls.
     """
 
     def __init__(self, lscape: "Landscape"):

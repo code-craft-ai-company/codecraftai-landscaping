@@ -42,7 +42,7 @@ if TYPE_CHECKING:
 
 class LandscapeIntegrationLayer(LandscapingLayerBase):
     """
-        Layer responsible for integrating discovered devices and services.
+        Layer responsible for integrating instances of declared and discovered devices, services and controls.
     """
 
     def __init__(self, lscape: "Landscape"):
