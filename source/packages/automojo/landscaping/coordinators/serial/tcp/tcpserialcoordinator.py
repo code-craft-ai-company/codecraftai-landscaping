@@ -74,7 +74,9 @@ class TcpSerialCoordinator(CoordinatorBase):
 
                 dev_config = device.device_config
                 host = dev_config["host"]
-                port = dev_config["port"]
+
+                # Ensure port is treated as an integer for key generation consistency
+                port = int(dev_config["port"])
 
                 key = f"serial: host={repr(host)} port={repr(port)}"
                 extensions.append((key, ext))

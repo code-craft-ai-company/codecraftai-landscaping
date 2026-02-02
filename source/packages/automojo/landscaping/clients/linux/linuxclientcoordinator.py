@@ -22,7 +22,7 @@ from automojo.landscaping.clients.constants import INTEGRATION_CLASS_FOR_LINUX_C
 from automojo.landscaping.clients.linux.linuxclient import LinuxClient
 
 from automojo.landscaping.integrationclasses import INTEGRATION_CLASS_NETWORK_SSH
-from automojo.landscaping.protocolextensions.sshprotocolextension import SshProtocolExtension
+from automojo.landscaping.extensions.protocol.sshprotocolextension import SshProtocolExtension
 
 if TYPE_CHECKING:
     from automojo.landscaping.landscape import Landscape
