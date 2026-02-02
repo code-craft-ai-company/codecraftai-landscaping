@@ -26,6 +26,7 @@ from automojo.landscaping.friendlyidentifier import FriendlyIdentifier
 
 from automojo.landscaping.coordinatorbase import CoordinatorBase
 from automojo.landscaping.extensions.control.controlextension import ControlExtension
+from automojo.landscaping.extensions.protocol.protocolextension import ProtocolExtension
 from automojo.landscaping.landscapeparameters import LandscapeActivationParams
 from automojo.landscaping.landscapeservice import LandscapeService
 
@@ -77,6 +78,21 @@ class ServiceCoordinatorBase(CoordinatorBase):
         self._cl_upnp_hint_to_ip_lookup: Dict[str, str] = {}
         self._cl_ip_to_host_lookup: Dict[str, str] = {}
         return
+
+    def get_children_as_extension(self, integration_key: str = "network/ssh") -> List[ProtocolExtension]:
+        """
+            Returns a list of protocol extensions (agents) for the services managed by this coordinator.
+
+            :param integration_key: The integration key to lookup the extension with. Defaults to "network/ssh".
+        """
+        extensions = []
+        with self._coord_lock:
+            for svc in self._cl_children.values():
+                if hasattr(svc, "extensions"):
+                    exts = svc.extensions
+                    if integration_key in exts:
+                        extensions.append(exts[integration_key])
+        return extensions
 
     @property
     def creates_control_extensions(self) -> bool:
@@ -169,6 +185,11 @@ class ServiceCoordinatorBase(CoordinatorBase):
 
         self.attach_protocol_extensions(landscape, service_info, service)
 
+        with self.begin_locked_coordinator_scope() as locked:
+            self._cl_children[host] = service
+            # If we have an IP, we can add it to lookup, but service usually resolves IP dynamically
+            # For now just tracking in children is enough for lookup_service_by_host
+
         return fid, service
 
     def create_ssh_agent(self, service: LandscapeService, service_info: Dict[str, Any], host: str, cred: BaseCredential,
@@ -226,7 +247,7 @@ class ServiceCoordinatorBase(CoordinatorBase):
         self._coord_lock.acquire()
         try:
             if host in self._cl_children:
-                service = self._cl_children[host].extended
+                service = self._cl_children[host]
         finally:
             self._coord_lock.release()
 
@@ -249,7 +270,7 @@ class ServiceCoordinatorBase(CoordinatorBase):
                 if ip in self._cl_ip_to_host_lookup:
                     host = self._cl_ip_to_host_lookup[ip]
                     if host in self._cl_children:
-                        service = self._cl_children[host].extended
+                        service = self._cl_children[host]
         finally:
             self._coord_lock.release()
 
@@ -271,7 +292,7 @@ class ServiceCoordinatorBase(CoordinatorBase):
         """
         results = []
 
-        for agent in self.children_as_extension:
+        for agent in self.get_children_as_extension():
             host = agent.host
             ipaddr = agent.ipaddr
             try:

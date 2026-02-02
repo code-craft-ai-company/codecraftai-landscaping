@@ -41,6 +41,8 @@ class TcpSerialCoordinator(CoordinatorBase):
             :param lscape: The owning :class:`Landscape`.
         """
         super().__init__(lscape, *args, **kwargs)
+
+        self._cl_ip_to_host_lookup: Dict[str, str] = {}
         return
 
     @property
