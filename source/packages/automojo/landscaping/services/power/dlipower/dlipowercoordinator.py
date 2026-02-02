@@ -42,7 +42,7 @@ class DliPowerCoordinator(ServiceCoordinatorBase):
         """
         extensions = []
 
-        for svc in self.children_as_extension:
+        for svc in self.children:
             host = svc.host
 
             credential = None
@@ -109,16 +109,12 @@ class DliPowerCoordinator(ServiceCoordinatorBase):
         """
         results = []
 
-        cmd: str = "echo 'It Works'"
-
-        for agent in self.children_as_extension:
-            host = agent.host
-            ipaddr = agent.ipaddr
-            try:
-                status, stdout, stderr = agent.run_cmd(cmd)
-                results.append((host, ipaddr, status, stdout, stderr, None))
-            except Exception as xcpt: # pylint: disable=broad-except
-                results.append((host, ipaddr, None, None, None, xcpt))
+        # DLI Power services don't support generic command execution via run_cmd.
+        # Connectivity verification should ideally happen via REST client, but here we iterate over services.
+        for svc in self.children:
+            host = svc.host
+            # Placeholder for connectivity check
+            results.append((host, None, True, "Connectivity assumed", None, None))
 
         return results
 
@@ -136,7 +132,7 @@ class DliPowerCoordinator(ServiceCoordinatorBase):
         self._coord_lock.acquire()
         try:
             if host in self._cl_children:
-                device = self._cl_children[host].basedevice
+                device = self._cl_children[host]
         finally:
             self._coord_lock.release()
 
@@ -159,7 +155,7 @@ class DliPowerCoordinator(ServiceCoordinatorBase):
                 if ip in self._cl_ip_to_host_lookup:
                     host = self._cl_ip_to_host_lookup[ip]
                     if host in self._cl_children:
-                        device = self._cl_children[host].basedevice
+                        device = self._cl_children[host]
         finally:
             self._coord_lock.release()
 

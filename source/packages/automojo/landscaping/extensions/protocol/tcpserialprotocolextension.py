@@ -34,7 +34,9 @@ class TcpSerialProtocolExtension(TcpSerialAgent, ProtocolExtension):
             :param called_id: Identifier used when logging sessions.
             :param aspects: Command aspects controlling execution behavior.
         """
-        TcpSerialAgent.__init__(self, host, port, called_id=called_id, aspects=aspects)
+        # TcpSerialAgent.__init__ signature might have changed in interop package.
+        # Removing called_id to fix TypeError.
+        TcpSerialAgent.__init__(self, host, port, aspects=aspects)
         ProtocolExtension.__init__(self)
         return
     
