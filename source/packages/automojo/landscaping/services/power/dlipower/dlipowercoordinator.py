@@ -64,7 +64,7 @@ class DliPowerCoordinator(ServiceCoordinatorBase):
                 for outlet_idx in range(1, 9):
                     # control_key format: "power: outlet={outlet_idx} server='{host}'"
                     # keys are sorted: outlet, server
-                    control_key = f"power: outlet={outlet_idx} server='{host}'"
+                    control_key = f"power: outlet={outlet_idx} server={repr(host)}"
 
                     ext = DliPowerControlExtension(client, outlet_idx)
 
@@ -113,8 +113,9 @@ class DliPowerCoordinator(ServiceCoordinatorBase):
         # Connectivity verification should ideally happen via REST client, but here we iterate over services.
         for svc in self.children:
             host = svc.host
+            ipaddr = svc.ipaddr
             # Placeholder for connectivity check
-            results.append((host, None, True, "Connectivity assumed", None, None))
+            results.append((host, ipaddr, True, "Connectivity assumed", None, None))
 
         return results
 
