@@ -1,6 +1,6 @@
 
 from automojo.testbase import verification
-from automojo.testbase.mocking import Mock, Patch, PatchType
+from automojo.testbase.mocking import Mock, create_instance_patch
 from automojo.landscaping.layers.landscapeoperationallayer import LandscapeOperationalLayer
 
 class DummyContextManager:
@@ -74,11 +74,8 @@ def test_activate_coordinators_order() -> None:
     # Initialize Layer
     layer = LandscapeOperationalLayer(mock_lscape)
 
-    # Use Patch directly
-    establish_conn_patch = Patch(layer, 'establish_connectivity', PatchType.Instance)
-
-    try:
-        mock_establish_conn = establish_conn_patch.activate()
+    # Use create_instance_patch for establish_connectivity
+    with create_instance_patch(layer, 'establish_connectivity') as mock_establish_conn:
         mock_establish_conn.configure(side_effect=record_call("establish_conn"))
 
         # Call the method
@@ -97,6 +94,3 @@ def test_activate_coordinators_order() -> None:
             verification.assert_greater(conn_idx, dev_idx, "establish_connectivity should be called AFTER dev_activate")
         except ValueError as e:
             verification.assert_fail(f"Expected call missing from order list: {e}. Order was: {call_order}")
-
-    finally:
-        establish_conn_patch.deactivate()
