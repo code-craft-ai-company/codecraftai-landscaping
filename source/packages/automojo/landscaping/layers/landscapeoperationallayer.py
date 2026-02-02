@@ -305,7 +305,7 @@ class LandscapeOperationalLayer(LandscapingLayerBase):
                     "UNAVAILABLE NODES:"
                 ]
                 for node in unavailable_nodes:
-                    err_msg_lines.append(f"    {node.name}")
+                    err_msg_lines.append(f"    {node.identity}")
                 err_msg = os.linesep.join(err_msg_lines)
                 raise CheckoutError(err_msg)
 
