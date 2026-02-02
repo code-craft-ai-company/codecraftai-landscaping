@@ -11,7 +11,7 @@ __copyright__ = "Copyright 2025, Automation Mojo LLC"
 __credits__ = []
 
 
-from typing import Any, Dict, Tuple, Union, TYPE_CHECKING
+from typing import Any, Dict, List, Tuple, Union, TYPE_CHECKING
 
 import weakref
 
@@ -61,7 +61,7 @@ class TcpSerialCoordinator(CoordinatorBase):
             device.enhance()
         return
 
-    def get_control_extensions(self) -> Dict[str, Any]:
+    def get_control_extensions(self) -> List[Tuple[str, Any]]:
         """
             Returns a list of control extensions managed by this coordinator.
         """

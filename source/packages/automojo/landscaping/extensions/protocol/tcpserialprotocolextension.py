@@ -14,13 +14,14 @@ from typing import Optional, Union
 
 import weakref
 
+from automojo.landscaping.extensions.control.controlextension import ControlExtension
 from automojo.landscaping.extensions.protocol.protocolextension import ProtocolExtension
 
 from automojo.interop.aspects import AspectsCmd, DEFAULT_CMD_ASPECTS
 
 from automojo.interop.protocols.serial.tcpserialagent import TcpSerialAgent
 
-class TcpSerialProtocolExtension(TcpSerialAgent, ProtocolExtension):
+class TcpSerialProtocolExtension(TcpSerialAgent, ProtocolExtension, ControlExtension):
     """
         Serial agent integrated as a protocol extension for a landscape device.
     """
@@ -38,6 +39,7 @@ class TcpSerialProtocolExtension(TcpSerialAgent, ProtocolExtension):
         # Removing called_id to fix TypeError.
         TcpSerialAgent.__init__(self, host, port, aspects=aspects)
         ProtocolExtension.__init__(self)
+        ControlExtension.__init__(self)
         return
     
     def initialize(self, coord_ref: weakref.ReferenceType, basedevice_ref: weakref.ReferenceType, extid: str, location: str, configinfo: dict):
