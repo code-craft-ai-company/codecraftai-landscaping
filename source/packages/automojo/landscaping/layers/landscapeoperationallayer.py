@@ -394,6 +394,18 @@ class LandscapeOperationalLayer(LandscapingLayerBase):
 
         layer_integ = lscape.layer_integration
 
+        coordinators_for_services = layer_integ.coordinators_for_services
+        for coord in coordinators_for_services.values():
+            coord.establish_connectivity(activation_params)
+
+        coordinators_for_power = layer_integ.coordinators_for_power
+        for coord in coordinators_for_power.values():
+            coord.establish_connectivity(activation_params)
+
+        coordinators_for_serial = layer_integ.coordinators_for_serial
+        for coord in coordinators_for_serial.values():
+            coord.establish_connectivity(activation_params)
+
         coordinators_for_devices = layer_integ.coordinators_for_devices
         for coord in coordinators_for_devices.values():
             coord.establish_connectivity(activation_params)
@@ -563,18 +575,19 @@ class LandscapeOperationalLayer(LandscapingLayerBase):
 
         self._operational_controlpoint_pool = {}
 
-        for svc in integ_layer.integrated_services.values():
-            if hasattr(svc.coordinator, "creates_control_extensions") and svc.coordinator.creates_control_extensions:
-                extensions = svc.coordinator.get_control_extensions()
+        coordinators_for_services = integ_layer.coordinators_for_services
+        for svc_coord in coordinators_for_services.values():
+            if hasattr(svc_coord, "creates_control_extensions") and svc_coord.creates_control_extensions:
+                extensions = svc_coord.get_control_extensions()
                 for key, ext in extensions:
                     self._operational_controlpoint_pool[key] = ext
 
-        if integ_layer.integrated_power is not None:
-            for pwr_svc in integ_layer.integrated_power.values():
-                if hasattr(pwr_svc.coordinator, "creates_control_extensions") and pwr_svc.coordinator.creates_control_extensions:
-                    extensions = pwr_svc.coordinator.get_control_extensions()
-                    for key, ext in extensions:
-                        self._operational_controlpoint_pool[key] = ext
+        coordinators_for_power = integ_layer.coordinators_for_power
+        for pwr_coord in coordinators_for_power.values():
+            if hasattr(pwr_coord, "creates_control_extensions") and pwr_coord.creates_control_extensions:
+                extensions = pwr_coord.get_control_extensions()
+                for key, ext in extensions:
+                    self._operational_controlpoint_pool[key] = ext
 
         coordinators_for_serial = integ_layer.coordinators_for_serial
         for serial_coord in coordinators_for_serial.values():

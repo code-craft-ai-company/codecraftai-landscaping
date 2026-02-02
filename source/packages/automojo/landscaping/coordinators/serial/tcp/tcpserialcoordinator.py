@@ -73,12 +73,10 @@ class TcpSerialCoordinator(CoordinatorBase):
                 ext = device.serial
 
                 dev_config = device.device_config
+                host = dev_config["host"]
+                port = dev_config["port"]
 
-                param_parts = []
-                for k, v in sorted(dev_config.items()):
-                    param_parts.append(f"{k}={repr(v)}")
-
-                key = f"serial: {' '.join(param_parts)}"
+                key = f"serial: host={repr(host)} port={repr(port)}"
                 extensions.append((key, ext))
 
         return extensions
