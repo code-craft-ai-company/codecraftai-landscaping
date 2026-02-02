@@ -191,12 +191,9 @@ class ServiceCoordinatorBase(CoordinatorBase):
             # For now just tracking in children is enough for lookup_service_by_host
 
             # Try to populate IP lookup if IP is available.
-            try:
-                ipaddr = service.ipaddr
-                if ipaddr is not None:
-                    self._cl_ip_to_host_lookup[ipaddr] = host
-            except (RuntimeError, ConfigurationError):
-                pass
+            ipaddr = service.ipaddr
+            if ipaddr is not None:
+                self._cl_ip_to_host_lookup[ipaddr] = host
 
         return fid, service
 
