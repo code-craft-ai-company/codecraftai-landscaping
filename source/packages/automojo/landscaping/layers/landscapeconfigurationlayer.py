@@ -26,7 +26,9 @@ from automojo.errors.exceptions import ConfigurationError
 
 from automojo.xmodules.xcollections.mergemap import MergeMap
 
+from automojo.thisapp.wellknown import ThisApplicationSingleton
 from automojo.configuration.configurationmaps import CONFIGURATION_MAPS
+from automojo.thisapp.contextpaths import ContextPaths
 
 from automojo.credentials.credentialmanager import CredentialManager
 from automojo.credentials.wellknown import CredentialManagerSingleton
@@ -216,7 +218,17 @@ class LandscapeConfigurationLayer(LandscapingLayerBase):
         """
             Initialize the credentials manager for the landscape object.
         """
-        self._credential_manager = CredentialManagerSingleton()
+
+        this_app = ThisApplicationSingleton()
+
+        credential_info = {}
+        if CONFIGURATION_MAPS.CREDENTIAL_CONFIGURATION_MAP is not None and \
+            len(CONFIGURATION_MAPS.CREDENTIAL_CONFIGURATION_MAP) > 0:
+            credential_info = CONFIGURATION_MAPS.CREDENTIAL_CONFIGURATION_MAP
+
+        credential_uris = this_app.context.lookup(ContextPaths.CONFIG_CREDENTIAL_URIS, [])
+
+        self._credential_manager = CredentialManagerSingleton(credential_info, credential_uris)
         return
 
     def load_landscape(self, activation_params: LandscapeActivationParams) -> Union[MergeMap, None]:
