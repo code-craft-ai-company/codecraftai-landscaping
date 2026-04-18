@@ -90,9 +90,13 @@ class ProtocolExtension:
         return self._location
 
     def initialize(self, coord_ref: weakref.ReferenceType, extends_ref: weakref.ReferenceType,
-                   extid: str, location: str, configinfo: dict) -> None:
+                   extid: str, location: str, configinfo: dict, **kwargs) -> None:
         """
             Initializes the landscape device extension.
+
+            :param kwargs: Protocol-specific extra initialization data forwarded by subclasses.
+                The base class ignores these; subclasses may consume them before or after
+                calling this method.
         """
         self._coord_ref = coord_ref
         self._extends_ref = extends_ref
