@@ -10,7 +10,7 @@ __copyright__ = "Copyright 2025, Automation Mojo LLC"
 __credits__ = []
 
 
-from typing import Generator
+from typing import Generator, Optional
 
 from automojo import testbase
 
@@ -20,14 +20,17 @@ from automojo.landscaping.landscape import Landscape
 from automojo.landscaping.clients.linux.linuxclientcoordinatorcoupling import LinuxClientCoordinatorCoupling
 
 @testbase.register.resource_factory()
-def create_landscape(constraints={}) -> Generator[Landscape, None, None]:
+def create_landscape(constraints: Optional[dict] = None) -> Generator[Landscape, None, None]:
     """
         Creates the global :class:`Landscape` instance.
 
         :param constraints: Optional dictionary of constraints used while constructing the Landscape.
+            Defaults to ``None``; an empty dictionary is materialised inside the function when omitted.
 
         :returns: A generator yielding the Landscape object.
     """
+    if constraints is None:
+        constraints = {}
     lscape = LandscapeSingleton()
     yield lscape
 

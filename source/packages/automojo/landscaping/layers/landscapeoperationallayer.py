@@ -168,7 +168,7 @@ class LandscapeOperationalLayer(LandscapingLayerBase):
 
             if cname not in self._operational_clusters_outstanding:
                 err_msg_lines = [
-                    f"Checkin of cluster '{cname}' that was not previously checked out."
+                    f"Checkin of cluster '{cname}' that was not previously checked out.",
                     "AVAILABLE POOL:"
                 ]
 
@@ -207,7 +207,7 @@ class LandscapeOperationalLayer(LandscapingLayerBase):
 
             if dev_identity not in self._operational_device_outstanding:
                 err_msg_lines = [
-                    f"Checkin of device '{dev_identity}' that was not previously checked out."
+                    f"Checkin of device '{dev_identity}' that was not previously checked out.",
                     "AVAILABLE POOL:"
                 ]
 
@@ -239,7 +239,7 @@ class LandscapeOperationalLayer(LandscapingLayerBase):
         with lscape.begin_locked_landscape_scope() as locked:
             if control_key not in self._operational_controlpoint_outstanding:
                 err_msg_lines = [
-                    f"Checkin of control point '{control_key}' that was not previously checked out."
+                    f"Checkin of control point '{control_key}' that was not previously checked out.",
                     "AVAILABLE POOL:"
                 ]
 

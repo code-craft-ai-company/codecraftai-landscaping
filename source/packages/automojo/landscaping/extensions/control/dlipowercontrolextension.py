@@ -39,16 +39,17 @@ class DliPowerControlExtension(DliPowerOutletControl, ProtocolExtension, Control
         ControlExtension.__init__(self)
         return
     
-    def initialize(self, coord_ref: weakref.ReferenceType, basedevice_ref: weakref.ReferenceType, extid: str, location: str, configinfo: dict):
+    def initialize(self, coord_ref: weakref.ReferenceType, basedevice_ref: weakref.ReferenceType, extid: str, location: str, configinfo: dict, **kwargs):
         """
-            Initializes the landscape device extension. It is not required to call this function in order to use an TcpSerialAgent, it is used
-            when an agent is attached to a LandscapeDevice as a device extension.
+            Initializes the landscape device extension. It is not required to call this function in order to use a DliPowerOutletControl, it is used
+            when an outlet is attached to a LandscapeDevice as a device extension.
 
             :param coord_ref: A weak reference to the coordinator that is managing interactions through this
             device extension.
             :param extid: A unique reference that can be used to identify this device via the coordinator even if its location changes.
             :param location: The location reference where this device can be found via the coordinator.
             :param configinfo: The configuration information dictionary from the landscape file for the specified host.
+            :param kwargs: Protocol-specific extra initialization data forwarded to :class:`ProtocolExtension`.
         """
-        ProtocolExtension.initialize(self, coord_ref, basedevice_ref, extid, location, configinfo)
+        ProtocolExtension.initialize(self, coord_ref, basedevice_ref, extid, location, configinfo, **kwargs)
         return

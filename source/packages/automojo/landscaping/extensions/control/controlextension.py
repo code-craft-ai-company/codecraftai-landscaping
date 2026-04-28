@@ -38,6 +38,7 @@ class ControlExtension:
         """
         self._service_ref = None
         self._extends_ref = None
+        self._control_id = None
         self._control_info = None
         self._extid = None
         self._location = None
