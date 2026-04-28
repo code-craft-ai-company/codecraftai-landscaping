@@ -52,10 +52,15 @@ class LandscapeIntegrationLayer(LandscapingLayerBase):
             :param lscape: The owning :class:`Landscape` object.
         """
         super().__init__(lscape)
-        self._integrated_devices: Dict[str, LandscapeDevice] = None
-        self._integrated_power: Dict[str, Any] = None
-        self._integrated_serial: Dict[str, Any] = None
-        self._integrated_services: Dict[str, LandscapeService] = None
+        # NB: initialise to empty dicts (not None) so the @property accessors
+        # below — which call ``.copy()`` unconditionally — never AttributeError
+        # when a config-init path runs but a per-category init path (e.g.
+        # `_initialize_landscape_power`) is skipped because device activation
+        # is disabled or the relevant coordinators were never registered.
+        self._integrated_devices: Dict[str, LandscapeDevice] = {}
+        self._integrated_power: Dict[str, Any] = {}
+        self._integrated_serial: Dict[str, Any] = {}
+        self._integrated_services: Dict[str, LandscapeService] = {}
 
         self._integrated_device_groups: Dict[str, LandscapeDeviceGroup] = {}
 

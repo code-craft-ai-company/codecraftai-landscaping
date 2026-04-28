@@ -126,7 +126,8 @@ class ClientSourcePackager:
                     
                     zf.write(filefull, afile)
 
-        sha256_digest = hashlib.sha256(open(zipfilename,'rb').read()).hexdigest()
+        with open(zipfilename, mode='rb') as zf_read:
+            sha256_digest = hashlib.sha256(zf_read.read()).hexdigest()
         with open(digestfilename, mode='w+') as df:
             df.write(sha256_digest)
 
