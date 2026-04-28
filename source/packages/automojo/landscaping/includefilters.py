@@ -13,6 +13,7 @@ __credits__ = []
 
 
 
+from abc import abstractmethod
 from typing import Any
 
 from automojo.interfaces.iincludefilter import IIncludeFilter
@@ -22,18 +23,59 @@ from automojo.landscaping.landscapeservice import LandscapeService
 
 class IncludeDeviceBase(IIncludeFilter):
     """
-        Base include type for device based includes
+        Marker base class for device-targeted include filters.
+
+        Concrete subclasses must override :meth:`should_include`.  This
+        class itself is abstract — direct instantiation produces a
+        filter whose ``should_include`` returns ``None`` (because the
+        upstream :class:`IIncludeFilter` Protocol declares the method
+        without a body), which would silently drop every device from
+        the filtered output.  The ``@abstractmethod`` declaration below
+        makes that misuse fail loudly at instantiation time instead.
     """
+
+    @abstractmethod
+    def should_include(self, check_object: Any) -> bool:
+        """
+            Override in a concrete subclass.
+
+            :param check_object: The candidate object.
+            :returns: ``True`` when the object should be included.
+        """
 
 class IncludeDeviceConfigBase(IIncludeFilter):
     """
-        Base include type for device based includes
+        Marker base class for device-config-targeted include filters.
+
+        See :class:`IncludeDeviceBase` for the rationale behind the
+        abstract :meth:`should_include` declaration.
     """
+
+    @abstractmethod
+    def should_include(self, check_object: Any) -> bool:
+        """
+            Override in a concrete subclass.
+
+            :param check_object: The candidate object.
+            :returns: ``True`` when the object should be included.
+        """
 
 class IncludeServiceBase(IIncludeFilter):
     """
-        Base include type for service based includes
+        Marker base class for service-targeted include filters.
+
+        See :class:`IncludeDeviceBase` for the rationale behind the
+        abstract :meth:`should_include` declaration.
     """
+
+    @abstractmethod
+    def should_include(self, check_object: Any) -> bool:
+        """
+            Override in a concrete subclass.
+
+            :param check_object: The candidate object.
+            :returns: ``True`` when the object should be included.
+        """
 
 class IncludeDeviceByDeviceType(IncludeDeviceBase):
     """
