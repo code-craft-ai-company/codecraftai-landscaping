@@ -120,7 +120,7 @@ class LandscapeService(FeatureAttachedObject):
                 self._credentials[cred_key] = credmgr.lookup_credential(cred_key)
 
         self._has_ssh_credential = False
-        self._primary_ssh_credential = None
+        self._ssh_credential = None
         for cred in self._credentials.values():
             if isinstance(cred, SshCredential):
                 self._has_ssh_credential = True

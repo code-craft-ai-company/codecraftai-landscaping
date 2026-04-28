@@ -82,7 +82,7 @@ class OrchestrationJob(ContextUser):
 
         self._orch_results_dir = get_path_for_output()
 
-        self._runtime_archive = os.path.join(self._test_results_dir, "runtime-declared.yaml")
+        self._runtime_archive = os.path.join(self._orch_results_dir, "runtime-declared.yaml")
 
         return
 
