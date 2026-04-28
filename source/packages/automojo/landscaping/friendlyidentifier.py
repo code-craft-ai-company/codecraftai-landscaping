@@ -71,12 +71,34 @@ class FriendlyIdentifier:
             Provides a short identifier for this instance.
 
             :returns: The resolved identity string for the identifier.
+
+            :raises SemanticError: If a match expression is configured but the
+                                   full identifier no longer matches it (typically
+                                   because :meth:`update_full_identifier` was given
+                                   an incompatible value), or if the match
+                                   expression has no capturing group.
         """
         id = None
 
         if self._identity_match is not None:
             mobj = self._identity_match.match(self._full_identifier)
-            id = mobj.groups()[0]
+            if mobj is None:
+                errmsg_lines = [
+                    "Identity match expression no longer matches the current full identifier.",
+                    "    FULL_IDENTIFIER: {}".format(self._full_identifier),
+                    "    PATTERN: {}".format(self._identity_match.pattern),
+                ]
+                errmsg = "\n".join(errmsg_lines)
+                raise SemanticError(errmsg)
+            groups = mobj.groups()
+            if len(groups) == 0:
+                errmsg_lines = [
+                    "Identity match expression has no capturing group.",
+                    "    PATTERN: {}".format(self._identity_match.pattern),
+                ]
+                errmsg = "\n".join(errmsg_lines)
+                raise SemanticError(errmsg)
+            id = groups[0]
         elif self._hint is not None:
             id = self._hint
         else:
@@ -116,19 +138,29 @@ class FriendlyIdentifier:
         """
             Compares two identifiers for equivalence.
 
-            :param other: Another `FriendlyIdentifier` or string to compare.
+            :param other: Another :class:`FriendlyIdentifier`, a string, or any
+                          other value.  For strings, equality is true when the
+                          string is a substring of the full identifier (matching
+                          the existing behaviour).  For unrelated types, returns
+                          ``NotImplemented`` so Python can fall back to the
+                          other operand's ``__eq__``.
 
-            :returns: ``True`` if the identifiers match, otherwise ``False``.
+            :returns: ``True`` when the identifiers are equivalent, ``False``
+                      when they are comparable but not equal, or
+                      ``NotImplemented`` when ``other`` is of an unrelated type.
         """
-        result = False
-
         if isinstance(other, FriendlyIdentifier):
-            result = self._full_identifier == self.full_identifier
-        elif isinstance(other, str) and self._full_identifier.find(other) > -1:
-            result = True
+            result = self._full_identifier == other._full_identifier
+        elif isinstance(other, str):
+            # The original substring semantic is preserved: a string that's a
+            # substring of the full identifier compares equal.
+            result = self._full_identifier.find(other) > -1
         else:
-            errmsg = "Unable to compare FriendlyIdentifier with type '{}'".format(type(other))
-            raise SemanticError(errmsg)
+            # Per the Python data model, returning NotImplemented (rather than
+            # raising) lets the other operand's ``__eq__`` try; if neither side
+            # can compare, Python falls back to identity comparison and the
+            # result is ``False`` without raising.
+            result = NotImplemented
 
         return result
 

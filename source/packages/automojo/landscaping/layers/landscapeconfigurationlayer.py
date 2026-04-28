@@ -143,9 +143,13 @@ class LandscapeConfigurationLayer(LandscapingLayerBase):
 
             while len(candidate_configs):
                 dev = candidate_configs.pop()
+                is_excluded = False
                 for xfilter in exclude_filters:
-                    if not xfilter.should_exclude(dev):
-                        selected_configs.append(dev)
+                    if xfilter.should_exclude(dev):
+                        is_excluded = True
+                        break
+                if not is_excluded:
+                    selected_configs.append(dev)
 
         return selected_configs
 

@@ -199,9 +199,16 @@ class LandscapeIntegrationLayer(LandscapingLayerBase):
         """
         return self._requested_integration_couplings
 
-    def get_devices(self, include_filters: Optional[List[IIncludeFilter]]=None, exclude_filters: Optional[List[IExcludeFilter]]=None) -> LandscapeDevice:
+    def get_devices(self, include_filters: Optional[List[IIncludeFilter]]=None, exclude_filters: Optional[List[IExcludeFilter]]=None) -> List[LandscapeDevice]:
         """
             Gets a copy of the integrated devices list.
+
+            :param include_filters: Optional list of include filters; a device is kept if ANY
+                                    filter says to include it (OR semantics, matching the
+                                    convention used elsewhere in the layer).
+            :param exclude_filters: Optional list of exclude filters; a device is dropped if
+                                    ANY filter says to exclude it (i.e. a device is kept only
+                                    when NO filter says to exclude it).
         """
         lscape = self.landscape
 
@@ -209,7 +216,7 @@ class LandscapeIntegrationLayer(LandscapingLayerBase):
 
         with lscape.begin_locked_landscape_scope() as locked:
             candidate_devices = [dev for dev in self._integrated_devices.values()]
-        
+
         selected_devices = []
 
         if include_filters is None:
@@ -229,15 +236,25 @@ class LandscapeIntegrationLayer(LandscapingLayerBase):
 
             while len(candidate_devices):
                 dev = candidate_devices.pop()
+                is_excluded = False
                 for xfilter in exclude_filters:
-                    if not xfilter.should_exclude(dev):
-                        selected_devices.append(dev)
+                    if xfilter.should_exclude(dev):
+                        is_excluded = True
+                        break
+                if not is_excluded:
+                    selected_devices.append(dev)
 
         return selected_devices
-    
-    def get_services(self, include_filters: Optional[List[IIncludeFilter]]=None, exclude_filters: Optional[List[IExcludeFilter]]=None) -> LandscapeService:
+
+    def get_services(self, include_filters: Optional[List[IIncludeFilter]]=None, exclude_filters: Optional[List[IExcludeFilter]]=None) -> List[LandscapeService]:
         """
             Gets a copy of the integrated service list.
+
+            :param include_filters: Optional list of include filters; a service is kept if ANY
+                                    filter says to include it.
+            :param exclude_filters: Optional list of exclude filters; a service is dropped if
+                                    ANY filter says to exclude it (i.e. a service is kept only
+                                    when NO filter says to exclude it).
         """
         lscape = self.landscape
 
@@ -245,7 +262,7 @@ class LandscapeIntegrationLayer(LandscapingLayerBase):
 
         with lscape.begin_locked_landscape_scope() as locked:
             candidate_services = [svc for svc in self._integrated_services.values()]
-        
+
         selected_services = []
 
         if include_filters is None:
@@ -265,9 +282,13 @@ class LandscapeIntegrationLayer(LandscapingLayerBase):
 
             while len(candidate_services):
                 svc = candidate_services.pop()
+                is_excluded = False
                 for xfilter in exclude_filters:
-                    if not xfilter.should_exclude(svc):
-                        selected_services.append(svc)
+                    if xfilter.should_exclude(svc):
+                        is_excluded = True
+                        break
+                if not is_excluded:
+                    selected_services.append(svc)
 
         return selected_services
 

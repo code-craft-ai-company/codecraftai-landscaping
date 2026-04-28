@@ -528,9 +528,13 @@ class LandscapeOperationalLayer(LandscapingLayerBase):
 
             while len(candidate_clusters):
                 dev = candidate_clusters.pop()
+                is_excluded = False
                 for xfilter in exclude_filters:
-                    if not xfilter.should_exclude(dev):
-                        selected_clusters.append(dev)
+                    if xfilter.should_exclude(dev):
+                        is_excluded = True
+                        break
+                if not is_excluded:
+                    selected_clusters.append(dev)
 
         return selected_clusters
 

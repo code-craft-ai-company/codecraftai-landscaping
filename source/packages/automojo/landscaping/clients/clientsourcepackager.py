@@ -154,7 +154,7 @@ class ClientSourcePackager:
         status, stdout, stderr = session.run_cmd('echo "$HOME"')
         if status != 0:
             errmsg = "Unable to obtain remote home directory for client."
-            raise Exception(errmsg)
+            raise RuntimeError(errmsg)
         
         rmt_home = stdout.strip()
         if destination.startswith("~"):
