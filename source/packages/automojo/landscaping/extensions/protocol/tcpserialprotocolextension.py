@@ -47,12 +47,34 @@ class TcpSerialProtocolExtension(TcpSerialAgent, ProtocolExtension, ControlExten
             Initializes the landscape device extension. It is not required to call this function in order to use an TcpSerialAgent, it is used
             when an agent is attached to a LandscapeDevice as a device extension.
 
-            :param coord_ref: A weak reference to the coordinator that is managing interactions through this
-            device extension.
-            :param extid: A unique reference that can be used to identify this device via the coordinator even if its location changes.
-            :param location: The location reference where this device can be found via the coordinator.
-            :param configinfo: The configuration information dictionary from the landscape file for the specified host.
-            :param kwargs: Protocol-specific extra initialization data forwarded to :class:`ProtocolExtension`.
+            Because :class:`TcpSerialProtocolExtension` inherits from BOTH
+            :class:`ProtocolExtension` (the device-side surface) and
+            :class:`ControlExtension` (the service-side surface), this
+            method seeds both sets of bookkeeping fields.  Without the
+            second initialise call, the ``service`` / ``control_id`` /
+            ``control_info`` accessors inherited from
+            :class:`ControlExtension` would resolve to ``None`` even after
+            the extension was nominally initialised, breaking any consumer
+            that reaches the control surface.
+
+            :param coord_ref: A weak reference to the coordinator that is
+                              managing interactions through this device
+                              extension.  This same reference is used as
+                              the ``service_ref`` on the control surface.
+            :param basedevice_ref: A weak reference to the
+                                   :class:`LandscapeDevice` this extension
+                                   is attached to (``None`` until attach).
+            :param extid: A unique reference that can be used to identify
+                          this device via the coordinator.  Re-used as the
+                          control identifier on the control surface.
+            :param location: The location reference where this device can
+                             be found via the coordinator.
+            :param configinfo: The configuration information dictionary.
+                               Re-used as ``control_info`` on the control
+                               surface.
+            :param kwargs: Protocol-specific extra initialization data
+                           forwarded to :class:`ProtocolExtension`.
         """
         ProtocolExtension.initialize(self, coord_ref, basedevice_ref, extid, location, configinfo, **kwargs)
+        ControlExtension.initialize(self, coord_ref, basedevice_ref, extid, configinfo)
         return

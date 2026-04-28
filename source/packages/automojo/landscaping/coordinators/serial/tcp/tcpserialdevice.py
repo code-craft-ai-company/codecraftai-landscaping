@@ -14,6 +14,8 @@ __credits__ = []
 
 from typing import TYPE_CHECKING
 
+from automojo.errors.exceptions import SemanticError
+
 from automojo.landscaping.landscapedevice import LandscapeDevice
 from automojo.landscaping.friendlyidentifier import FriendlyIdentifier
 
@@ -22,6 +24,11 @@ from automojo.interop.protocols.serial.tcpserialagent import TcpSerialAgent
 if TYPE_CHECKING:
     from automojo.landscaping.landscape import Landscape
     from automojo.landscaping.coordinatorbase import CoordinatorBase
+
+# Canonical extension key for the TCP-serial protocol extension.  Centralised
+# here so the producer side and the consumer side cannot drift apart.
+_SERIAL_EXTENSION_KEY = "serial"
+
 
 class TcpSerialDevice(LandscapeDevice):
     """
@@ -63,7 +70,22 @@ class TcpSerialDevice(LandscapeDevice):
     def serial(self) -> TcpSerialAgent:
         """
             Returns the :class:`TcpSerialAgent` extension for this device.
+
+            :raises SemanticError: When no serial extension has been attached to this
+                                   device.  This indicates API misuse — either the
+                                   coordinator failed to attach the extension during
+                                   landscape activation, or a caller is using a device
+                                   that was never wired for TCP serial.
         """
-        ext = self._extensions["serial"]
+        if _SERIAL_EXTENSION_KEY not in self._extensions:
+            err_msg_lines = [
+                "No TCP serial extension is attached to this device.",
+                "    DEVICE: {}".format(self._friendly_id.full_identifier),
+                "    EXPECTED EXTENSION KEY: {}".format(_SERIAL_EXTENSION_KEY),
+                "    ATTACHED EXTENSION KEYS: {}".format(sorted(self._extensions.keys())),
+            ]
+            err_msg = "\n".join(err_msg_lines)
+            raise SemanticError(err_msg)
+        ext = self._extensions[_SERIAL_EXTENSION_KEY]
         return ext
 
