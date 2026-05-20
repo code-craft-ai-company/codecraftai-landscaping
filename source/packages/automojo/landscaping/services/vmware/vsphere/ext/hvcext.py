@@ -2,16 +2,16 @@
     .. module:: hvcext
     :platform: Darwin, Linux, Unix, Windows
     :synopsis: Backwards-compatibility shim — re-exports ``HvcExt`` from
-               ``automojo.interop.vsphere.apigroups.hvcgroup``.
+               ``automojo.restclient.vsphere.apigroups.hvcgroup``.
 
     .. moduleauthor:: Myron Walker <myron.walker@gmail.com>
 
     The legacy ``HvcExt`` class was renamed to ``HvcGroup`` and moved into the
-    ``automojo-interop-vsphere`` package during M5. This shim preserves the
+    ``automojo-restclient-vsphere`` package during M5. This shim preserves the
     legacy import path for one release cycle. Importing this module emits a
     :class:`DeprecationWarning` exactly once per process. New code should use::
 
-        from automojo.interop.vsphere.apigroups.hvcgroup import HvcGroup
+        from automojo.restclient.vsphere.apigroups.hvcgroup import HvcGroup
 """
 
 __author__ = "Myron Walker"
@@ -24,7 +24,7 @@ from automojo.landscaping.services.vmware._shim import install_shim
 
 install_shim(
     old_path=__name__,
-    new_module_name="automojo.interop.vsphere.apigroups.hvcgroup",
+    new_module_name="automojo.restclient.vsphere.apigroups.hvcgroup",
     public_names=["HvcExt"],
     aliases={"HvcExt": "HvcGroup"},
 )

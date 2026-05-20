@@ -2,17 +2,17 @@
     .. module:: vsphereagent
     :platform: Darwin, Linux, Unix, Windows
     :synopsis: Backwards-compatibility shim — re-exports ``VSphereAgent`` from
-               its new home in ``automojo.interop.vsphere.vsphereclient``.
+               its new home in ``automojo.restclient.vsphere.vsphereclient``.
 
     .. moduleauthor:: Myron Walker <myron.walker@gmail.com>
 
     The legacy ``VSphereAgent`` class was renamed to ``VSphereClient`` and moved
-    into the ``automojo-interop-vsphere`` package during M5. This shim preserves
+    into the ``automojo-restclient-vsphere`` package during M5. This shim preserves
     the legacy import path for one release cycle. Importing this module emits a
     :class:`DeprecationWarning` exactly once per process. New code should use::
 
-        from automojo.interop.vsphere.vsphereclient import VSphereClient
-        from automojo.interop.vsphere.vspherefilterstate import VSphereFilterState
+        from automojo.restclient.vsphere.vsphereclient import VSphereClient
+        from automojo.restclient.vsphere.vspherefilterstate import VSphereFilterState
 """
 
 __author__ = "Myron Walker"
@@ -25,7 +25,7 @@ from automojo.landscaping.services.vmware._shim import install_shim
 
 install_shim(
     old_path=__name__,
-    new_module_name="automojo.interop.vsphere.vsphereclient",
+    new_module_name="automojo.restclient.vsphere.vsphereclient",
     public_names=["VSphereAgent"],
     aliases={"VSphereAgent": "VSphereClient"},
 )
@@ -35,6 +35,6 @@ install_shim(
 # second call with the same old_path is silent and just attaches symbols.
 install_shim(
     old_path=__name__,
-    new_module_name="automojo.interop.vsphere.vspherefilterstate",
+    new_module_name="automojo.restclient.vsphere.vspherefilterstate",
     public_names=["VSphereFilterState"],
 )

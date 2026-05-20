@@ -2,16 +2,16 @@
     .. module:: identityext
     :platform: Darwin, Linux, Unix, Windows
     :synopsis: Backwards-compatibility shim — re-exports ``IdentityExt`` from
-               ``automojo.interop.vsphere.apigroups.identitygroup``.
+               ``automojo.restclient.vsphere.apigroups.identitygroup``.
 
     .. moduleauthor:: Myron Walker <myron.walker@gmail.com>
 
     The legacy ``IdentityExt`` class was renamed to ``IdentityGroup`` and moved into the
-    ``automojo-interop-vsphere`` package during M5. This shim preserves the
+    ``automojo-restclient-vsphere`` package during M5. This shim preserves the
     legacy import path for one release cycle. Importing this module emits a
     :class:`DeprecationWarning` exactly once per process. New code should use::
 
-        from automojo.interop.vsphere.apigroups.identitygroup import IdentityGroup
+        from automojo.restclient.vsphere.apigroups.identitygroup import IdentityGroup
 """
 
 __author__ = "Myron Walker"
@@ -24,7 +24,7 @@ from automojo.landscaping.services.vmware._shim import install_shim
 
 install_shim(
     old_path=__name__,
-    new_module_name="automojo.interop.vsphere.apigroups.identitygroup",
+    new_module_name="automojo.restclient.vsphere.apigroups.identitygroup",
     public_names=["IdentityExt"],
     aliases={"IdentityExt": "IdentityGroup"},
 )

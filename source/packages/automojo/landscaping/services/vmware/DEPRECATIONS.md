@@ -1,7 +1,7 @@
 # services/vmware Deprecations
 
 Every module listed below is a one-release-cycle backwards-compatibility shim
-that re-exports symbols from the new `automojo-interop-vsphere` package. All
+that re-exports symbols from the new `automojo-restclient-vsphere` package. All
 shims emit a `DeprecationWarning` exactly once per process per import path on
 first import.
 
@@ -18,13 +18,13 @@ Target removal release: **M13** (one cycle after M5 ships).
 
 | Legacy import path                                                  | Replacement                                                  |
 | ------------------------------------------------------------------- | ------------------------------------------------------------ |
-| `automojo.landscaping.services.vmware.vsphere.vsphereagent`         | `automojo.interop.vsphere.vsphereclient.VSphereClient`        |
-|                                                                     | `automojo.interop.vsphere.vspherefilterstate.VSphereFilterState` |
+| `automojo.landscaping.services.vmware.vsphere.vsphereagent`         | `automojo.restclient.vsphere.vsphereclient.VSphereClient`        |
+|                                                                     | `automojo.restclient.vsphere.vspherefilterstate.VSphereFilterState` |
 
 ### `vsphere/ext/` (29 modules)
 
 Every `*ext.py` re-exports the matching `*Group` from
-`automojo.interop.vsphere.apigroups.*group`:
+`automojo.restclient.vsphere.apigroups.*group`:
 
 | Legacy module               | Legacy class                | New class                    |
 | --------------------------- | --------------------------- | ---------------------------- |
@@ -63,21 +63,21 @@ Every `*ext.py` re-exports the matching `*Group` from
 
 | Legacy module                                  | Symbols re-exported                                  | New home                                          |
 | ---------------------------------------------- | ---------------------------------------------------- | ------------------------------------------------- |
-| `datastructures.vcenter`                       | `DatacenterSummary`, `FolderSummary`                 | `automojo.interop.vsphere.model.summary`          |
-| `datastructures.model.summary`                 | `DatacenterSummary`, `FolderSummary`                 | `automojo.interop.vsphere.model.summary`          |
-| `datastructures.model.vm`                      | `VirtualMachineSummary`, `VirtualMachineInfo`        | `automojo.interop.vsphere.model.vm`               |
-| `datastructures.specs.vmcreate`                | `VmCreateSpec`                                       | `automojo.interop.vsphere.specs.vmcreate`         |
-| `datastructures.specs.vmhardware`              | `VmHardwareSpec`                                     | `automojo.interop.vsphere.specs.vmhardware`       |
-| `datastructures.specs.vmplacement`             | `VmPlacementSpec`                                    | `automojo.interop.vsphere.specs.vmplacement`      |
-| `datastructures.specs.vmstorage`               | `VmStorageSpec`, `VmDiskSpec`, `VmStoragePolicySpec` (aliased to `VmStorageSpec`) | `automojo.interop.vsphere.specs.vmstorage`        |
+| `datastructures.vcenter`                       | `DatacenterSummary`, `FolderSummary`                 | `automojo.restclient.vsphere.model.summary`          |
+| `datastructures.model.summary`                 | `DatacenterSummary`, `FolderSummary`                 | `automojo.restclient.vsphere.model.summary`          |
+| `datastructures.model.vm`                      | `VirtualMachineSummary`, `VirtualMachineInfo`        | `automojo.restclient.vsphere.model.vm`               |
+| `datastructures.specs.vmcreate`                | `VmCreateSpec`                                       | `automojo.restclient.vsphere.specs.vmcreate`         |
+| `datastructures.specs.vmhardware`              | `VmHardwareSpec`                                     | `automojo.restclient.vsphere.specs.vmhardware`       |
+| `datastructures.specs.vmplacement`             | `VmPlacementSpec`                                    | `automojo.restclient.vsphere.specs.vmplacement`      |
+| `datastructures.specs.vmstorage`               | `VmStorageSpec`, `VmDiskSpec`, `VmStoragePolicySpec` (aliased to `VmStorageSpec`) | `automojo.restclient.vsphere.specs.vmstorage`        |
 
 ### `metasphere/`
 
 | Legacy module           | Legacy class         | New class          | New module                                     |
 | ----------------------- | -------------------- | ------------------ | ---------------------------------------------- |
-| `metasphere.vcenter`    | `VmPowerState`       | `PowerState`       | `automojo.interop.vsphere.enums.powerstate`    |
-| `metasphere.vmguestos`  | `VmGuestOS`          | `GuestOs`          | `automojo.interop.vsphere.enums.guestos`       |
-| `metasphere.vmhardware` | `VmHardwareVersion`  | `HardwareVersion`  | `automojo.interop.vsphere.enums.hardwareversion` |
+| `metasphere.vcenter`    | `VmPowerState`       | `PowerState`       | `automojo.restclient.vsphere.enums.powerstate`    |
+| `metasphere.vmguestos`  | `VmGuestOS`          | `GuestOs`          | `automojo.restclient.vsphere.enums.guestos`       |
+| `metasphere.vmhardware` | `VmHardwareVersion`  | `HardwareVersion`  | `automojo.restclient.vsphere.enums.hardwareversion` |
 
 ## Symbols that did NOT survive the migration
 
@@ -92,7 +92,7 @@ off these shims:
   `VmHardwareEthernetBackingType`, `VmHardwareAdapterScsiType`) — replaced by
   plain strings on `VmHardwareSpec`.
 - `datastructures.model.summary.VmSummary` — replaced by
-  `automojo.interop.vsphere.model.vm.VirtualMachineSummary`.
+  `automojo.restclient.vsphere.model.vm.VirtualMachineSummary`.
 - `datastructures.model.vm.*` fine-grained dataclasses
   (`VmHardwareInfo`, `VmIdentityInfo`, `VmInfo`, etc.) — consolidated into
   `VirtualMachineInfo`.

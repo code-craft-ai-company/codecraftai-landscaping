@@ -2,16 +2,16 @@
     .. module:: isoext
     :platform: Darwin, Linux, Unix, Windows
     :synopsis: Backwards-compatibility shim — re-exports ``IsoExt`` from
-               ``automojo.interop.vsphere.apigroups.isogroup``.
+               ``automojo.restclient.vsphere.apigroups.isogroup``.
 
     .. moduleauthor:: Myron Walker <myron.walker@gmail.com>
 
     The legacy ``IsoExt`` class was renamed to ``IsoGroup`` and moved into the
-    ``automojo-interop-vsphere`` package during M5. This shim preserves the
+    ``automojo-restclient-vsphere`` package during M5. This shim preserves the
     legacy import path for one release cycle. Importing this module emits a
     :class:`DeprecationWarning` exactly once per process. New code should use::
 
-        from automojo.interop.vsphere.apigroups.isogroup import IsoGroup
+        from automojo.restclient.vsphere.apigroups.isogroup import IsoGroup
 """
 
 __author__ = "Myron Walker"
@@ -24,7 +24,7 @@ from automojo.landscaping.services.vmware._shim import install_shim
 
 install_shim(
     old_path=__name__,
-    new_module_name="automojo.interop.vsphere.apigroups.isogroup",
+    new_module_name="automojo.restclient.vsphere.apigroups.isogroup",
     public_names=["IsoExt"],
     aliases={"IsoExt": "IsoGroup"},
 )

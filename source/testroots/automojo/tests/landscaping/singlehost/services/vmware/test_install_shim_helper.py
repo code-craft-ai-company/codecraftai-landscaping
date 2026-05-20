@@ -23,14 +23,14 @@ def test_install_shim_emits_one_warning_and_attaches_symbol() -> None:
         warnings.simplefilter("always")
         install_shim(
             old_path=fake_old_path,
-            new_module_name="automojo.interop.vsphere.vsphereclient",
+            new_module_name="automojo.restclient.vsphere.vsphereclient",
             public_names=["VSphereClient"],
         )
 
     dep_warns = [w for w in captured if issubclass(w.category, DeprecationWarning)]
     verification.assert_equal(len(dep_warns), 1)
 
-    from automojo.interop.vsphere.vsphereclient import VSphereClient
+    from automojo.restclient.vsphere.vsphereclient import VSphereClient
 
     verification.assert_true(fake_module.VSphereClient is VSphereClient)
     return
@@ -46,7 +46,7 @@ def test_install_shim_second_call_same_path_does_not_re_warn() -> None:
         warnings.simplefilter("always")
         install_shim(
             old_path=fake_old_path,
-            new_module_name="automojo.interop.vsphere.vsphereclient",
+            new_module_name="automojo.restclient.vsphere.vsphereclient",
             public_names=["VSphereClient"],
         )
 
@@ -57,7 +57,7 @@ def test_install_shim_second_call_same_path_does_not_re_warn() -> None:
         warnings.simplefilter("always")
         install_shim(
             old_path=fake_old_path,
-            new_module_name="automojo.interop.vsphere.vsphereclient",
+            new_module_name="automojo.restclient.vsphere.vsphereclient",
             public_names=["VSphereClient"],
         )
 
@@ -74,12 +74,12 @@ def test_install_shim_resolves_alias_mapping() -> None:
 
     install_shim(
         old_path=fake_old_path,
-        new_module_name="automojo.interop.vsphere.vsphereclient",
+        new_module_name="automojo.restclient.vsphere.vsphereclient",
         public_names=["VSphereAgent"],
         aliases={"VSphereAgent": "VSphereClient"},
     )
 
-    from automojo.interop.vsphere.vsphereclient import VSphereClient
+    from automojo.restclient.vsphere.vsphereclient import VSphereClient
 
     verification.assert_true(fake_module.VSphereAgent is VSphereClient)
     return

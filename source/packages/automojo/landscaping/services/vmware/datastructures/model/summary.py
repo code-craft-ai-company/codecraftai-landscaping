@@ -2,12 +2,12 @@
     .. module:: summary
     :platform: Darwin, Linux, Unix, Windows
     :synopsis: Backwards-compatibility shim — re-exports summary DTOs from
-               ``automojo.interop.vsphere.model.summary``.
+               ``automojo.restclient.vsphere.model.summary``.
 
     .. moduleauthor:: Myron Walker <myron.walker@gmail.com>
 
     The summary DTOs that originally lived here were extracted to the
-    ``automojo-interop-vsphere`` package during M5. ``DatacenterSummary`` and
+    ``automojo-restclient-vsphere`` package during M5. ``DatacenterSummary`` and
     ``FolderSummary`` re-export from the new module. ``VmSummary`` was retired
     in favour of the richer :class:`VirtualMachineSummary` in the new package
     and is no longer re-exported; consumers should migrate to the new type.
@@ -15,10 +15,10 @@
     Importing this module emits a :class:`DeprecationWarning` exactly once per
     process. New code should use::
 
-        from automojo.interop.vsphere.model.summary import (
+        from automojo.restclient.vsphere.model.summary import (
             DatacenterSummary, FolderSummary,
         )
-        from automojo.interop.vsphere.model.vm import VirtualMachineSummary
+        from automojo.restclient.vsphere.model.vm import VirtualMachineSummary
 """
 
 __author__ = "Myron Walker"
@@ -31,6 +31,6 @@ from automojo.landscaping.services.vmware._shim import install_shim
 
 install_shim(
     old_path=__name__,
-    new_module_name="automojo.interop.vsphere.model.summary",
+    new_module_name="automojo.restclient.vsphere.model.summary",
     public_names=["DatacenterSummary", "FolderSummary"],
 )
