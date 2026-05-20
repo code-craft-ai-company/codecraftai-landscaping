@@ -1,26 +1,28 @@
 """
-    .. module:: vmplacementspec
+    .. module:: vmplacement
     :platform: Darwin, Linux, Unix, Windows
-    :synopsis: Contains the VmPlacementSpec object used to indicate the placement of a newly created VM.
+    :synopsis: Backwards-compatibility shim — re-exports
+               :class:`VmPlacementSpec` from
+               ``automojo.interop.vsphere.specs.vmplacement``.
 
     .. moduleauthor:: Myron Walker <myron.walker@gmail.com>
+
+    Importing this module emits a :class:`DeprecationWarning` exactly once per
+    process. New code should use::
+
+        from automojo.interop.vsphere.specs.vmplacement import VmPlacementSpec
 """
 
 __author__ = "Myron Walker"
 __copyright__ = "Copyright 2025, Automation Mojo LLC"
 __credits__ = []
 
-from typing import Optional
 
-from dataclasses import dataclass
+from automojo.landscaping.services.vmware._shim import install_shim
 
-@dataclass
-class VmPlacementSpec:
-    """
-        Placement specification describing where a VM should reside.
-    """
-    datastore: str
-    folder: str
-    cluster: Optional[str] = None
-    host: Optional[str] = None
-    resource_pool: Optional[str] = None
+
+install_shim(
+    old_path=__name__,
+    new_module_name="automojo.interop.vsphere.specs.vmplacement",
+    public_names=["VmPlacementSpec"],
+)

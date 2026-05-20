@@ -36,6 +36,19 @@ from automojo.credentials.wellknown import CredentialManagerSingleton
 from automojo.interfaces.iexcludefilter import IExcludeFilter
 from automojo.interfaces.iincludefilter import IIncludeFilter
 
+from automojo.interfaces.addressplane import AddressPlane
+
+from automojo.landscaping.config.landscapeconfigdiagnostic import (
+    LandscapeConfigError,
+    SEVERITY_ERROR,
+)
+from automojo.landscaping.config.vpnconfigschema import (
+    parse_landscape_vpn_block,
+    validate_landscape_vpn_block,
+    warnings_from,
+)
+from automojo.landscaping.config.vpnproviderentry import VPNProviderEntry
+
 from automojo.landscaping.layers.landscapinglayerbase import LandscapingLayerBase
 from automojo.landscaping.landscapeparameters import (
     LandscapeActivationParams
@@ -70,6 +83,13 @@ class LandscapeConfigurationLayer(LandscapingLayerBase):
 
         self._topology_files: List[str] = None
         self._topology_info: MergeMap = None
+
+        # Landscape-level VPN configuration. These default to an
+        # absent/empty state so a landscape file without a ``vpn:``
+        # block behaves bit-identically to the pre-feature loader.
+        self._vpn_default_plane: AddressPlane = AddressPlane.PUBLIC
+        self._vpn_providers: List[VPNProviderEntry] = []
+        self._vpn_block_present: bool = False
 
         return
 
@@ -107,6 +127,43 @@ class LandscapeConfigurationLayer(LandscapingLayerBase):
             Gets the topology information loaded from configuration files.
         """
         return self._topology_info
+
+    @property
+    def vpn_default_plane(self) -> AddressPlane:
+        """
+            Returns the landscape-level default :class:`AddressPlane`
+            parsed from the ``vpn.default_plane`` field. Defaults to
+            :attr:`AddressPlane.PUBLIC` when the ``vpn:`` block is
+            absent.
+
+            :returns: The configured default :class:`AddressPlane`.
+        """
+        rtnval = self._vpn_default_plane
+        return rtnval
+
+    @property
+    def vpn_providers(self) -> List[VPNProviderEntry]:
+        """
+            Returns a shallow copy of the parsed landscape-level VPN
+            provider entries. Empty when the landscape has no ``vpn:``
+            block.
+
+            :returns: A list of :class:`VPNProviderEntry` records.
+        """
+        rtnval = list(self._vpn_providers)
+        return rtnval
+
+    @property
+    def vpn_block_present(self) -> bool:
+        """
+            Indicates whether the loaded landscape configuration
+            contained a top-level ``vpn:`` block. False for landscapes
+            that predate the feature.
+
+            :returns: ``True`` when a ``vpn:`` block was loaded.
+        """
+        rtnval = self._vpn_block_present
+        return rtnval
 
     def get_device_configs(self, include_filters: Optional[List[IIncludeFilter]]=None, exclude_filters: Optional[List[IExcludeFilter]]=None) -> List[dict]:
         """
@@ -261,7 +318,65 @@ class LandscapeConfigurationLayer(LandscapingLayerBase):
                 for wrn_path, wrn_msg in warnings:
                     self.logger.warn("Landscape Configuration Warning: ({}) {}".format(wrn_path, wrn_msg))
 
+            self._load_vpn_block()
+
         return self._landscape_info
+
+    def _load_vpn_block(self) -> None:
+        """
+            Parse and validate the top-level ``vpn:`` block of the
+            landscape document if it is present.
+
+            Backwards compatibility: when the landscape document has no
+            ``vpn:`` key, defaults stay in effect (PUBLIC default plane,
+            empty providers list) and ``vpn_block_present`` remains
+            ``False`` so the loader path is bit-identical to the
+            pre-feature behaviour.
+
+            :raises: :class:`ConfigurationError` when the validator
+                reports any ``error``-severity diagnostic.
+        """
+        if self._landscape_info is None:
+            return
+
+        # ``MergeMap`` supports __contains__/__getitem__ so we can probe
+        # for ``vpn`` directly without flattening the whole document.
+        if "vpn" not in self._landscape_info:
+            return
+
+        try:
+            doc_for_validation: Dict[str, Any] = self._landscape_info.flatten()
+        except AttributeError:
+            doc_for_validation = dict(self._landscape_info)
+
+        diagnostics = validate_landscape_vpn_block(doc=doc_for_validation)
+
+        warning_diags = warnings_from(diagnostics=diagnostics)
+        for wdiag in warning_diags:
+            self.logger.warn(
+                "Landscape VPN Configuration Warning: ({}) {}".format(
+                    wdiag.path, wdiag.message
+                )
+            )
+
+        try:
+            default_plane, providers = parse_landscape_vpn_block(
+                doc=doc_for_validation
+            )
+        except LandscapeConfigError as ex:
+            # Re-raise as ConfigurationError to fit into the existing
+            # loader's hard-fail surface, preserving the message body.
+            err_msg_lines = ["ERROR Landscape vpn block validation failures:"]
+            for line in str(ex).splitlines():
+                err_msg_lines.append("    " + line)
+            err_msg = os.linesep.join(err_msg_lines)
+            raise ConfigurationError(err_msg) from None
+
+        self._vpn_default_plane = default_plane
+        self._vpn_providers = providers
+        self._vpn_block_present = True
+
+        return
 
 
     def load_topology(self, activation_params: LandscapeActivationParams) -> Union[MergeMap, None]:

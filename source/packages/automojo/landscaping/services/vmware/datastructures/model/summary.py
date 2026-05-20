@@ -1,44 +1,36 @@
 """
     .. module:: summary
     :platform: Darwin, Linux, Unix, Windows
-    :synopsis: Module containing the summary functionality.
+    :synopsis: Backwards-compatibility shim — re-exports summary DTOs from
+               ``automojo.interop.vsphere.model.summary``.
 
     .. moduleauthor:: Myron Walker <myron.walker@gmail.com>
+
+    The summary DTOs that originally lived here were extracted to the
+    ``automojo-interop-vsphere`` package during M5. ``DatacenterSummary`` and
+    ``FolderSummary`` re-export from the new module. ``VmSummary`` was retired
+    in favour of the richer :class:`VirtualMachineSummary` in the new package
+    and is no longer re-exported; consumers should migrate to the new type.
+
+    Importing this module emits a :class:`DeprecationWarning` exactly once per
+    process. New code should use::
+
+        from automojo.interop.vsphere.model.summary import (
+            DatacenterSummary, FolderSummary,
+        )
+        from automojo.interop.vsphere.model.vm import VirtualMachineSummary
 """
 
 __author__ = "Myron Walker"
 __copyright__ = "Copyright 2025, Automation Mojo LLC"
 __credits__ = []
 
-from dataclasses import dataclass
 
-from automojo.landscaping.services.vmware.metasphere.vcenter import FolderType
-from automojo.landscaping.services.vmware.metasphere.vcenter import VmPowerState
+from automojo.landscaping.services.vmware._shim import install_shim
 
-@dataclass
-class DatacenterSummary:
-    """
-        Simple datacenter summary returned from vCenter queries.
-    """
-    name: str
-    datacenter: str
 
-@dataclass
-class FolderSummary:
-    """
-        Folder summary describing a vCenter folder object.
-    """
-    name: str
-    folder: str
-    type: FolderType
-
-@dataclass
-class VmSummary:
-    """
-        Summary information about a virtual machine.
-    """
-    name: str
-    power_state: VmPowerState
-    vm: str
-    cpu_count: int
-    memory_size_MiB: int
+install_shim(
+    old_path=__name__,
+    new_module_name="automojo.interop.vsphere.model.summary",
+    public_names=["DatacenterSummary", "FolderSummary"],
+)
