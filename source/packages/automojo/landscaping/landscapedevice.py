@@ -28,6 +28,7 @@ from automojo.errors.exceptions import AbstractMethodError, ConfigurationError, 
 from automojo.credentials.basecredential import BaseCredential
 from automojo.credentials.sshcredential import SshCredential
 from automojo.interfaces.addressplane import AddressPlane
+from automojo.interfaces.ivpnclient import IVPNClient
 from automojo.interop.interfaces.isystemcontext import ISystemContext
 from automojo.landscaping.addressing.deviceaddressset import DeviceAddressSet
 from automojo.landscaping.friendlyidentifier import FriendlyIdentifier
@@ -135,6 +136,12 @@ class LandscapeDevice(FeatureAttachedObject):
         self._vpn_managed = False
         self._vpn_advertise_tags = []
         self._initialize_vpn_overrides(device_config=device_config)
+
+        # Registry of managed-host VPN clients keyed by provider name.
+        # Populated by :class:`VPNCoordinatorCoupling` when a device
+        # declares ``vpn.managed=True``. Empty by default so legacy
+        # device configurations remain bit-identical.
+        self._vpn_clients: Dict[str, IVPNClient] = {}
 
         self._overlay_warning_emitted = False
 
@@ -402,6 +409,48 @@ class LandscapeDevice(FeatureAttachedObject):
             raise SemanticError(errmsg)
 
         return
+
+    def register_vpn_client(self, *, provider: str, client: IVPNClient) -> None:
+        """
+            Registers a managed-host :class:`IVPNClient` on this device
+            under ``provider``.
+
+            This method is called by :class:`VPNCoordinatorCoupling`
+            when the device declares ``vpn.managed=True``. A second
+            registration for the same provider replaces the prior
+            client.
+
+            :param provider: The VPN provider identifier (for example
+                ``"tailscale"`` or ``"twingate"``).
+            :param client: The :class:`IVPNClient` instance to register.
+        """
+        self._vpn_clients[provider] = client
+        return
+
+    def vpn_client_for(self, *, provider: str) -> IVPNClient:
+        """
+            Returns the managed-host :class:`IVPNClient` registered for
+            ``provider`` on this device.
+
+            :param provider: The VPN provider identifier.
+
+            :returns: The :class:`IVPNClient` registered for the
+                provider.
+            :raises: :class:`SemanticError` when no client has been
+                registered for ``provider``.
+        """
+        if provider not in self._vpn_clients:
+            err_msg_lines = ["No VPN client registered for the requested provider."]
+            err_msg_lines.append("DEVICE:   {}".format(self.identity))
+            err_msg_lines.append("PROVIDER: {}".format(provider))
+            err_msg_lines.append("REGISTERED PROVIDERS:")
+            for registered in self._vpn_clients.keys():
+                err_msg_lines.append("    {}".format(registered))
+            err_msg = os.linesep.join(err_msg_lines)
+            raise SemanticError(err_msg)
+
+        rtnval = self._vpn_clients[provider]
+        return rtnval
 
     def begin_locked_scope(self) -> "LockedScope":
         """

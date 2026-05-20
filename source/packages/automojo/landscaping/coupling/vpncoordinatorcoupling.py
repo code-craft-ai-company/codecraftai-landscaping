@@ -42,6 +42,67 @@ from automojo.landscaping.coupling.vpncouplingresult import VPNCouplingResult
 logger = logging.getLogger(__name__)
 
 
+# The configuration-block key that selects this coupling kind. A
+# landscape whose configuration carries a top-level ``vpn:`` block
+# resolves to this kind through the landscape coordinator factory.
+VPN_COORDINATOR_COUPLING_KIND = "vpn"
+
+# Module-level registry of landscape coupling kinds. The landscape
+# coordinator factory consults this table to map a configuration-block
+# key (for example ``"vpn"``) to the coupling class that services it.
+_COUPLING_KIND_REGISTRY: Dict[str, type] = {}
+
+
+def register_coupling_kind(*, kind: str, coupling_type: type) -> None:
+    """
+        Registers a landscape coupling kind with the landscape
+        coordinator factory registry.
+
+        :param kind: The configuration-block key that selects the
+            coupling (for example ``"vpn"``).
+        :param coupling_type: The coupling class to instantiate when a
+            landscape declares the ``kind`` configuration block.
+    """
+    _COUPLING_KIND_REGISTRY[kind] = coupling_type
+    return
+
+
+def coupling_type_for_kind(*, kind: str) -> type:
+    """
+        Returns the coupling class registered for ``kind``.
+
+        :param kind: The configuration-block key to look up.
+
+        :returns: The registered coupling class.
+        :raises: :class:`ConfigurationError` when ``kind`` has not been
+            registered.
+    """
+    if kind not in _COUPLING_KIND_REGISTRY:
+        err_msg_lines = ["No landscape coupling kind registered for the requested key."]
+        err_msg_lines.append("KIND: {}".format(kind))
+        err_msg_lines.append("REGISTERED KINDS:")
+        for registered in _COUPLING_KIND_REGISTRY.keys():
+            err_msg_lines.append("    {}".format(registered))
+        err_msg = os.linesep.join(err_msg_lines)
+        raise ConfigurationError(err_msg)
+
+    rtnval = _COUPLING_KIND_REGISTRY[kind]
+    return rtnval
+
+
+def is_coupling_kind_registered(*, kind: str) -> bool:
+    """
+        Indicates whether a coupling kind has been registered with the
+        landscape coordinator factory registry.
+
+        :param kind: The configuration-block key to test.
+
+        :returns: ``True`` when ``kind`` is registered.
+    """
+    rtnval = kind in _COUPLING_KIND_REGISTRY
+    return rtnval
+
+
 class VPNCoordinatorCoupling:
     """
         Landscape-side coupling that wires a mesh-VPN control plane into
@@ -87,6 +148,21 @@ class VPNCoordinatorCoupling:
         self._control_plane: IVPNControlPlane = control_plane
         self._vpn_client_factory: Optional[Any] = vpn_client_factory
         self._vpn_managed_default: bool = vpn_managed
+        return
+
+    @classmethod
+    def register(cls) -> None:
+        """
+            Registers :class:`VPNCoordinatorCoupling` with the landscape
+            coordinator factory registry under the ``vpn`` coupling
+            kind.
+
+            Once registered, a landscape whose configuration carries a
+            top-level ``vpn:`` block resolves to this coupling class
+            through the normal factory path.
+        """
+        register_coupling_kind(kind=VPN_COORDINATOR_COUPLING_KIND,
+                               coupling_type=cls)
         return
 
     @property
@@ -518,4 +594,10 @@ class VPNCoordinatorCoupling:
         return
 
 
-__all__ = ["VPNCoordinatorCoupling"]
+__all__ = [
+    "VPNCoordinatorCoupling",
+    "VPN_COORDINATOR_COUPLING_KIND",
+    "register_coupling_kind",
+    "coupling_type_for_kind",
+    "is_coupling_kind_registered",
+]

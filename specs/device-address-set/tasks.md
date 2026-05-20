@@ -22,6 +22,9 @@
     DEFERRED — backward compatibility is non-negotiable for this
     foundational M4 change. `_host` remains readable; downstream
     migration to `addresses.resolve(...)` will land in a follow-up.
+    NOTE: this task is intentionally left deferred per the
+    M4-COMPLETE.md backward-compat decision (keep `_host` as a shim for
+    one release cycle).
   - [x] 4d. Add `preferred_plane: AddressPlane` instance attribute sourced
     from device config with landscape-root fallback, default
     `AddressPlane.PUBLIC`.
@@ -29,6 +32,8 @@
     overlay slot is empty after `_resolve_addresses()`.
 - [ ] 5. Audit `landscaping/` for any remaining `_host` references and migrate
   each to `addresses.resolve(...)`. DEFERRED — see 4c.
+  NOTE: this task is intentionally left deferred per the M4-COMPLETE.md
+  backward-compat decision (keep `_host` as a shim for one release cycle).
 - [x] 6. Apply project coding standards (named-only, explicit returns).
 - [x] 7. Tests — example-based:
   - [x] 7a. Constructor with each plane combination.
@@ -52,6 +57,9 @@
   - [x] 8f. `test_set_then_get_round_trip` (via
     `test_with_address_round_trip`).
 - [x] 9. Add `hypothesis` to test dependencies if not already present.
-- [ ] 10. Update consumer specs (`ssh-address-plane-awareness`,
+- [x] 10. Update consumer specs (`ssh-address-plane-awareness`,
   `overlay-dns-resolver`) cross-links if the resolver method signature
-  shifts from the published shape.
+  shifts from the published shape. No cross-link update required: the
+  resolver signature shipped as the published shape
+  (`resolve(*, plane, fallback_planes=None)` — task 3d) and did not
+  shift, so the consumer-spec cross-links remain accurate.

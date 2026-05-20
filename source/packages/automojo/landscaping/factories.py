@@ -19,6 +19,16 @@ from automojo.landscaping.landscape import Landscape
 
 from automojo.landscaping.clients.linux.linuxclientcoordinatorcoupling import LinuxClientCoordinatorCoupling
 
+from automojo.landscaping.coupling.vpncoordinatorcoupling import VPNCoordinatorCoupling
+
+# Register the VPN coordinator coupling kind with the landscape
+# coordinator factory registry. A landscape whose configuration carries
+# a top-level ``vpn:`` block resolves to :class:`VPNCoordinatorCoupling`
+# through this registration. Landscapes with no ``vpn:`` block never
+# instantiate it, preserving backward compatibility.
+VPNCoordinatorCoupling.register()
+
+
 @testbase.register.resource_factory()
 def create_landscape(constraints: Optional[dict] = None) -> Generator[Landscape, None, None]:
     """
