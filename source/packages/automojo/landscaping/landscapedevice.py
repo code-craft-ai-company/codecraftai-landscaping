@@ -27,7 +27,9 @@ from automojo.errors.exceptions import AbstractMethodError, ConfigurationError, 
 
 from automojo.credentials.basecredential import BaseCredential
 from automojo.credentials.sshcredential import SshCredential
+from automojo.interfaces.addressplane import AddressPlane
 from automojo.interop.interfaces.isystemcontext import ISystemContext
+from automojo.landscaping.addressing.deviceaddressset import DeviceAddressSet
 from automojo.landscaping.friendlyidentifier import FriendlyIdentifier
 from automojo.landscaping.extensions.protocol.protocolextension import ProtocolExtension
 from automojo.xmodules.xthreading.lockscopes import LockedScope, UnLockedScope
@@ -116,6 +118,26 @@ class LandscapeDevice(FeatureAttachedObject):
         if "ipaddr" in device_config:
             self._configured_ipaddr = device_config["ipaddr"]
 
+        # Multi-plane address set. The legacy ``_host`` value populates
+        # the PUBLIC slot to preserve today's behaviour for any caller
+        # reading addresses through the new ``addresses`` property.
+        self._address_set = DeviceAddressSet(public=self._host)
+
+        # Per-device preferred plane. Default is PUBLIC, which keeps the
+        # legacy behaviour bit-identical. Per-device config may override;
+        # landscape-root fallback is consulted when the device omits it.
+        self._preferred_plane = self._determine_preferred_plane(lscape=lscape,
+                                                                device_config=device_config)
+
+        # Landscape VPN per-device override fields. These default to
+        # empty/None so legacy device configurations remain bit-identical.
+        self._vpn_provider = None
+        self._vpn_managed = False
+        self._vpn_advertise_tags = []
+        self._initialize_vpn_overrides(device_config=device_config)
+
+        self._overlay_warning_emitted = False
+
         if self._configured_ipaddr is None and self._host is not None:
              self._resolve_ipaddress()
 
@@ -134,6 +156,62 @@ class LandscapeDevice(FeatureAttachedObject):
                 break
 
         return
+
+    @property
+    def addresses(self) -> DeviceAddressSet:
+        """
+            Returns the multi-plane :class:`DeviceAddressSet` carried by
+            this device.
+
+            :returns: The device's :class:`DeviceAddressSet` instance.
+        """
+        rtnval = self._address_set
+        return rtnval
+
+    @property
+    def vpn_provider(self) -> Union[str, None]:
+        """
+            Returns the name of the landscape root ``vpn.providers``
+            entry this device is bound to, or ``None`` when the device
+            has no per-device VPN override.
+
+            :returns: The provider name or ``None``.
+        """
+        rtnval = self._vpn_provider
+        return rtnval
+
+    @property
+    def vpn_managed(self) -> bool:
+        """
+            Returns ``True`` when the device opted in to landscape-managed
+            VPN-daemon ownership via ``devices[*].vpn.managed``.
+
+            :returns: The managed flag (default ``False``).
+        """
+        rtnval = self._vpn_managed
+        return rtnval
+
+    @property
+    def vpn_advertise_tags(self) -> list:
+        """
+            Returns the per-device advertise-tag list. Empty when the
+            device did not declare ``devices[*].vpn.advertise_tags``.
+
+            :returns: A list of advertised tag strings.
+        """
+        rtnval = list(self._vpn_advertise_tags)
+        return rtnval
+
+    @property
+    def preferred_plane(self) -> AddressPlane:
+        """
+            Returns the preferred :class:`AddressPlane` to use when
+            dialing this device. Default is :attr:`AddressPlane.PUBLIC`.
+
+            :returns: The configured preferred plane.
+        """
+        rtnval = self._preferred_plane
+        return rtnval
 
     @property
     def configured_ipaddr(self) -> Union[str, None]:
@@ -530,7 +608,14 @@ class LandscapeDevice(FeatureAttachedObject):
     def _resolve_ipaddress(self) -> str:
         """
             Resolves and caches the IP address for this device using the host
-            or configured IP address.
+            or configured IP address. The resolved address is also mirrored
+            into the multi-plane address set's PUBLIC slot so consumers of
+            :attr:`addresses` observe the same value.
+
+            :returns: The resolved IPv4/IPv6 address as a string.
+            :raises: :class:`ConfigurationError` when DNS resolution fails;
+                :class:`RuntimeError` when neither host nor configured
+                ipaddr is available.
         """
 
         ipaddr = None
@@ -549,7 +634,126 @@ class LandscapeDevice(FeatureAttachedObject):
             errmsg = f"_resolve_ipaddress: Unable to resolve IP address for dev {self}."
             raise RuntimeError(errmsg)
 
+        # Mirror the resolved address into the PUBLIC slot of the
+        # multi-plane address set. The original ``_host`` value is
+        # preserved as a fallback when DNS resolution did not happen.
+        public_for_set = ipaddr
+        if public_for_set is None:
+            public_for_set = self._host
+        self._address_set.set_public(address=public_for_set)
+
         return ipaddr
+
+    def _resolve_addresses(self) -> DeviceAddressSet:
+        """
+            Refresh and return the device's multi-plane address set.
+
+            For now this method only populates the PUBLIC slot (from the
+            existing DNS/configured-ipaddr path). Future M4 work will
+            extend it to populate PRIVATE and OVERLAY slots from cloud
+            metadata and VPN coordinators respectively.
+
+            :returns: The :class:`DeviceAddressSet` carried by this device.
+        """
+        if self._configured_ipaddr is None and self._host is not None:
+            self._resolve_ipaddress()
+        elif self._address_set.public() is None and self._host is not None:
+            self._address_set.set_public(address=self._host)
+
+        if self._preferred_plane == AddressPlane.OVERLAY:
+            overlay_addr = self._address_set.overlay()
+            if overlay_addr is None and not self._overlay_warning_emitted:
+                warn_msg = ("Device {} has preferred_plane=OVERLAY but no "
+                            "overlay address is populated; falling back to "
+                            "the public plane.").format(self.identity)
+                self.logger.warning(warn_msg)
+                self._overlay_warning_emitted = True
+
+        rtnval = self._address_set
+        return rtnval
+
+    def _determine_preferred_plane(self, *, lscape: "Landscape",
+                                   device_config: dict) -> AddressPlane:
+        """
+            Resolve the device's preferred address plane from per-device
+            config with landscape-root fallback.
+
+            :param lscape: The landscape this device belongs to.
+            :param device_config: The device's configuration dictionary.
+
+            :returns: The resolved :class:`AddressPlane` value. Default
+                is :attr:`AddressPlane.PUBLIC`.
+        """
+        rtnval = AddressPlane.PUBLIC
+
+        configured = None
+        if "preferred_plane" in device_config:
+            configured = device_config["preferred_plane"]
+        elif "vpn" in device_config and isinstance(device_config["vpn"], dict) \
+                and "preferred_plane" in device_config["vpn"]:
+            # Per-device override expressed as ``devices[*].vpn.preferred_plane``
+            # per the landscape-vpn-config-schema spec.
+            configured = device_config["vpn"]["preferred_plane"]
+        else:
+            # Landscape-root fallback. The attribute may not exist on
+            # older landscape implementations, so look it up defensively.
+            # The schema-driven attribute name is ``vpn_default_plane``;
+            # the legacy attribute ``preferred_plane`` is honoured as a
+            # backward-compatible secondary.
+            landscape_attr = getattr(lscape, "vpn_default_plane", None)
+            if landscape_attr is None:
+                landscape_attr = getattr(lscape, "preferred_plane", None)
+            if landscape_attr is not None:
+                configured = landscape_attr
+
+        if configured is not None:
+            if isinstance(configured, AddressPlane):
+                rtnval = configured
+            elif isinstance(configured, str):
+                key = configured.strip().upper()
+                if key in AddressPlane.__members__:
+                    rtnval = AddressPlane[key]
+
+        return rtnval
+
+    def _initialize_vpn_overrides(self, *, device_config: dict) -> None:
+        """
+            Pull the per-device ``vpn:`` override values out of the raw
+            configuration dictionary, populating ``_vpn_provider``,
+            ``_vpn_managed`` and ``_vpn_advertise_tags`` accordingly.
+
+            Devices without a ``vpn:`` mapping retain their defaults so
+            existing landscape files behave bit-identically.
+
+            :param device_config: The device configuration dictionary.
+        """
+        if "vpn" not in device_config:
+            return
+
+        vpn_block = device_config["vpn"]
+        if not isinstance(vpn_block, dict):
+            return
+
+        if "provider" in vpn_block:
+            provider_value = vpn_block["provider"]
+            if isinstance(provider_value, str) and len(provider_value) > 0:
+                self._vpn_provider = provider_value
+
+        if "managed" in vpn_block:
+            managed_value = vpn_block["managed"]
+            if isinstance(managed_value, bool):
+                self._vpn_managed = managed_value
+
+        if "advertise_tags" in vpn_block:
+            tags_value = vpn_block["advertise_tags"]
+            if isinstance(tags_value, list):
+                clean_tags: list = []
+                for tag in tags_value:
+                    if isinstance(tag, str):
+                        clean_tags.append(tag)
+                self._vpn_advertise_tags = clean_tags
+
+        return
 
     def _repr_html_(self) -> str:
         """

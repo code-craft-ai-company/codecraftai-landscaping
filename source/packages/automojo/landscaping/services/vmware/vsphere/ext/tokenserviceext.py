@@ -1,9 +1,17 @@
 """
     .. module:: tokenserviceext
     :platform: Darwin, Linux, Unix, Windows
-    :synopsis: Contains the TokenServiceExt object.
+    :synopsis: Backwards-compatibility shim — re-exports ``TokenServiceExt`` from
+               ``automojo.interop.vsphere.apigroups.tokenservicegroup``.
 
     .. moduleauthor:: Myron Walker <myron.walker@gmail.com>
+
+    The legacy ``TokenServiceExt`` class was renamed to ``TokenServiceGroup`` and moved into the
+    ``automojo-interop-vsphere`` package during M5. This shim preserves the
+    legacy import path for one release cycle. Importing this module emits a
+    :class:`DeprecationWarning` exactly once per process. New code should use::
+
+        from automojo.interop.vsphere.apigroups.tokenservicegroup import TokenServiceGroup
 """
 
 __author__ = "Myron Walker"
@@ -11,25 +19,12 @@ __copyright__ = "Copyright 2025, Automation Mojo LLC"
 __credits__ = []
 
 
-from typing import TYPE_CHECKING
+from automojo.landscaping.services.vmware._shim import install_shim
 
-from  http import HTTPStatus
 
-from automojo.landscaping.services.vmware.vsphere.ext.baseext import BaseExt
-
-if TYPE_CHECKING:
-    from automojo.landscaping.services.vmware.vsphere.vsphereagent import VSphereAgent
-
-class TokenServiceExt(BaseExt):
-    """
-        Extension managing vSphere authentication tokens.
-    """
-
-    def __init__(self, agent: "VSphereAgent"):
-        """
-            Initializes the token service extension.
-
-            :param agent: Owning :class:`VSphereAgent` instance.
-        """
-        super().__init__(agent)
-        return
+install_shim(
+    old_path=__name__,
+    new_module_name="automojo.interop.vsphere.apigroups.tokenservicegroup",
+    public_names=["TokenServiceExt"],
+    aliases={"TokenServiceExt": "TokenServiceGroup"},
+)

@@ -1,9 +1,17 @@
 """
     .. module:: servicesext
     :platform: Darwin, Linux, Unix, Windows
-    :synopsis: Contains the ServicesExt object.
+    :synopsis: Backwards-compatibility shim — re-exports ``ServicesExt`` from
+               ``automojo.interop.vsphere.apigroups.servicesgroup``.
 
     .. moduleauthor:: Myron Walker <myron.walker@gmail.com>
+
+    The legacy ``ServicesExt`` class was renamed to ``ServicesGroup`` and moved into the
+    ``automojo-interop-vsphere`` package during M5. This shim preserves the
+    legacy import path for one release cycle. Importing this module emits a
+    :class:`DeprecationWarning` exactly once per process. New code should use::
+
+        from automojo.interop.vsphere.apigroups.servicesgroup import ServicesGroup
 """
 
 __author__ = "Myron Walker"
@@ -11,25 +19,12 @@ __copyright__ = "Copyright 2025, Automation Mojo LLC"
 __credits__ = []
 
 
-from typing import TYPE_CHECKING
+from automojo.landscaping.services.vmware._shim import install_shim
 
-from  http import HTTPStatus
 
-from automojo.landscaping.services.vmware.vsphere.ext.baseext import BaseExt
-
-if TYPE_CHECKING:
-    from automojo.landscaping.services.vmware.vsphere.vsphereagent import VSphereAgent
-
-class ServicesExt(BaseExt):
-    """
-        Extension that exposes various vSphere services.
-    """
-
-    def __init__(self, agent: "VSphereAgent"):
-        """
-            Initializes the services extension for a vSphere agent.
-
-            :param agent: Owning :class:`VSphereAgent` instance.
-        """
-        super().__init__(agent)
-        return
+install_shim(
+    old_path=__name__,
+    new_module_name="automojo.interop.vsphere.apigroups.servicesgroup",
+    public_names=["ServicesExt"],
+    aliases={"ServicesExt": "ServicesGroup"},
+)

@@ -1,9 +1,17 @@
 """
     .. module:: trustedinfrastructureext
     :platform: Darwin, Linux, Unix, Windows
-    :synopsis: Contains the TrustedInfrastructureExt object.
+    :synopsis: Backwards-compatibility shim — re-exports ``TrustedInfrastructureExt`` from
+               ``automojo.interop.vsphere.apigroups.trustedinfrastructuregroup``.
 
     .. moduleauthor:: Myron Walker <myron.walker@gmail.com>
+
+    The legacy ``TrustedInfrastructureExt`` class was renamed to ``TrustedInfrastructureGroup`` and moved into the
+    ``automojo-interop-vsphere`` package during M5. This shim preserves the
+    legacy import path for one release cycle. Importing this module emits a
+    :class:`DeprecationWarning` exactly once per process. New code should use::
+
+        from automojo.interop.vsphere.apigroups.trustedinfrastructuregroup import TrustedInfrastructureGroup
 """
 
 __author__ = "Myron Walker"
@@ -11,25 +19,12 @@ __copyright__ = "Copyright 2025, Automation Mojo LLC"
 __credits__ = []
 
 
-from typing import TYPE_CHECKING
+from automojo.landscaping.services.vmware._shim import install_shim
 
-from  http import HTTPStatus
 
-from automojo.landscaping.services.vmware.vsphere.ext.baseext import BaseExt
-
-if TYPE_CHECKING:
-    from automojo.landscaping.services.vmware.vsphere.vsphereagent import VSphereAgent
-
-class TrustedInfrastructureExt(BaseExt):
-    """
-        Extension that manages trusted infrastructure resources.
-    """
-
-    def __init__(self, agent: "VSphereAgent"):
-        """
-            Initializes the trusted infrastructure extension.
-
-            :param agent: Owning :class:`VSphereAgent` instance.
-        """
-        super().__init__(agent)
-        return
+install_shim(
+    old_path=__name__,
+    new_module_name="automojo.interop.vsphere.apigroups.trustedinfrastructuregroup",
+    public_names=["TrustedInfrastructureExt"],
+    aliases={"TrustedInfrastructureExt": "TrustedInfrastructureGroup"},
+)

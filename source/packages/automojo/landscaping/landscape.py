@@ -22,6 +22,10 @@ import threading
 
 from automojo.errors.exceptions import SemanticError
 
+from automojo.interfaces.addressplane import AddressPlane
+
+from automojo.landscaping.config.vpnproviderentry import VPNProviderEntry
+
 from automojo.thisapp.contextpaths import ContextPaths
 from automojo.thisapp.wellknown import ThisApplicationSingleton
 
@@ -172,6 +176,41 @@ class Landscape:
             Gets the operational layer for the current Landscape.
         """
         return self._layer_operational
+
+    @property
+    def vpn_default_plane(self) -> AddressPlane:
+        """
+            Returns the landscape's default :class:`AddressPlane` parsed
+            from the ``vpn.default_plane`` field, or
+            :attr:`AddressPlane.PUBLIC` when no ``vpn:`` block is
+            present.
+
+            :returns: The landscape-wide default :class:`AddressPlane`.
+        """
+        rtnval = self._layer_configuration.vpn_default_plane
+        return rtnval
+
+    @property
+    def vpn_providers(self) -> List[VPNProviderEntry]:
+        """
+            Returns the landscape-level VPN provider list. Empty when
+            the landscape configuration omits the ``vpn:`` block.
+
+            :returns: A list of :class:`VPNProviderEntry` records.
+        """
+        rtnval = self._layer_configuration.vpn_providers
+        return rtnval
+
+    @property
+    def vpn_block_present(self) -> bool:
+        """
+            Returns ``True`` when the loaded landscape configuration
+            contained a top-level ``vpn:`` block.
+
+            :returns: Whether the landscape has VPN configuration.
+        """
+        rtnval = self._layer_configuration.vpn_block_present
+        return rtnval
 
     @property
     def installed_integration_couplings(self) -> Dict[str, IntegrationCoupling]:

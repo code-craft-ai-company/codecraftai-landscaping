@@ -1,60 +1,27 @@
 """
-    .. module:: vmcreatespec
+    .. module:: vmcreate
     :platform: Darwin, Linux, Unix, Windows
-    :synopsis: Contains various VmCreateSpec related objects used in the creation of VM(s).
+    :synopsis: Backwards-compatibility shim — re-exports :class:`VmCreateSpec`
+               from ``automojo.interop.vsphere.specs.vmcreate``.
 
     .. moduleauthor:: Myron Walker <myron.walker@gmail.com>
+
+    Importing this module emits a :class:`DeprecationWarning` exactly once per
+    process. New code should use::
+
+        from automojo.interop.vsphere.specs.vmcreate import VmCreateSpec
 """
 
 __author__ = "Myron Walker"
 __copyright__ = "Copyright 2025, Automation Mojo LLC"
 __credits__ = []
 
-from typing import List, Optional
 
-from dataclasses import dataclass
+from automojo.landscaping.services.vmware._shim import install_shim
 
-from automojo.landscaping.services.vmware.metasphere.vmguestos import VmGuestOS
-from automojo.landscaping.services.vmware.metasphere.vmhardware import VmHardwareVersion
 
-from automojo.landscaping.services.vmware.datastructures.specs.vmplacement import VmPlacementSpec
-from automojo.landscaping.services.vmware.datastructures.specs.vmhardware import (
-    VmHardwareBootCreateSpec,
-    VmHardwareCpuUpdateSpec,
-    VmHardwareDiskCreateSpec,
-    VmHardwareFloppyCreateSpec,
-    VmHardwareCdromCreateSpec,
-    VmHardwareMemoryUpdateSpec,
-    VmHardwareEthernetCreateSpec,
-    VmHardwareAdapterNvmeCreateSpec,
-    VmHardwareParallelCreateSpec,
-    VmHardwareBootDeviceEntryCreateSpec,
-    VmHardwareAdapterSataCreateSpec,
-    VmHardwareAdapterScsiCreateSpec,
-    VmHardwareSerialCreateSpec
+install_shim(
+    old_path=__name__,
+    new_module_name="automojo.interop.vsphere.specs.vmcreate",
+    public_names=["VmCreateSpec"],
 )
-from automojo.landscaping.services.vmware.datastructures.specs.vmstorage import VmStoragePolicySpec
-
-@dataclass
-class VmCreateSpec:
-    """
-        Aggregate specification describing a virtual machine to create.
-    """
-    guest_OS: VmGuestOS
-    placement: VmPlacementSpec
-    boot: Optional[VmHardwareBootCreateSpec] = None
-    cpu: Optional[VmHardwareCpuUpdateSpec] = None
-    disks: Optional[List[VmHardwareDiskCreateSpec]] = None
-    floppies: Optional[List[VmHardwareFloppyCreateSpec]] = None
-    cdroms: Optional[List[VmHardwareCdromCreateSpec]] = None
-    hardware_version: Optional[VmHardwareVersion] = None
-    memory: Optional[VmHardwareMemoryUpdateSpec] = None
-    name: Optional[str] = None
-    nics: Optional[List[VmHardwareEthernetCreateSpec]] = None
-    nvme_adapters: Optional[List[VmHardwareAdapterNvmeCreateSpec]] = None
-    parallel_ports: Optional[List[VmHardwareParallelCreateSpec]] = None
-    boot_devices: Optional[List[VmHardwareBootDeviceEntryCreateSpec]] = None
-    sata_adapters: Optional[List[VmHardwareAdapterSataCreateSpec]] = None
-    scsi_adapters: Optional[List[VmHardwareAdapterScsiCreateSpec]] = None
-    serial_ports: Optional[List[VmHardwareSerialCreateSpec]] = None
-    storage_policy: Optional[List[VmStoragePolicySpec]] = None

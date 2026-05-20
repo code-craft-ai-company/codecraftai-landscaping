@@ -1,21 +1,36 @@
 """
     .. module:: vmstorage
     :platform: Darwin, Linux, Unix, Windows
-    :synopsis: Contains various VmStorage*Spec related objects used in the creation of VM(s).
+    :synopsis: Backwards-compatibility shim — re-exports the storage spec
+               types from ``automojo.interop.vsphere.specs.vmstorage``.
 
     .. moduleauthor:: Myron Walker <myron.walker@gmail.com>
-"""
 
+    The legacy ``VmStoragePolicySpec`` dataclass was superseded by the
+    :class:`VmStorageSpec` / :class:`VmDiskSpec` SchemaObjects in the new
+    ``automojo-interop-vsphere`` package during M5. Both new classes are
+    re-exported here; the legacy ``VmStoragePolicySpec`` symbol is mapped onto
+    :class:`VmStorageSpec` so existing imports resolve.
+
+    Importing this module emits a :class:`DeprecationWarning` exactly once per
+    process. New code should use::
+
+        from automojo.interop.vsphere.specs.vmstorage import (
+            VmStorageSpec, VmDiskSpec,
+        )
+"""
 
 __author__ = "Myron Walker"
 __copyright__ = "Copyright 2025, Automation Mojo LLC"
 __credits__ = []
 
-from dataclasses import dataclass
 
-@dataclass
-class VmStoragePolicySpec:
-    """
-        Storage policy specification used by a virtual machine.
-    """
-    policy: str
+from automojo.landscaping.services.vmware._shim import install_shim
+
+
+install_shim(
+    old_path=__name__,
+    new_module_name="automojo.interop.vsphere.specs.vmstorage",
+    public_names=["VmStorageSpec", "VmDiskSpec", "VmStoragePolicySpec"],
+    aliases={"VmStoragePolicySpec": "VmStorageSpec"},
+)
