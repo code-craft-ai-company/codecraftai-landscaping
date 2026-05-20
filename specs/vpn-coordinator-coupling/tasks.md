@@ -18,8 +18,11 @@
   - [x] 5f. Idempotency: only call `set_overlay` when address differs.
   - [x] 5g. Managed-host path: construct an `IVPNClient` and register on the
     device.
-- [ ] 6. Update `LandscapeDevice` to expose `vpn_client_for(provider) ->
-  Optional[IVPNClient]` and to hold the registry.
+- [x] 6. Update `LandscapeDevice` to expose `vpn_client_for(provider) ->
+  IVPNClient` and to hold the registry. The `_vpn_clients` registry is
+  initialised in `__init__`; `vpn_client_for` raises `SemanticError`
+  (rather than returning `None`) when no client is registered for the
+  requested provider, surfacing the misconfiguration explicitly.
 - [x] 7. Apply project coding standards (named-only, explicit returns).
 - [x] 8. Tests — example-based:
   - [x] 8a. `test_couple_hostname_match_attaches_overlay`.
@@ -33,6 +36,11 @@
   - [x] 8i. `test_managed_host_without_credential_raises`.
   - [x] 8j. `test_managed_host_registers_vpn_client`.
 - [ ] 9. Fixture files: control-plane device list, landscape YAML snippet.
-- [ ] 10. Register the coupling kind with the landscape coordinator factory
+- [x] 10. Register the coupling kind with the landscape coordinator factory
   so YAML-declared `vpn:` blocks construct it automatically (cross-spec with
-  `landscape-vpn-config-schema`).
+  `landscape-vpn-config-schema`). Implemented via a coupling-kind registry in
+  `coupling/vpncoordinatorcoupling.py` (`register_coupling_kind`,
+  `coupling_type_for_kind`, `is_coupling_kind_registered`) keyed by the
+  `vpn` kind; `VPNCoordinatorCoupling.register()` is invoked from
+  `landscaping/factories.py` so the kind is registered along the normal
+  factory path.
