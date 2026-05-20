@@ -2,16 +2,16 @@
     .. module:: inventoryext
     :platform: Darwin, Linux, Unix, Windows
     :synopsis: Backwards-compatibility shim — re-exports ``InventoryExt`` from
-               ``automojo.interop.vsphere.apigroups.inventorygroup``.
+               ``automojo.restclient.vsphere.apigroups.inventorygroup``.
 
     .. moduleauthor:: Myron Walker <myron.walker@gmail.com>
 
     The legacy ``InventoryExt`` class was renamed to ``InventoryGroup`` and moved into the
-    ``automojo-interop-vsphere`` package during M5. This shim preserves the
+    ``automojo-restclient-vsphere`` package during M5. This shim preserves the
     legacy import path for one release cycle. Importing this module emits a
     :class:`DeprecationWarning` exactly once per process. New code should use::
 
-        from automojo.interop.vsphere.apigroups.inventorygroup import InventoryGroup
+        from automojo.restclient.vsphere.apigroups.inventorygroup import InventoryGroup
 """
 
 __author__ = "Myron Walker"
@@ -24,7 +24,7 @@ from automojo.landscaping.services.vmware._shim import install_shim
 
 install_shim(
     old_path=__name__,
-    new_module_name="automojo.interop.vsphere.apigroups.inventorygroup",
+    new_module_name="automojo.restclient.vsphere.apigroups.inventorygroup",
     public_names=["InventoryExt"],
     aliases={"InventoryExt": "InventoryGroup"},
 )

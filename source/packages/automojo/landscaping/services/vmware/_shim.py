@@ -7,7 +7,7 @@
     .. moduleauthor:: Myron Walker <myron.walker@gmail.com>
 
     Each legacy module under ``services/vmware`` was extracted into the
-    ``automojo-interop-vsphere`` (or ``automojo-interop-vmworkstation``) package
+    ``automojo-restclient-vsphere`` (or ``automojo-interop-vmworkstation``) package
     during M5. The legacy import paths are preserved for one release cycle by
     thin shim modules that delegate to :func:`install_shim`. The helper:
 
