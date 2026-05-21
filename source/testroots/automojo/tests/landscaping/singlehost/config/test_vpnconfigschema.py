@@ -263,6 +263,44 @@ class DeviceOverrideTests(unittest.TestCase):
         self.assertIn("preferred_plane", errors[0].path)
         return
 
+    def test_duplicate_provider_name_errors(self) -> None:
+        """
+            Regression for the audit duplicate-provider-name finding: two
+            providers declaring the same ``name`` produce a SEVERITY_ERROR.
+        """
+        doc = _tailscale_doc()
+        doc["vpn"]["providers"].append({
+            "name": "corp-tailnet",
+            "kind": "twingate",
+            "credential_ref": "twingate:corp",
+            "network_slug": "corp-net",
+        })
+        diagnostics = validate_landscape_vpn_block(doc=doc)
+        errors = [d for d in diagnostics if d.severity == SEVERITY_ERROR]
+        duplicate_errors = [d for d in errors if "duplicate" in d.message]
+        self.assertEqual(len(duplicate_errors), 1)
+        return
+
+    def test_advertise_tags_non_string_element_errors(self) -> None:
+        """
+            Regression for the audit advertise_tags element-validation
+            finding: a non-string element in ``vpn.advertise_tags`` is an
+            error rather than being silently accepted.
+        """
+        doc = _tailscale_doc()
+        doc["devices"].append({
+            "name": "db01",
+            "vpn": {
+                "provider": "corp-tailnet",
+                "advertise_tags": ["tag:db", 7, ""],
+            },
+        })
+        diagnostics = validate_landscape_vpn_block(doc=doc)
+        errors = [d for d in diagnostics if d.severity == SEVERITY_ERROR]
+        tag_errors = [d for d in errors if "advertise_tags[" in d.path]
+        self.assertEqual(len(tag_errors), 2)
+        return
+
     def test_apod_section_devices_validated(self) -> None:
         """
             Device entries under ``apod.<section>`` are validated the

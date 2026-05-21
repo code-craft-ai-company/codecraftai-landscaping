@@ -374,6 +374,17 @@ def _validate_provider_entry(*, entry: Any, idx: int,
             )
             diagnostics.append(diag)
 
+    if name_value in provider_names:
+        msg = ("duplicate provider name {!r}; provider names must be "
+               "unique within vpn.providers.").format(name_value)
+        diag = LandscapeConfigDiagnostic(
+            severity=SEVERITY_ERROR,
+            path=base_path + ".name",
+            message=msg,
+        )
+        diagnostics.append(diag)
+        return
+
     provider_names.add(name_value)
 
     return
@@ -558,6 +569,17 @@ def _validate_single_device_vpn(*, vpn_block: dict, device_path: str,
                 message="device vpn.advertise_tags must be a list of strings.",
             )
             diagnostics.append(diag)
+        else:
+            for tag_idx in range(0, len(tags_value)):
+                tag_item = tags_value[tag_idx]
+                if not isinstance(tag_item, str) or len(tag_item) == 0:
+                    tag_path = "{}.advertise_tags[{}]".format(device_path, tag_idx)
+                    diag = LandscapeConfigDiagnostic(
+                        severity=SEVERITY_ERROR,
+                        path=tag_path,
+                        message="device vpn.advertise_tags entries must be non-empty strings.",
+                    )
+                    diagnostics.append(diag)
 
     for raw_key in vpn_block.keys():
         if raw_key not in DEVICE_VPN_KNOWN_KEYS:

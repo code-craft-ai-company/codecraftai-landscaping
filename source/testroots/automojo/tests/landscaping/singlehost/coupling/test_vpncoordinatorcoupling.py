@@ -359,6 +359,37 @@ class VPNCoordinatorCouplingTests(unittest.TestCase):
         self.assertIs(device.vpn_client_for(provider="tailscale"), fake_client)
         return
 
+    def test_couple_twice_does_not_re_register_managed_client(self) -> None:
+        # Regression for audit IL-H4: couple() is documented idempotent, but
+        # for managed devices it rebuilt and re-registered the IVPNClient on
+        # every call. A second couple() must not invoke the factory again.
+        device = FakeDevice(hostname="alpha", managed=True)
+        records = [
+            VPNDeviceRecord(device_id="a", hostname="alpha",
+                            overlay_address="100.64.0.1"),
+        ]
+        cp = make_control_plane(records)
+
+        invocations: List[Any] = []
+
+        def factory(*, device: Any, provider: str) -> IVPNClient:
+            invocations.append((device, provider))
+            rtnval = MagicMock(spec=IVPNClient)
+            return rtnval
+
+        coupling = VPNCoordinatorCoupling(provider="tailscale",
+                                          control_plane=cp,
+                                          vpn_client_factory=factory)
+        coupling.couple(devices=[device])
+        first_client = device.vpn_client_for(provider="tailscale")
+
+        coupling.couple(devices=[device])
+        second_client = device.vpn_client_for(provider="tailscale")
+
+        self.assertEqual(len(invocations), 1)
+        self.assertIs(first_client, second_client)
+        return
+
     def test_managed_host_factory_returning_none_raises(self) -> None:
         device = FakeDevice(hostname="alpha", managed=True)
         records = [
