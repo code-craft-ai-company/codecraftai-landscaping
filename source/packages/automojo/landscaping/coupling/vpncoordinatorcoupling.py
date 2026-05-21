@@ -376,6 +376,28 @@ class VPNCoordinatorCoupling:
             rtnval = True
         return rtnval
 
+    def _has_registered_vpn_client(self, *, device: Any) -> bool:
+        """
+            Report whether ``device`` already carries a registered
+            :class:`IVPNClient` for this coupling's provider.
+
+            This supports the idempotent contract of :meth:`couple`: a
+            second invocation MUST NOT rebuild and re-register a client
+            that is already present.
+
+            :param device: The landscape device to inspect.
+
+            :returns: ``True`` when a client for the provider is already
+                registered on the device.
+        """
+        registry = getattr(device, "_vpn_clients", None)
+        if registry is None:
+            rtnval = False
+            return rtnval
+
+        rtnval = self._provider in registry
+        return rtnval
+
     def _register_vpn_client(self, *, device: Any) -> None:
         """
             Construct and register a managed-host :class:`IVPNClient`
@@ -548,7 +570,9 @@ class VPNCoordinatorCoupling:
 
             managed = self._device_managed(device, default=self._vpn_managed_default)
             if managed:
-                self._register_vpn_client(device=device)
+                already_registered = self._has_registered_vpn_client(device=device)
+                if not already_registered:
+                    self._register_vpn_client(device=device)
 
         return result
 

@@ -16,7 +16,7 @@ __credits__ = []
 from dataclasses import dataclass
 
 
-@dataclass
+@dataclass(frozen=True)
 class AspectsLandscapeCoupling:
     """
         Behaviour-modifying parameters carried into the landscape

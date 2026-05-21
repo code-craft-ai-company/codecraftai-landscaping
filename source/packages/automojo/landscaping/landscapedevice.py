@@ -762,6 +762,17 @@ class LandscapeDevice(FeatureAttachedObject):
                 key = configured.strip().upper()
                 if key in AddressPlane.__members__:
                     rtnval = AddressPlane[key]
+                else:
+                    known_planes = ", ".join(sorted(AddressPlane.__members__.keys()))
+                    warn_msg = ("Unrecognized preferred address plane {!r}; "
+                                "falling back to {}. KNOWN PLANES: {}.").format(
+                                    configured, AddressPlane.PUBLIC.name, known_planes)
+                    self.logger.warning(warn_msg)
+            else:
+                warn_msg = ("Preferred address plane has unexpected type {}; "
+                            "falling back to {}.").format(
+                                type(configured).__name__, AddressPlane.PUBLIC.name)
+                self.logger.warning(warn_msg)
 
         return rtnval
 
