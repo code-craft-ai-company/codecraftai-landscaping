@@ -14,9 +14,9 @@ import os
 
 from automojo.xmodules.xcollections.contextuser import ContextUser
 
-from automojo.runtime.runtimevariables import AM_RUNTIME_VARIABLES
+from automojo.thisapp.runtimevariables import AM_RUNTIME_VARIABLES
 
-from automojo.runtime.paths import get_path_for_output
+from automojo.thisapp.paths import get_path_for_output
 
 from automojo.landscaping.wellknown import LandscapeSingleton
 
