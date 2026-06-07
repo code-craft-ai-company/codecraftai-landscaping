@@ -749,7 +749,7 @@ Each task should include:
 ## Documentation Requirements
 
 Each implemented task should include:
-- **Sphinx-style documentation** comments following AutomationX conventions
+- **Sphinx-style documentation** comments following CodeCraftX conventions
 - **Usage examples** with configuration samples
 - **Integration guides** for extending functionality
 - **Troubleshooting information** for common issues

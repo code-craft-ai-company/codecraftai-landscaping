@@ -77,7 +77,7 @@ upstream data quirks do not produce nonsense dial targets.
 
 #### Acceptance Criteria
 
-1. THE SYSTEM SHALL define `IDeviceAddressSet` in `automojo-interfaces`
+1. THE SYSTEM SHALL define `IDeviceAddressSet` in `codecraftai-interfaces`
    exposing `public()`, `private()`, `overlay(provider)`, and
    `resolve(plane, fallback_planes)`.
 2. `DeviceAddressSet` SHALL implement `IDeviceAddressSet`.

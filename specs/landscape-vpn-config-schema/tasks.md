@@ -1,6 +1,6 @@
 # Implementation Plan — Landscape VPN Config Schema
 
-- [x] 1. Create `automojo/landscaping/config/__init__.py` (if not present).
+- [x] 1. Create `ccai/landscaping/config/__init__.py` (if not present).
 - [x] 2. Create `config/vpnproviderentry.py` with the `VPNProviderEntry`
   dataclass.
 - [x] 3. Create `config/landscapeconfigdiagnostic.py` with the
@@ -39,5 +39,5 @@
 - [x] 11. Fixture files: four landscape YAMLs as listed in the design.
 - [x] 12. Regression test that every existing landscape fixture in the
   package produces zero new diagnostics.
-- [x] 13. Cross-link with `automojo-configuration` `vpn-config-schema` spec
+- [x] 13. Cross-link with `codecraftai-configuration` `vpn-config-schema` spec
   so the schema fragment definitions stay in sync.

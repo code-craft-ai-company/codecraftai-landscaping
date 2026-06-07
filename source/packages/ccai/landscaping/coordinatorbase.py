@@ -1,0 +1,220 @@
+"""
+    .. module:: coordinatorbase
+    :platform: Darwin, Linux, Unix, Windows
+    :synopsis: Contains the CoordinatorBase which is the base object for coordinators to
+    derive from and establishes patterns for coordinators which help to make
+    them threadsafe.
+
+    .. moduleauthor:: Myron Walker <myron.walker@gmail.com>
+"""
+
+__author__ = "Myron Walker"
+__copyright__ = "Copyright 2025, Code Craft AI LLC"
+__credits__ = []
+
+
+
+from typing import Any, List, Optional, TYPE_CHECKING
+
+import threading
+import weakref
+
+from ccai.errors.exceptions import AbstractMethodError
+
+from ccai.xmodules.xthreading.lockscopes import LockedScope, UnLockedScope
+
+from ccai.landscaping.landscapeparameters import LandscapeActivationParams
+from ccai.landscaping.landscapedevice import LandscapeDevice
+
+if TYPE_CHECKING:
+    from ccai.landscaping.landscape import Landscape
+
+class CoordinatorBase:
+    """
+        The CoordinatorBase utilizes the expected device declarations of type such as 'network/upnp' to establish and maintain
+        connectivity and interoperability with a class of devices.  A derived coordinator will scan the medium such as a network
+        for the devices declared in the landscape description.  The coordinator will also create the threads necessary to maintain
+        communicates with the external devices over the medium.
+    """
+
+    def __init__(self, lscape: "Landscape", *args, coord_config=None, **kwargs):
+        """
+            Constructs an instance of a derived :class:`CoordinatorBase` object.
+
+            :param lscape: The :class:`Landscape` singleton instance.
+            :param *args: A pass through for other positional args.
+            :param **kwargs: A pass through for the other keyword args.
+        """
+
+        self._lscape_ref = weakref.ref(lscape)
+        self._coord_config = coord_config
+
+        # If the landscape is in interactive mode, then all the coordinators should
+        # default to using interactive mode
+        self._interactive_mode = lscape.interactive_mode
+
+        self._coord_lock = threading.RLock()
+
+        self._cl_children = {}
+
+        self._cl_expected_devices = []
+
+        self._cl_found_devices = []
+        self._cl_matched_devices = []
+        self._cl_missing_devices = []
+
+        return
+
+    @property
+    def children(self) -> List[LandscapeDevice]:
+        """
+            Returns a list of the devices created by the coordinator and registered by the coordinator with the Landscape object.
+        """
+        chlist = []
+
+        self._coord_lock.acquire()
+        try:
+            chlist = [c for c in self._cl_children.values()]
+        finally:
+            self._coord_lock.release()
+
+        return chlist
+
+    @property
+    def coord_config(self):
+        """
+            The dedicated coordinator configuration for coordinators that have a dedicated
+            configuration section in the landscape file.  Example: power, serial, wireless
+        """
+        return self._coord_config
+
+    @property
+    def landscape(self) -> "Landscape":
+        """
+            Returns a hard reference to the Landscape singleton instance.
+        """
+        lscape = self._lscape_ref()
+        return lscape
+
+    @property
+    def expected_devices(self):
+        """
+            The devices that were expected to be discovered by the coordinators discovery protocol.
+        """
+        devices = []
+
+        with self._coord_lock:
+            devices = list(self._cl_expected_devices)
+
+        return devices
+
+    @property
+    def found_devices(self):
+        """
+            The devices that were dynamically discovery by the coordinators discovery protocol.
+        """
+        devices = []
+
+        with self._coord_lock:
+            devices = list(self._cl_found_devices)
+
+        return devices
+
+    @property
+    def matched_devices(self):
+        """
+            The devices that the coordinator found during protocol discovery that matched corresponding
+            expected devices.
+        """
+        devices = []
+
+        with self._coord_lock:
+            devices = list(self._cl_matched_devices)
+
+        return devices
+
+    @property
+    def missing_devices(self):
+        """
+            The devices that the coordinator found to be missing during startup.
+        """
+        devices = []
+
+        with self._coord_lock:
+            devices = list(self._cl_missing_devices)
+
+        return devices
+
+    def activate(self, activation_params: LandscapeActivationParams):
+        """
+            Called by the :class:`LandscapeOperationalLayer` in order for the coordinator to be able to
+            potentially enhanced devices.
+        """
+        raise AbstractMethodError("activate: must be overloaded by derived coordinator classes")
+
+
+    def begin_locked_coordinator_scope(self) -> LockedScope:
+        """
+            Method that creates a locked scope for this device.
+        """
+        lkd_scope = LockedScope(self._coord_lock)
+        return lkd_scope
+
+    def begin_unlocked_coordinator_scope(self) -> UnLockedScope:
+        """
+            Method that creates an unlocked scope for this device.
+        """
+        unlkd_scope = UnLockedScope(self._coord_lock)
+        return unlkd_scope
+
+    def configure_devices(self, landscape: "Landscape"):
+        """
+            Called by configuration tools running in the "Infrastructure Orchestration" layer to configure
+            a coordinator devices.
+        """
+        raise AbstractMethodError("configure_devices: must be overloaded by derived coordinator classes")
+
+    def establish_connectivity(self, activation_params: LandscapeActivationParams):
+        """
+            Called by the :class:`LandscapeOperationalLayer` in order for the coordinator to be able to
+            verify connectivity with devices.
+        """
+        raise AbstractMethodError("establish_connectivity: must be overloaded by derived coordinator classes")
+
+    def establish_presence(self):
+        """
+            Implemented by derived coordinator classes to establish a specific presence in the
+            landscape.
+        """
+        return
+
+    def lookup_device_by_key(self, key) -> LandscapeDevice:
+        """
+            Looks up a device from the list of children by key in a thread safe way.
+        """
+
+        found = None
+
+        self._coord_lock.acquire()
+        try:
+            if key in self._cl_children:
+                found = self._cl_children[key]
+        finally:
+            self._coord_lock.release()
+
+        return found
+
+    def verify_connectivity(self, cmd: str = "echo 'It Works'", user: Optional[str] = None, raiseerror: bool = True):
+        """
+            Loops through the nodes in the coordinators pool in order to verify connectivity with the remote node.
+
+            :param cmd: A command to run on the remote machine in order to verify that connectivity can be establish.
+            :param user: The name of the user credentials to use for connectivity.
+            If the 'user' parameter is not provided, then the credentials
+            of the default or priviledged user will be used.
+            :param raiseerror: A boolean value indicating if this API should raise an Exception on failure.
+
+            :returns: A list of errors encountered when verifying connectivity with the devices managed or watched by the coordinator.
+        """
+        # pylint: disable=no-self-use
+        raise AbstractMethodError("verify_connectivity: must be overloaded by derived coordinator classes")

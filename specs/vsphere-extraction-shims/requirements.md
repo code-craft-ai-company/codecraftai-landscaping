@@ -4,8 +4,8 @@
 
 The `vsphere-extraction-shims` feature provides one-release-cycle backward
 compatibility for downstream consumers of the vsphere-related code that is
-moving out of `automojo-landscaping/services/vmware/` into the new
-`automojo-interop-vsphere` package. Each shim module lives at the old import
+moving out of `codecraftai-landscaping/services/vmware/` into the new
+`codecraftai-interop-vsphere` package. Each shim module lives at the old import
 path, re-exports the same names from the new package, and emits a
 `DeprecationWarning` exactly once per process per import path.
 
@@ -29,15 +29,15 @@ to keep working unchanged for one release cycle while I migrate.
 
 1. THE SYSTEM SHALL provide a shim module at every old import path that
    downstream code used:
-   - `automojo.landscaping.services.vmware.vsphere.vsphereagent`
-   - `automojo.landscaping.services.vmware.vsphere.ext.<each ext module>`
-   - `automojo.landscaping.services.vmware.datastructures.model.<each model>`
-   - `automojo.landscaping.services.vmware.datastructures.specs.<each spec>`
-   - `automojo.landscaping.services.vmware.metasphere.<each enum>`
-   - `automojo.landscaping.services.vmware.vmworkstationagent`
+   - `ccai.landscaping.services.vmware.vsphere.vsphereagent`
+   - `ccai.landscaping.services.vmware.vsphere.ext.<each ext module>`
+   - `ccai.landscaping.services.vmware.datastructures.model.<each model>`
+   - `ccai.landscaping.services.vmware.datastructures.specs.<each spec>`
+   - `ccai.landscaping.services.vmware.metasphere.<each enum>`
+   - `ccai.landscaping.services.vmware.vmworkstationagent`
 2. WHEN a shim module is imported THE SYSTEM SHALL re-export every public
    symbol the old module exported, sourced from the matching module in
-   `automojo-interop-vsphere` (or `automojo-interop-vmworkstation`).
+   `codecraftai-interop-vsphere` (or `codecraftai-interop-vmworkstation`).
 3. THE SYSTEM SHALL preserve original symbol names — no renaming.
 
 ### Requirement 2: Emit `DeprecationWarning` Exactly Once Per Import
@@ -61,7 +61,7 @@ deprecated module so log noise stays low while migration is visible.
 
 ### Requirement 3: No New Surface Area
 
-**User Story:** As a maintainer of the `automojo-interop-vsphere` package, I
+**User Story:** As a maintainer of the `codecraftai-interop-vsphere` package, I
 want the shims to add nothing — no helper classes, no extra documentation —
 so deletion is trivial.
 
@@ -70,7 +70,7 @@ so deletion is trivial.
 1. THE SYSTEM SHALL NOT introduce any new public class, function, or
    constant inside a shim module beyond the re-export and the warning call.
 2. THE SYSTEM SHALL NOT introduce any new dependency in
-   `automojo-landscaping`.
+   `codecraftai-landscaping`.
 
 ### Requirement 4: Shim Module Construction Is Generated, Not Hand-Authored
 

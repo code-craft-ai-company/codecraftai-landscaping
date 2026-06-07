@@ -1,0 +1,67 @@
+"""
+    .. module:: vsphereservice
+    :platform: Darwin, Linux, Unix, Windows
+    :synopsis: Module containing the vsphereservice functionality.
+
+    .. moduleauthor:: Myron Walker <myron.walker@gmail.com>
+"""
+__author__ = "Myron Walker"
+__copyright__ = "Copyright 2025, Code Craft AI LLC"
+__credits__ = []
+
+from typing import TYPE_CHECKING
+
+from ccai.credentials.basecredential import BaseCredential
+from ccai.landscaping.coordinatorbase import CoordinatorBase
+from ccai.landscaping.friendlyidentifier import FriendlyIdentifier
+from ccai.landscaping.landscape import Landscape
+from ccai.landscaping.services.servicebase import ServiceBase
+
+from ccai.landscaping.services.vmware.vsphere.vsphereagent import VSphereAgent
+
+if TYPE_CHECKING:
+    from ccai.landscaping.landscape import Landscape
+    from ccai.landscaping.coordinatorbase import CoordinatorBase
+
+class VSphereService(ServiceBase):
+    """
+        Service wrapper used to manage vSphere interactions.
+    """
+
+    def __init__(self, lscape: Landscape, coordinator: CoordinatorBase, friendly_id:
+                 FriendlyIdentifier, service_type: str, service_config: dict):
+        """
+            Initializes a :class:`VSphereService` instance.
+
+            :param lscape: Owning landscape instance.
+            :param coordinator: Coordinator that created the service.
+            :param friendly_id: Friendly identifier for the service.
+            :param service_type: String indicating the service type.
+            :param service_config: Configuration dictionary for the service.
+        """
+        super().__init__(lscape, coordinator, friendly_id, service_type, service_config)
+        
+        credmgr = lscape.credential_manager
+
+        self._credential_table = {}
+        if "credentials" in service_config:
+            for cred_name in service_config["credentials"]:
+                self._credential_table[cred_name] = credmgr.lookup_credential(cred_name)
+        
+        self._credential = None
+        for cred in self._credentials.values():
+            if isinstance(cred, BaseCredential):
+                self._credential = cred
+                break
+        
+        self._vsagent = VSphereAgent(self.host, self._credential)
+        return
+    
+    @property
+    def vsagent(self):
+        """
+            Returns the :class:`VSphereAgent` associated with this service.
+
+            :returns: VSphereAgent instance.
+        """
+        return self._vsagent
