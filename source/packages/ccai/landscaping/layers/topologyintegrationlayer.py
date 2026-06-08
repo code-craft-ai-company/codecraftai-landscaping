@@ -1,0 +1,39 @@
+"""
+    .. module:: topologyintegrationlayer
+    :platform: Darwin, Linux, Unix, Windows
+    :synopsis: Module containing the :class:`TopologyItegrationLayer` class which is used
+    to load initialize the test landscape and integrate with all the available
+    landscape resources.
+
+    .. moduleauthor:: Myron Walker <myron.walker@gmail.com>
+
+"""
+
+__author__ = "Myron Walker"
+__copyright__ = "Copyright 2025, Code Craft AI LLC"
+__credits__ = []
+
+
+
+from typing import TYPE_CHECKING
+
+from ccai.landscaping.layers.landscapinglayerbase import LandscapingLayerBase
+
+
+if TYPE_CHECKING:
+    from ccai.landscaping.landscape import Landscape
+
+
+class TopologyIntegrationLayer(LandscapingLayerBase):
+    """
+        Layer responsible for applying topology configuration information.
+    """
+
+    def __init__(self, lscape: "Landscape"):
+        """
+            Creates a :class:`TopologyIntegrationLayer` instance.
+
+            :param lscape: The owning :class:`Landscape` object.
+        """
+        super().__init__(lscape)
+        return

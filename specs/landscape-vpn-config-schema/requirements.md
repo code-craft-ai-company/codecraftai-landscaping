@@ -5,7 +5,7 @@
 The `landscape-vpn-config-schema` feature adds a top-level `vpn:` section to
 `landscape.yaml` along with per-device `vpn:` overrides. The schema lists VPN
 providers, references credentials by name (resolved through
-`automojo-credentials`), declares a default landscape-wide preferred plane,
+`codecraftai-credentials`), declares a default landscape-wide preferred plane,
 and per-device opt-in for `managed=True` daemon ownership.
 
 Schema validation lives in this feature so every consumer (landscaping,

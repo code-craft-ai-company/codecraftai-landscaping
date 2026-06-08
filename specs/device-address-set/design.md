@@ -4,7 +4,7 @@
 
 `DeviceAddressSet` is the canonical multi-plane address container for
 `LandscapeDevice`. It implements `IDeviceAddressSet` from
-`automojo-interfaces` and is the only legal way to hand a host to SSH, DNS,
+`codecraftai-interfaces` and is the only legal way to hand a host to SSH, DNS,
 or file-ops in the post-refactor landscape model. The single-string `_host`
 attribute is removed (not deprecated) as part of this work; consumers must
 migrate to the address set.
@@ -15,11 +15,11 @@ under `hypothesis` cover plane priority across every combination of
 present/absent planes.
 
 **See Also:**
-- automojo-interfaces `address-plane-types` spec — defines `AddressPlane`
+- codecraftai-interfaces `address-plane-types` spec — defines `AddressPlane`
   and `IDeviceAddressSet`.
-- [ssh-address-plane-awareness](../../../automojo-interop/specs/ssh-address-plane-awareness/design.md)
+- [ssh-address-plane-awareness](../../../codecraftai-interop/specs/ssh-address-plane-awareness/design.md)
   — consumes `resolve(...)`.
-- [overlay-dns-resolver](../../../automojo-interop/specs/overlay-dns-resolver/design.md)
+- [overlay-dns-resolver](../../../codecraftai-interop/specs/overlay-dns-resolver/design.md)
   — uses overlay addresses for resolution.
 - [vpn-coordinator-coupling](../vpn-coordinator-coupling/design.md) —
   populates the overlay slot via the VPN control plane.
@@ -109,11 +109,11 @@ malformed upstream YAML.
 ## Module Layout
 
 ```
-source/packages/automojo/landscaping/addressing/
+source/packages/ccai/landscaping/addressing/
 ├── __init__.py
 └── deviceaddressset.py    ← class + free helpers
 
-source/packages/automojo/landscaping/
+source/packages/ccai/landscaping/
 └── landscapedevice.py     ← now uses DeviceAddressSet (see _resolve_addresses)
 ```
 

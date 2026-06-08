@@ -7,9 +7,9 @@ from unittest.mock import MagicMock
 # Add packages to path
 sys.path.insert(0, os.path.abspath("source/packages"))
 
-from automojo.landscaping.layers.landscapeoperationallayer import LandscapeOperationalLayer
-from automojo.landscaping.services.power.dlipower.dlipowercoordinator import DliPowerCoordinator
-from automojo.errors.exceptions import CheckoutError
+from ccai.landscaping.layers.landscapeoperationallayer import LandscapeOperationalLayer
+from ccai.landscaping.services.power.dlipower.dlipowercoordinator import DliPowerCoordinator
+from ccai.errors.exceptions import CheckoutError
 
 class TestControlKeyFormat(unittest.TestCase):
     def test_key_generation_operational_layer(self):

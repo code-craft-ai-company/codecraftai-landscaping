@@ -9,8 +9,8 @@ VPN provider objects on the landscape root and a populated
 `preferred_plane` plus optional provider reference on each `LandscapeDevice`.
 
 The schema validation lives here so every consumer — landscaping itself,
-`automojo-provisioning` (which writes `landscape.yaml` after `apply`), and
-`automojo-arcli` (`arcli landscape validate`) — shares one parser. Diagnostic
+`codecraftai-provisioning` (which writes `landscape.yaml` after `apply`), and
+`codecraftai-arcli` (`arcli landscape validate`) — shares one parser. Diagnostic
 output is structured (`LandscapeConfigDiagnostic`) so editor integrations can
 surface line / column information without re-parsing.
 
@@ -18,7 +18,7 @@ surface line / column information without re-parsing.
 - [device-address-set](../device-address-set/design.md)
 - [vpn-coordinator-coupling](../vpn-coordinator-coupling/design.md) — the
   consumer that constructs from parsed provider entries.
-- automojo-configuration `vpn-config-schema` spec — the cross-package YAML
+- codecraftai-configuration `vpn-config-schema` spec — the cross-package YAML
   schema authoring counterpart.
 
 ---
@@ -91,7 +91,7 @@ class LandscapeConfigError(Exception):
 ## Module Layout
 
 ```
-source/packages/automojo/landscaping/config/
+source/packages/ccai/landscaping/config/
 ├── vpnconfigschema.py            ← schema constants, validate_*
 ├── vpnproviderentry.py
 └── landscapeconfigdiagnostic.py
@@ -158,5 +158,5 @@ logs each `warning` once.
   - Device referencing a non-existent provider → error diagnostic.
 - Validator function tests cover each diagnostic path independently.
 - A regression test asserts that loading every existing landscape fixture in
-  `automojo-landscaping/source/testroots/.../fixtures/` produces no new
+  `codecraftai-landscaping/source/testroots/.../fixtures/` produces no new
   diagnostics post-feature.

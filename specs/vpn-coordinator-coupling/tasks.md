@@ -1,6 +1,6 @@
 # Implementation Plan — VPN Coordinator Coupling
 
-- [x] 1. Create `automojo/landscaping/coupling/__init__.py` (if not present).
+- [x] 1. Create `ccai/landscaping/coupling/__init__.py` (if not present).
 - [x] 2. Create `coupling/vpncouplingresult.py` with `VPNCouplingResult`
   dataclass.
 - [x] 3. Create `coupling/exceptions.py` with

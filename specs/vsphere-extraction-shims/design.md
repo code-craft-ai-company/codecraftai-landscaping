@@ -2,9 +2,9 @@
 
 ## Overview
 
-This feature populates `automojo-landscaping/source/packages/automojo/landscaping/services/vmware/`
+This feature populates `codecraftai-landscaping/source/packages/ccai/landscaping/services/vmware/`
 with thin shim modules that re-export the matching symbols from
-`automojo-interop-vsphere` (and `automojo-interop-vmworkstation` for the
+`codecraftai-interop-vsphere` (and `codecraftai-interop-vmworkstation` for the
 VMware Workstation agent) and emit a `DeprecationWarning` exactly once per
 process per import path. The shims exist for a single release cycle and are
 removed under the M13 milestone.
@@ -19,9 +19,9 @@ and not shimmed; it simply updates its imports to point at the new package.
 
 **See Also:**
 - Master plan §6.2 (VSphere extraction)
-- automojo-interop-vsphere `vsphere-client-rest-base` spec
-- automojo-interop-vsphere `vsphere-apigroups-migration` spec
-- automojo-interop-vmworkstation `vmworkstation-client` spec
+- codecraftai-interop-vsphere `vsphere-client-rest-base` spec
+- codecraftai-interop-vsphere `vsphere-apigroups-migration` spec
+- codecraftai-interop-vmworkstation `vmworkstation-client` spec
 
 ---
 
@@ -30,23 +30,23 @@ and not shimmed; it simply updates its imports to point at the new package.
 ```
 ┌──────────────────────────────────────────────────────────────┐
 │   Downstream consumer (still using old import path)          │
-│   from automojo.landscaping.services.vmware.vsphere          │
+│   from ccai.landscaping.services.vmware.vsphere          │
 │                  .vsphereagent import VSphereAgent           │
 └──────────────────────────────┬───────────────────────────────┘
                                │
                                ▼
 ┌──────────────────────────────────────────────────────────────┐
 │   Shim module (~5 lines)                                     │
-│   automojo/landscaping/services/vmware/vsphere/vsphereagent  │
+│   ccai/landscaping/services/vmware/vsphere/vsphereagent  │
 │                                                              │
 │   _shim.install_shim(                                        │
-│       old_path="automojo.landscaping.services.vmware."       │
+│       old_path="ccai.landscaping.services.vmware."       │
 │                "vsphere.vsphereagent",                       │
-│       new_module_name="automojo.interop.vsphere"             │
+│       new_module_name="ccai.interop.vsphere"             │
 │                       ".vsphereclient",                      │
 │       public_names=["VSphereAgent"],                         │
 │   )                                                          │
-│   from automojo.interop.vsphere.vsphereclient import *       │
+│   from ccai.interop.vsphere.vsphereclient import *       │
 └──────────────────────────────┬───────────────────────────────┘
                                │ DeprecationWarning (once per process)
                                ▼
@@ -58,7 +58,7 @@ and not shimmed; it simply updates its imports to point at the new package.
 ## Module Layout
 
 ```
-source/packages/automojo/landscaping/services/vmware/
+source/packages/ccai/landscaping/services/vmware/
 ├── _shim.py                       ← install_shim() helper
 ├── DEPRECATIONS.md                ← per-shim removal schedule
 ├── vsphere/
@@ -74,7 +74,7 @@ source/packages/automojo/landscaping/services/vmware/
 │   ├── model/  (one shim per moved DTO)
 │   └── specs/  (one shim per moved spec)
 ├── metasphere/  (one shim per moved enum)
-└── vmworkstationagent.py          (shim → automojo-interop-vmworkstation)
+└── vmworkstationagent.py          (shim → codecraftai-interop-vmworkstation)
 ```
 
 Tests:
@@ -132,10 +132,10 @@ def install_shim(
 Each shim file is then ~5 lines:
 
 ```python
-from automojo.landscaping.services.vmware._shim import install_shim
+from ccai.landscaping.services.vmware._shim import install_shim
 install_shim(
     old_path=__name__,
-    new_module_name="automojo.interop.vsphere.vsphereclient",
+    new_module_name="ccai.interop.vsphere.vsphereclient",
     public_names=["VSphereAgent"],
 )
 ```
@@ -175,6 +175,6 @@ removed at that time.
   - Use `warnings.catch_warnings(record=True)` to import the same shim from
     two distinct test-side import sites; assert exactly one
     `DeprecationWarning` was recorded.
-- No test requires `automojo-interop-vsphere` to be fully implemented — a
+- No test requires `codecraftai-interop-vsphere` to be fully implemented — a
   stub package can be installed in the test environment to satisfy the
   imports during M5.

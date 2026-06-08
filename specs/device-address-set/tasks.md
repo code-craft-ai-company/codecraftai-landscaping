@@ -1,16 +1,16 @@
 # Implementation Plan — Device Address Set
 
 - [x] 1. Confirm `AddressPlane` enum and `IDeviceAddressSet` protocol are
-  available from `automojo-interfaces` (per the `address-plane-types`
+  available from `codecraftai-interfaces` (per the `address-plane-types`
   feature in M1). If not, block on that spec.
-- [x] 2. Create `automojo/landscaping/addressing/__init__.py`.
-- [x] 3. Create `automojo/landscaping/addressing/deviceaddressset.py`:
+- [x] 2. Create `ccai/landscaping/addressing/__init__.py`.
+- [x] 3. Create `ccai/landscaping/addressing/deviceaddressset.py`:
   - [x] 3a. Constructor accepting named `public`, `private`, `overlay`.
   - [x] 3b. Setters `set_public`, `set_private`, `set_overlay`.
   - [x] 3c. Accessors `public()`, `private()`, `overlay(provider=None)`.
   - [x] 3d. `resolve(*, plane, fallback_planes=None)` pure function.
   - [x] 3e. Empty-string filtering inside accessors.
-- [ ] 4. Refactor `automojo/landscaping/landscapedevice.py`:
+- [ ] 4. Refactor `ccai/landscaping/landscapedevice.py`:
   - [x] 4a. Add `addresses: DeviceAddressSet` instance attribute initialised
     in `__init__` per coding standards.
   - [x] 4b. Add `_resolve_addresses() -> DeviceAddressSet` alongside the

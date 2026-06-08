@@ -19,8 +19,8 @@ cheap.
   coupling populates.
 - [landscape-vpn-config-schema](../landscape-vpn-config-schema/design.md) —
   the YAML block that configures this coupling.
-- [vpn-tailscale-control-plane](../../../automojo-interop/specs/vpn-tailscale-control-plane/design.md)
-- [vpn-twingate-control-plane](../../../automojo-interop/specs/vpn-twingate-control-plane/design.md)
+- [vpn-tailscale-control-plane](../../../codecraftai-interop/specs/vpn-tailscale-control-plane/design.md)
+- [vpn-twingate-control-plane](../../../codecraftai-interop/specs/vpn-twingate-control-plane/design.md)
 
 ---
 
@@ -77,7 +77,7 @@ DEFAULT_LANDSCAPE_COUPLING_ASPECTS = AspectsLandscapeCoupling()
 ## Module Layout
 
 ```
-source/packages/automojo/landscaping/coupling/
+source/packages/ccai/landscaping/coupling/
 ├── __init__.py
 ├── vpncoordinatorcoupling.py
 ├── vpncouplingresult.py

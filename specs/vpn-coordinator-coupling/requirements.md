@@ -3,7 +3,7 @@
 ## Introduction
 
 The `vpn-coordinator-coupling` feature adds `VPNCoordinatorCoupling` under
-`automojo/landscaping/coupling/`. It is the landscape-side glue that
+`ccai/landscaping/coupling/`. It is the landscape-side glue that
 discovers peer devices from a VPN control plane (Tailscale or Twingate) and
 attaches overlay addresses to the matching `LandscapeDevice` records in the
 landscape. Where the landscape's host policy requires it, it also registers
