@@ -150,6 +150,8 @@ class ClientCoordinatorCouplingBase(CoordinatorCoupling):
         layer_integ = lscape.layer_integration
 
         device_list = layer_integ.get_devices()
+        dev_config_errors = []
+        dev_scan_results = {}
         if len(device_list) > 0:
             dev_client_list = [dev for dev in filter(partial(is_matching_client_config, cls.integration_class), device_list)]
 

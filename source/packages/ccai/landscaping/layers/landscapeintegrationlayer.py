@@ -62,6 +62,8 @@ class LandscapeIntegrationLayer(LandscapingLayerBase):
         self._integrated_serial: Dict[str, Any] = {}
         self._integrated_services: Dict[str, LandscapeService] = {}
 
+        self._devices_by_ext_type: Dict[str, Dict[str, LandscapeDevice]] = {}
+
         self._integrated_device_groups: Dict[str, LandscapeDeviceGroup] = {}
 
         self._requested_integration_couplings: Dict[str, IntegrationCouplingType] = {}

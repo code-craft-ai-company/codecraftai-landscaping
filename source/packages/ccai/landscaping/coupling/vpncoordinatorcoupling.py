@@ -19,10 +19,11 @@ __copyright__ = "Copyright 2025, Code Craft AI LLC"
 __credits__ = []
 
 
-import logging
 import os
 
 from typing import Any, Dict, List, Optional
+
+from ccai.xmodules.xlogging.enhancedloggers import getEnhancedLogger
 
 from ccai.aspects.aspects import Aspects
 from ccai.errors.exceptions import ConfigurationError
@@ -39,7 +40,7 @@ from ccai.landscaping.coupling.exceptions import (
 from ccai.landscaping.coupling.vpncouplingresult import VPNCouplingResult
 
 
-logger = logging.getLogger(__name__)
+logger = getEnhancedLogger()
 
 
 # The configuration-block key that selects this coupling kind. A

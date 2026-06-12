@@ -39,6 +39,6 @@ class UPNP_HEADERS:
         HTTP header defaults used for UPNP requests.
     """
 
-    USER_AGENT = "AutomationMojo/1.0 UPNP Test Package"
-    SERVER = "{},{},AutomationKit/1.0".format(platform.system(), platform.release())
+    USER_AGENT = "CodeCraftAI/1.0 UPNP Test Package"
+    SERVER = "{},{},CodeCraftAI/1.0".format(platform.system(), platform.release())
 

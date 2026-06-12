@@ -114,7 +114,11 @@ class CommandsExt:
             if status != 0:
                 ipaddr = self.client.ipaddr
                 errmsg = f"Error attempting to mount cifs share={share} on mpoint={mpoint}."
-                errmsg = format_command_result(errmsg, mnt_cmd, status, stdout, stderr, exp_status=0, target=ipaddr)
+                # Redact the CIFS password before it reaches the exception text / logs.
+                redacted_cmd = mnt_cmd
+                if password is not None:
+                    redacted_cmd = mnt_cmd.replace(escape_cifs_val(password), "***")
+                errmsg = format_command_result(errmsg, redacted_cmd, status, stdout, stderr, exp_status=0, target=ipaddr)
                 raise CommandError(errmsg, status, stdout, stderr)
 
         return

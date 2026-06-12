@@ -50,14 +50,14 @@ configuration.
 # Testing Conventions
 The 'codecraftai-landscaping' package repository utilizes the 'testbase' framework in order to run tests.  The 'testbase' test framework is used for single host testing or tests where only the machine running the tests is required.
 
-Test are organized at the lowest level by resource configuration.  For example, all the single host tests for this package are in the folder 'source/testroots/ccai/tests/singlehost/landscaping'.
+Test are organized at the lowest level by resource configuration.  For example, all the single host tests for this package are in the folder 'source/testroots/ccai/tests/landscaping/singlehost'.
 
 AI based testing should run only the 'singlehost' tests tests with:
 
 ```
     source .venv/bin/activate
     
-    testbase testing run --root source/testroots/ccai --includes=ccai.tests.singlehost --output=./.output
+    testbase testing run --root source/testroots/ccai --includes=ccai.tests.landscaping.singlehost --output=./.output
 ```
 
 When running tests you should create an output folder in order to be able to capture all the test run artifacts in an isolated folder.

@@ -148,6 +148,8 @@ class ServiceCoordinatorCouplingBase(CoordinatorCoupling):
         layer_integ = lscape.layer_integration
 
         service_list = layer_integ.get_services()
+        svc_config_errors = []
+        svc_scan_results = {}
         if len(service_list) > 0:
             svc_service_list = [svc for svc in filter(partial(is_matching_service_config, cls.integration_class), service_list)]
 
@@ -175,7 +177,8 @@ class ServiceCoordinatorCouplingBase(CoordinatorCoupling):
             :returns: A tuple with a list of error messages for failed connections and dict of connectivity
             reports for services based on the coordinator.
         """
-        return
+        rtnval = ([], {})
+        return rtnval
 
     @classmethod
     def validate_item_configuration(cls, item_info: Dict[str, Any]) -> Tuple[List[str], List[str]]:

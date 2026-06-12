@@ -619,7 +619,7 @@ class LandscapeOperationalLayer(LandscapingLayerBase):
                     cluster = coordinator.create_cluster_for_devices(cname, cgroup, nodes, spares)
 
                     try:
-                        cluster.enchance_metadata()
+                        cluster.enhance_metadata()
                     except Exception as xcpt:
                         errmsg_lines = [
                             "Error while attempting to enhance the metadata for a cluster.",

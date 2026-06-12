@@ -99,7 +99,8 @@ class PowerServiceCoordinatorCouplingBase(ServiceCoordinatorCouplingBase):
             reports for devices devices based on the coordinator.
         """
 
-        config_errors = [], scan_results = {}
+        config_errors = []
+        scan_results = {}
 
         return config_errors, scan_results
 
@@ -112,7 +113,8 @@ class PowerServiceCoordinatorCouplingBase(ServiceCoordinatorCouplingBase):
             :returns: A tuple with a list of error messages for failed connections and dict of connectivity
             reports for devices devices based on the coordinator.
         """
-        return
+        rtnval = ([], {})
+        return rtnval
 
     @classmethod
     def validate_item_configuration(cls, item_info: Dict[str, Any]) -> Tuple[List[str], List[str]]:

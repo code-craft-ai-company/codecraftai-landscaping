@@ -281,10 +281,9 @@ class NodeCoordinatorBase(CoordinatorBase):
         self._coord_lock.acquire()
         try:
             if ip in self._cl_ip_to_host_lookup:
-                if ip in self._cl_ip_to_host_lookup:
-                    host = self._cl_ip_to_host_lookup[ip]
-                    if host in self._cl_children:
-                        device = self._cl_children[host].basedevice
+                host = self._cl_ip_to_host_lookup[ip]
+                if host in self._cl_children:
+                    device = self._cl_children[host].basedevice
         finally:
             self._coord_lock.release()
 

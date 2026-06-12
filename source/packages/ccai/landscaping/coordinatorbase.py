@@ -81,6 +81,29 @@ class CoordinatorBase:
         return chlist
 
     @property
+    def children_as_extension(self) -> List["ProtocolExtension"]:
+        """
+            Returns the protocol extensions (agents) for this coordinator's children
+            under the default "network/ssh" integration key. This is the surface the
+            connectivity-verification paths iterate to run commands against each child.
+        """
+        integration_key = "network/ssh"
+
+        extensions = []
+
+        self._coord_lock.acquire()
+        try:
+            for child in self._cl_children.values():
+                if hasattr(child, "extensions"):
+                    child_exts = child.extensions
+                    if integration_key in child_exts:
+                        extensions.append(child_exts[integration_key])
+        finally:
+            self._coord_lock.release()
+
+        return extensions
+
+    @property
     def coord_config(self):
         """
             The dedicated coordinator configuration for coordinators that have a dedicated

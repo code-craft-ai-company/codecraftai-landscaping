@@ -120,10 +120,12 @@ class ClientSourcePackager:
 
                     if afile in self.EXCLUDE_FILE_LEAFS:
                         logger.info(f"Skipping excluded file leaf {afile}.")
+                        continue
 
                     if any(fnmatch.fnmatch(fname, expat) for expat in self.EXCLUDE_FILENAME_MATCHES):
                         logger.info(f"Skipping file with excluded match pattern {afile}.")
-                    
+                        continue
+
                     zf.write(filefull, afile)
 
         with open(zipfilename, mode='rb') as zf_read:
@@ -167,13 +169,13 @@ class ClientSourcePackager:
             rm_pkg_cmd = f"sudo rm -f {rmt_filename}"
             status, stdout, stderr = session.run_cmd(rm_pkg_cmd)
             if status != 0:
-                errmsg = "Unable to remove remote package. file={rmt_filename}."
+                errmsg = f"Unable to remove remote package. file={rmt_filename}."
                 raise RuntimeError(errmsg)
             
             rm_source_cmd = f"sudo rm -fr {destination}"
             status, stdout, stderr = session.run_cmd(rm_source_cmd)
             if status != 0:
-                errmsg = "Unable to remove remote source directory. file={destination}."
+                errmsg = f"Unable to remove remote source directory. file={destination}."
                 raise RuntimeError(errmsg)
 
         session.file_push(lcl_filename, rmt_filename)
@@ -271,7 +273,8 @@ class ClientSourcePackager:
             errmsg = os.linesep.join(errmsg_lines)
             raise RuntimeError(errmsg)
         
-        lcl_env_file = tempfile.mktemp()
+        lcl_env_fd, lcl_env_file = tempfile.mkstemp()
+        os.close(lcl_env_fd)
         with open(lcl_env_file, 'w+') as envf:
             for vname, vval in package_env.items():
                 envf.write(f"{vname}={vval}{os.linesep}")

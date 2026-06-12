@@ -138,8 +138,10 @@ class ConfigureExt:
                 sudo_grp_cmd = f"printf '%s\\n' {shlex.quote(sudo_password)} | sudo -S usermod -aG sudo {shlex.quote(sudo_username)}"
                 status, stdout, stderr = session.run_cmd(sudo_grp_cmd)
                 if status != 0:
+                    # Redact the sudo password before it reaches the exception text / logs.
+                    redacted_cmd = sudo_grp_cmd.replace(shlex.quote(sudo_password), "'***'")
                     errmsg = format_command_result(f"Error while attempting to add `{sudo_username}` to the 'sudo' user group.",
-                                                sudo_grp_cmd, status, stdout, stderr, exp_status=[0], target=client.ipaddr)
+                                                redacted_cmd, status, stdout, stderr, exp_status=[0], target=client.ipaddr)
                     raise CommandError(errmsg, status, stdout, stderr)
 
                 sudo_line = f"{sudo_username} ALL=(ALL) NOPASSWD: ALL"
@@ -147,8 +149,10 @@ class ConfigureExt:
                 sudo_user_cfg_cmd =  f"printf '%s\\n' {shlex.quote(sudo_password)} | sudo -S bash -c {shlex.quote(inner_cfg_cmd)}"
                 status, stdout, stderr = session.run_cmd(sudo_user_cfg_cmd)
                 if status != 0:
+                    # Redact the sudo password before it reaches the exception text / logs.
+                    redacted_cmd = sudo_user_cfg_cmd.replace(shlex.quote(sudo_password), "'***'")
                     errmsg = format_command_result(f"Error while installing sudo config for user `{sudo_username}`.",
-                                                sudo_user_cfg_cmd, status, stdout, stderr, exp_status=[0], target=client.ipaddr)
+                                                redacted_cmd, status, stdout, stderr, exp_status=[0], target=client.ipaddr)
                     raise CommandError(errmsg, status, stdout, stderr)
         
         return
