@@ -44,6 +44,7 @@ from ccai.landscaping.landscapeparameters import (
 )
 from ccai.landscaping.landscapedevice import LandscapeDevice
 from ccai.landscaping.landscapedevicecluster import LandscapeDeviceCluster
+from ccai.landscaping.extensions.control.controlextension import ControlExtension
 from ccai.landscaping.landscapeservice import LandscapeService
 
 from ccai.testbase.coupling.integrationcoupling import IntegrationCoupling
@@ -396,11 +397,11 @@ class Landscape:
         self.layer_operational.checkin_device(device)
         return
 
-    def checkin_control_point(self, service: LandscapeService):
+    def checkin_control_point(self, extension: ControlExtension, control_key: str):
         """
-            Checkin control point (service) to the operational pool.
+            Checkin control point (extension) to the operational pool.
         """
-        self.layer_operational.checkin_control_point(service)
+        self.layer_operational.checkin_control_point(extension, control_key)
         return
 
     def checkout_cluster(self, cluster: LandscapeDeviceCluster):
@@ -417,12 +418,12 @@ class Landscape:
         self.layer_operational.checkout_device(device)
         return
 
-    def checkout_control_point(self, service: LandscapeService = None, **kwargs) -> LandscapeService:
+    def checkout_control_point(self, feature_name: str, **kwargs) -> ControlExtension:
         """
-            Checkout control point (service) from the operational pool.
+            Checkout control point (extension) from the operational pool.
         """
-        service = self.layer_operational.checkout_control_point(service=service, **kwargs)
-        return service
+        extension = self.layer_operational.checkout_control_point(feature_name, **kwargs)
+        return extension
 
     def get_cluster_by_name(self, cluster_name: str) -> Union[LandscapeDeviceCluster, None]:
         """
