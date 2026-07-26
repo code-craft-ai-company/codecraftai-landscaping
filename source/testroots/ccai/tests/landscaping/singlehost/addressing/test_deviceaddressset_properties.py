@@ -16,7 +16,8 @@ import unittest
 
 from typing import Dict, List, Optional
 
-from hypothesis import given, strategies as st
+from ccai.testbase.properties import given
+from ccai.testbase.properties import strategies as st
 
 from ccai.interfaces.addressplane import AddressPlane
 from ccai.landscaping.addressing.deviceaddressset import DeviceAddressSet

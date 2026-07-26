@@ -16,7 +16,8 @@ import unittest
 
 from typing import Dict, List, Optional
 
-from hypothesis import given, settings, strategies as st
+from ccai.testbase.properties import given
+from ccai.testbase.properties import strategies as st
 
 from ccai.interfaces.ivpncontrolplane import VPNDeviceRecord
 from ccai.landscaping.coupling.aspectslandscapecoupling import (
@@ -101,8 +102,7 @@ class VPNCoordinatorCouplingProperties(unittest.TestCase):
         Property tests covering idempotency and order-independence.
     """
 
-    @settings(max_examples=50, deadline=None)
-    @given(records=records_strategy(), devices=devices_strategy())
+    @given(records=records_strategy(), devices=devices_strategy(), constraints={"max_examples": 50})
     def test_couple_is_idempotent(self,
                                   records: List[VPNDeviceRecord],
                                   devices: List[FakeDevice]) -> None:
@@ -121,8 +121,8 @@ class VPNCoordinatorCouplingProperties(unittest.TestCase):
         self.assertEqual(first_snap, second_snap)
         return
 
-    @settings(max_examples=50, deadline=None)
-    @given(records=records_strategy(), devices=devices_strategy(),
+    @given(
+    constraints={"max_examples": 50},records=records_strategy(), devices=devices_strategy(),
            seed=st.integers(min_value=0, max_value=10000))
     def test_couple_is_order_independent(self,
                                          records: List[VPNDeviceRecord],
