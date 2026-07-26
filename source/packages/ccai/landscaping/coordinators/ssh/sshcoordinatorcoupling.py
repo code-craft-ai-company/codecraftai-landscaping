@@ -61,14 +61,20 @@ class SshCoordinatorCoupling(CoordinatorCoupling):
         return
 
     @classmethod
-    def attach_to_environment(cls, landscape: "Landscape"):
+    def attach_to_framework(cls, **kwargs):
         """
-            This API is called so that the IntegrationCoupling can process configuration information.  The :class:`IntegrationCoupling`
-            will verify that it has a valid environment and configuration to run in.
+            Attaches this coupling to the test framework and registers it as an
+            integration dependency when the landscape declares a matching item.
 
-            :raises :class:`mojo.xmods.exceptions.AKitMissingConfigError`, :class:`mojo.xmods.exceptions.ConfigurationError`:
+            Registration MUST happen in the framework-attachment phase: the
+            landscape's ``activate_integration`` step (which runs between
+            framework attachment and environment attachment) consults the
+            registered couplings to decide which coordinators to create -- a
+            coupling that waits for ``attach_to_environment`` registers too
+            late and its devices are silently never created.
         """
 
+        landscape = kwargs["landscape"]
         cls.landscape = landscape
         layer_config = landscape.layer_configuration
 
