@@ -31,6 +31,7 @@ codecraftai-testbase = { git = "https://github.com/automationmojo/codecraftai-te
 codecraftai-dataprofiles = { git = "https://github.com/automationmojo/codecraftai-dataprofiles.git", branch = "main" }
 codecraftai-networking = { git = "https://github.com/automationmojo/codecraftai-networking.git", branch = "main" }
 codecraftai-interop = { git = "https://github.com/automationmojo/codecraftai-interop.git", branch = "main" }
+codecraftai-integration-runtime = { git = "https://github.com/automationmojo/codecraftai-integration-runtime.git", branch = "main" }
 
 [tool.poetry.group.dev.dependencies]
 
