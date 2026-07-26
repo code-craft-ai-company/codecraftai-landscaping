@@ -288,6 +288,13 @@ class LandscapeConfigurationLayer(LandscapingLayerBase):
             credential_info = CONFIGURATION_MAPS.CREDENTIAL_CONFIGURATION_MAP
 
         credential_uris = this_app.context.lookup(ContextPaths.CONFIG_CREDENTIAL_URIS, [])
+        if credential_uris is None:
+            # A run with no credential configuration at all (e.g. a singlehost
+            # suite under a landscape-capable job) stores None at the context
+            # path.  That is a valid way to run -- it gets an EMPTY credential
+            # manager, and only a test that actually asks for a credential
+            # fails, with a per-credential error.
+            credential_uris = []
 
         self._credential_manager = CredentialManagerSingleton(credential_info, credential_uris)
         return
