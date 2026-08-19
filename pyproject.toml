@@ -18,20 +18,20 @@ packages = [{include="ccai", from="source/packages"}]
 [tool.poetry.dependencies]
 python = ">=3.10,<4.0"
 pyyaml = "^6.0.2"
-codecraftai-errors = { git = "https://github.com/automationmojo/codecraftai-errors.git", branch = "main" }
-codecraftai-xmodules = { git = "https://github.com/automationmojo/codecraftai-xmodules.git", branch = "main" }
-codecraftai-extension = { git = "https://github.com/automationmojo/codecraftai-extension.git", branch = "main" }
-codecraftai-configuration = { git = "https://github.com/automationmojo/codecraftai-configuration.git", branch = "main" }
-codecraftai-restclient-vsphere = { git = "https://github.com/automationmojo/codecraftai-restclient-vsphere.git", branch = "main" }
-codecraftai-credentials = { git = "https://github.com/automationmojo/codecraftai-credentials.git", branch = "main" }
-codecraftai-this-app = { git = "https://github.com/automationmojo/codecraftai-this-app.git", branch = "main" }
-codecraftai-interfaces = { git = "https://github.com/automationmojo/codecraftai-interfaces.git", branch = "main" }
-codecraftai-waiting = { git = "https://github.com/automationmojo/codecraftai-waiting.git", branch = "main" }
-codecraftai-testbase = { git = "https://github.com/automationmojo/codecraftai-testbase.git", branch = "main" }
-codecraftai-dataprofiles = { git = "https://github.com/automationmojo/codecraftai-dataprofiles.git", branch = "main" }
-codecraftai-networking = { git = "https://github.com/automationmojo/codecraftai-networking.git", branch = "main" }
-codecraftai-interop = { git = "https://github.com/automationmojo/codecraftai-interop.git", branch = "main" }
-codecraftai-integration-runtime = { git = "https://github.com/automationmojo/codecraftai-integration-runtime.git", branch = "main" }
+codecraftai-errors = { git = "https://github.com/code-craft-ai-company/codecraftai-errors.git", branch = "main" }
+codecraftai-xmodules = { git = "https://github.com/code-craft-ai-company/codecraftai-xmodules.git", branch = "main" }
+codecraftai-extension = { git = "https://github.com/code-craft-ai-company/codecraftai-extension.git", branch = "main" }
+codecraftai-configuration = { git = "https://github.com/code-craft-ai-company/codecraftai-configuration.git", branch = "main" }
+codecraftai-restclient-vsphere = { git = "https://github.com/code-craft-ai-company/codecraftai-restclient-vsphere.git", branch = "main" }
+codecraftai-credentials = { git = "https://github.com/code-craft-ai-company/codecraftai-credentials.git", branch = "main" }
+codecraftai-this-app = { git = "https://github.com/code-craft-ai-company/codecraftai-this-app.git", branch = "main" }
+codecraftai-interfaces = { git = "https://github.com/code-craft-ai-company/codecraftai-interfaces.git", branch = "main" }
+codecraftai-waiting = { git = "https://github.com/code-craft-ai-company/codecraftai-waiting.git", branch = "main" }
+codecraftai-testbase = { git = "https://github.com/code-craft-ai-company/codecraftai-testbase.git", branch = "main" }
+codecraftai-dataprofiles = { git = "https://github.com/code-craft-ai-company/codecraftai-dataprofiles.git", branch = "main" }
+codecraftai-networking = { git = "https://github.com/code-craft-ai-company/codecraftai-networking.git", branch = "main" }
+codecraftai-interop = { git = "https://github.com/code-craft-ai-company/codecraftai-interop.git", branch = "main" }
+codecraftai-integration-runtime = { git = "https://github.com/code-craft-ai-company/codecraftai-integration-runtime.git", branch = "main" }
 
 [tool.poetry.group.dev.dependencies]
 
