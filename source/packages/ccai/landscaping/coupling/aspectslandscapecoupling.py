@@ -15,9 +15,11 @@ __credits__ = []
 
 from dataclasses import dataclass
 
+from ccai.aspects.aspects import Aspects as AspectsBase
 
-@dataclass(frozen=True)
-class AspectsLandscapeCoupling:
+
+@dataclass(eq=False)
+class AspectsLandscapeCoupling(AspectsBase):
     """
         Behaviour-modifying parameters carried into the landscape
         coupling verbs.
@@ -37,6 +39,11 @@ class AspectsLandscapeCoupling:
     refresh_interval_seconds: float = 30.0
     timeout_seconds: float = 60.0
     raise_on_ambiguous: bool = True
+
+    def __post_init__(self) -> None:
+        self.freeze()
+        return
+
 
 
 DEFAULT_LANDSCAPE_COUPLING_ASPECTS = AspectsLandscapeCoupling()
