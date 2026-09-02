@@ -42,7 +42,7 @@ and extension hooks under `extensions/` allow downstream packages such as
 `codecraftai-interop-ext-upnp` and `codecraftai-interop-ext-tasker` to contribute
 additional protocols and client coordinators.
 
-It builds on `codecraftai-interfaces`, `codecraftai-interop`, and `codecraftai-credentials`
+It builds on `codecraftai-foundations`, `codecraftai-interop`, and `codecraftai-credentials`
 and is typically consumed by higher-level orchestration packages and by test
 frameworks that need to materialise a live automation environment from declarative
 configuration.

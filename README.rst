@@ -2,7 +2,7 @@
 Code Craft AI Landscaping
 ============================
 
-The ``codecraftai-landscaping`` package provides the topology model and device-discovery framework that ccai tests and automation tools use to reason about the machines, clusters, and services under test. A ``Landscape`` aggregates the devices declared by configuration, organises them through integration layers, and exposes them through friendly identifiers so that tests can address resources by role rather than by raw hostnames or IP addresses. It builds on ``codecraftai-interfaces``, ``codecraftai-interop``, and ``codecraftai-credentials``, and is typically consumed by higher-level orchestration packages.
+The ``codecraftai-landscaping`` package provides the topology model and device-discovery framework that ccai tests and automation tools use to reason about the machines, clusters, and services under test. A ``Landscape`` aggregates the devices declared by configuration, organises them through integration layers, and exposes them through friendly identifiers so that tests can address resources by role rather than by raw hostnames or IP addresses. It builds on ``codecraftai-foundations``, ``codecraftai-interop``, and ``codecraftai-credentials``, and is typically consumed by higher-level orchestration packages.
 
 Highlights
 ==========
