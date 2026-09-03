@@ -7,6 +7,9 @@
     .. moduleauthor:: Myron Walker <myron.walker@gmail.com>
 """
 
+from __future__ import annotations
+
+
 __author__ = "Myron Walker"
 __copyright__ = "Copyright 2025, Code Craft AI LLC"
 __credits__ = []
