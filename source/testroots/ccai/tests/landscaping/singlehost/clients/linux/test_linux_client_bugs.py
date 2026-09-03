@@ -120,7 +120,7 @@ def test_bug_unpacking_order():
         # We need to suppress the exception or catch it
         try:
             cmd_ext.cifs_mount("//server/share", "/mnt/point", "user", "pass")
-        except:
+        except Exception:
             pass
 
         # check call to format_command_result
