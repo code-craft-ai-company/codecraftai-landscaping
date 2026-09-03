@@ -100,61 +100,60 @@ def snapshot_overlay(devices: List[FakeDevice],
     return rtnval
 
 
-class VPNCoordinatorCouplingProperties(unittest.TestCase):
-    """
-        Property tests covering idempotency and order-independence.
-    """
+# Module-level on purpose: the testbase sequencer collects module-level
+# ``test_*`` and drives ``@given`` from the metadata the decorator records.
+# A @given-decorated TestCase *method* never receives its generated
+# arguments, so it cannot run at all.
 
-    @given(records=records_strategy(), devices=devices_strategy(), constraints={"max_examples": 50})
-    def test_couple_is_idempotent(self,
-                                  records: List[VPNDeviceRecord],
-                                  devices: List[FakeDevice]) -> None:
-        cp = make_control_plane(records)
-        coupling = VPNCoordinatorCoupling(provider="tailscale",
-                                          control_plane=cp)
-        aspects = AspectsLandscapeCoupling(raise_on_ambiguous=False)
 
-        coupling.couple(devices=devices, aspects=aspects)
-        first_snap = snapshot_overlay(devices, "tailscale")
+@given(records=records_strategy(), devices=devices_strategy(), constraints={"max_examples": 50})
+def test_couple_is_idempotent(records: List[VPNDeviceRecord],
+                              devices: List[FakeDevice]) -> None:
+    cp = make_control_plane(records)
+    coupling = VPNCoordinatorCoupling(provider="tailscale",
+                                      control_plane=cp)
+    aspects = AspectsLandscapeCoupling(raise_on_ambiguous=False)
 
-        second = coupling.couple(devices=devices, aspects=aspects)
-        second_snap = snapshot_overlay(devices, "tailscale")
+    coupling.couple(devices=devices, aspects=aspects)
+    first_snap = snapshot_overlay(devices, "tailscale")
 
-        self.assertEqual(second.updated, 0)
-        self.assertEqual(first_snap, second_snap)
-        return
+    second = coupling.couple(devices=devices, aspects=aspects)
+    second_snap = snapshot_overlay(devices, "tailscale")
 
-    @given(
-    constraints={"max_examples": 50},records=records_strategy(), devices=devices_strategy(),
-           seed=st.integers(min_value=0, max_value=10000))
-    def test_couple_is_order_independent(self,
-                                         records: List[VPNDeviceRecord],
-                                         devices: List[FakeDevice],
-                                         seed: int) -> None:
-        # Build two devices lists carrying the same hostnames so the
-        # final overlay state may be compared by hostname.
-        hostnames = [d.hostname for d in devices if d.hostname is not None]
-        devices_a = [FakeDevice(hostname=h) for h in hostnames]
-        # Reverse to vary iteration order.
-        devices_b = [FakeDevice(hostname=h) for h in reversed(hostnames)]
-        _ = seed
+    assert second.updated == 0
+    assert first_snap == second_snap
+    return
 
-        cp_a = make_control_plane(records)
-        coupling_a = VPNCoordinatorCoupling(provider="tailscale",
-                                            control_plane=cp_a)
-        cp_b = make_control_plane(list(reversed(records)))
-        coupling_b = VPNCoordinatorCoupling(provider="tailscale",
-                                            control_plane=cp_b)
+@given(
+constraints={"max_examples": 50},records=records_strategy(), devices=devices_strategy(),
+       seed=st.integers(min_value=0, max_value=10000))
+def test_couple_is_order_independent(records: List[VPNDeviceRecord],
+                                     devices: List[FakeDevice],
+                                     seed: int) -> None:
+    # Build two devices lists carrying the same hostnames so the
+    # final overlay state may be compared by hostname.
+    hostnames = [d.hostname for d in devices if d.hostname is not None]
+    devices_a = [FakeDevice(hostname=h) for h in hostnames]
+    # Reverse to vary iteration order.
+    devices_b = [FakeDevice(hostname=h) for h in reversed(hostnames)]
+    _ = seed
 
-        aspects = AspectsLandscapeCoupling(raise_on_ambiguous=False)
-        coupling_a.couple(devices=devices_a, aspects=aspects)
-        coupling_b.couple(devices=devices_b, aspects=aspects)
+    cp_a = make_control_plane(records)
+    coupling_a = VPNCoordinatorCoupling(provider="tailscale",
+                                        control_plane=cp_a)
+    cp_b = make_control_plane(list(reversed(records)))
+    coupling_b = VPNCoordinatorCoupling(provider="tailscale",
+                                        control_plane=cp_b)
 
-        snap_a = snapshot_overlay(devices_a, "tailscale")
-        snap_b = snapshot_overlay(devices_b, "tailscale")
+    aspects = AspectsLandscapeCoupling(raise_on_ambiguous=False)
+    coupling_a.couple(devices=devices_a, aspects=aspects)
+    coupling_b.couple(devices=devices_b, aspects=aspects)
 
-        self.assertEqual(snap_a, snap_b)
-        return
+    snap_a = snapshot_overlay(devices_a, "tailscale")
+    snap_b = snapshot_overlay(devices_b, "tailscale")
+
+    assert snap_a == snap_b
+    return
 
 
 if __name__ == "__main__":

@@ -207,32 +207,33 @@ def _config_pairs(draw):
     return device_config, device_vpn_plane, landscape_default
 
 
-class PreferredPlanePrecedenceProperty(unittest.TestCase):
+# Module-level on purpose: the testbase sequencer collects module-level
+# ``test_*`` and drives ``@given`` from the metadata the decorator records.
+# A @given-decorated TestCase *method* never receives its generated
+# arguments, so it cannot run at all.
+
+
+@given(_config_pairs())
+def test_precedence_rule(params) -> None:
     """
-        Hypothesis-driven property over the documented precedence rule.
+        For any combination of (landscape default × per-device
+        override) the resolver follows the documented precedence:
+        device > landscape > PUBLIC.
     """
+    device_config, device_vpn_plane, landscape_default = params
 
-    @given(_config_pairs())
-    def test_precedence_rule(self, params) -> None:
-        """
-            For any combination of (landscape default × per-device
-            override) the resolver follows the documented precedence:
-            device > landscape > PUBLIC.
-        """
-        device_config, device_vpn_plane, landscape_default = params
+    resolved = _resolve(device_config=device_config,
+                        vpn_default_plane=landscape_default)
 
-        resolved = _resolve(device_config=device_config,
-                            vpn_default_plane=landscape_default)
+    if device_vpn_plane is not None:
+        expected = AddressPlane[device_vpn_plane]
+    elif landscape_default is not None:
+        expected = landscape_default
+    else:
+        expected = AddressPlane.PUBLIC
 
-        if device_vpn_plane is not None:
-            expected = AddressPlane[device_vpn_plane]
-        elif landscape_default is not None:
-            expected = landscape_default
-        else:
-            expected = AddressPlane.PUBLIC
-
-        self.assertEqual(resolved, expected)
-        return
+    assert resolved == expected
+    return
 
 
 if __name__ == "__main__":

@@ -16,6 +16,8 @@ import unittest
 
 from typing import Dict, List, Optional
 
+from ccai import testbase
+
 from ccai.testbase.properties import given
 from ccai.testbase.properties import strategies as st
 
@@ -45,149 +47,148 @@ def _build_overlay(values: List[Optional[str]]) -> Dict[str, Optional[str]]:
     return rtnval
 
 
-class DeviceAddressSetProperties(unittest.TestCase):
+# Module-level on purpose: the testbase sequencer collects module-level
+# ``test_*`` and drives ``@given`` from the metadata the decorator records.
+# A @given-decorated TestCase *method* never receives its generated
+# arguments, so it cannot run at all.
+
+
+@given(public=_OPTIONAL_ADDR, private=_OPTIONAL_ADDR,
+       overlay_values=st.lists(_OPTIONAL_ADDR, min_size=0, max_size=3),
+       plane=_PLANE)
+def test_address_for_is_total(public: Optional[str],
+                              private: Optional[str],
+                              overlay_values: List[Optional[str]],
+                              plane: AddressPlane) -> None:
     """
-        Hypothesis property tests covering totality, round-trip,
-        immutability, and the resolve / preferred-address priority
-        semantics on :class:`DeviceAddressSet`.
+        ``address_for`` is total: it returns ``Optional[str]``
+        without raising for any input.
     """
+    overlay_map = _build_overlay(overlay_values)
+    addr_set = DeviceAddressSet(public=public, private=private,
+                                overlay=overlay_map)
 
-    @given(public=_OPTIONAL_ADDR, private=_OPTIONAL_ADDR,
-           overlay_values=st.lists(_OPTIONAL_ADDR, min_size=0, max_size=3),
-           plane=_PLANE)
-    def test_address_for_is_total(self, public: Optional[str],
-                                  private: Optional[str],
-                                  overlay_values: List[Optional[str]],
-                                  plane: AddressPlane) -> None:
-        """
-            ``address_for`` is total: it returns ``Optional[str]``
-            without raising for any input.
-        """
-        overlay_map = _build_overlay(overlay_values)
-        addr_set = DeviceAddressSet(public=public, private=private,
-                                    overlay=overlay_map)
+    result = addr_set.address_for(plane=plane)
+    is_valid = result is None or isinstance(result, str)
+    assert is_valid
+    if isinstance(result, str):
+        assert len(result) > 0
 
-        result = addr_set.address_for(plane=plane)
-        is_valid = result is None or isinstance(result, str)
-        self.assertTrue(is_valid)
-        if isinstance(result, str):
-            self.assertGreater(len(result), 0)
+    return
 
-        return
+@given(public=_OPTIONAL_ADDR, private=_OPTIONAL_ADDR,
+       overlay_values=st.lists(_OPTIONAL_ADDR, min_size=0, max_size=3),
+       plane=_PLANE)
+def test_has_matches_address_for(public: Optional[str],
+                                 private: Optional[str],
+                                 overlay_values: List[Optional[str]],
+                                 plane: AddressPlane) -> None:
+    """
+        ``has(plane)`` iff ``address_for(plane) is not None``.
+    """
+    overlay_map = _build_overlay(overlay_values)
+    addr_set = DeviceAddressSet(public=public, private=private,
+                                overlay=overlay_map)
 
-    @given(public=_OPTIONAL_ADDR, private=_OPTIONAL_ADDR,
-           overlay_values=st.lists(_OPTIONAL_ADDR, min_size=0, max_size=3),
-           plane=_PLANE)
-    def test_has_matches_address_for(self, public: Optional[str],
-                                     private: Optional[str],
-                                     overlay_values: List[Optional[str]],
-                                     plane: AddressPlane) -> None:
-        """
-            ``has(plane)`` iff ``address_for(plane) is not None``.
-        """
-        overlay_map = _build_overlay(overlay_values)
-        addr_set = DeviceAddressSet(public=public, private=private,
-                                    overlay=overlay_map)
+    candidate = addr_set.address_for(plane=plane)
+    expected = candidate is not None
+    actual = addr_set.has(plane=plane)
+    assert actual == expected
 
-        candidate = addr_set.address_for(plane=plane)
-        expected = candidate is not None
-        actual = addr_set.has(plane=plane)
-        self.assertEqual(actual, expected)
+    return
 
-        return
+@given(plane=_PLANE, address=_NON_EMPTY_ADDR)
+def test_with_address_round_trip(plane: AddressPlane,
+                                 address: str) -> None:
+    """
+        ``with_address(plane=p, address=a).address_for(plane=p) == a``.
+    """
+    original = DeviceAddressSet()
+    updated = original.with_address(plane=plane, address=address)
 
-    @given(plane=_PLANE, address=_NON_EMPTY_ADDR)
-    def test_with_address_round_trip(self, plane: AddressPlane,
-                                     address: str) -> None:
-        """
-            ``with_address(plane=p, address=a).address_for(plane=p) == a``.
-        """
-        original = DeviceAddressSet()
-        updated = original.with_address(plane=plane, address=address)
+    result = updated.address_for(plane=plane)
+    assert result == address
 
-        result = updated.address_for(plane=plane)
-        self.assertEqual(result, address)
+    # And the original must remain unchanged.
+    original_result = original.address_for(plane=plane)
+    assert original_result is None
 
-        # And the original must remain unchanged.
-        original_result = original.address_for(plane=plane)
-        self.assertIsNone(original_result)
+    return
 
-        return
+@given(plane=_PLANE, address=_NON_EMPTY_ADDR)
+def test_with_address_immutable(plane: AddressPlane,
+                                address: str) -> None:
+    """
+        Any mutating operation returns a new instance and leaves
+        the original unchanged.
+    """
+    original = DeviceAddressSet(public="orig_public")
+    updated = original.with_address(plane=plane, address=address)
 
-    @given(plane=_PLANE, address=_NON_EMPTY_ADDR)
-    def test_with_address_immutable(self, plane: AddressPlane,
-                                    address: str) -> None:
-        """
-            Any mutating operation returns a new instance and leaves
-            the original unchanged.
-        """
-        original = DeviceAddressSet(public="orig_public")
-        updated = original.with_address(plane=plane, address=address)
+    assert updated is not original
+    # Original public slot is untouched.
+    assert original.public() == "orig_public"
 
-        self.assertIsNot(updated, original)
-        # Original public slot is untouched.
-        self.assertEqual(original.public(), "orig_public")
+    return
 
-        return
+@given(public=_OPTIONAL_ADDR, private=_OPTIONAL_ADDR,
+       overlay_values=st.lists(_OPTIONAL_ADDR, min_size=0, max_size=3),
+       planes=st.lists(_PLANE, min_size=1, max_size=4))
+def test_preferred_address_first_present(public: Optional[str],
+                                         private: Optional[str],
+                                         overlay_values: List[Optional[str]],
+                                         planes: List[AddressPlane]) -> None:
+    """
+        ``preferred_address(planes=[...])`` returns the address of
+        the first populated plane in the supplied order, or raises
+        consistently when none are populated.
+    """
+    overlay_map = _build_overlay(overlay_values)
+    addr_set = DeviceAddressSet(public=public, private=private,
+                                overlay=overlay_map)
 
-    @given(public=_OPTIONAL_ADDR, private=_OPTIONAL_ADDR,
-           overlay_values=st.lists(_OPTIONAL_ADDR, min_size=0, max_size=3),
-           planes=st.lists(_PLANE, min_size=1, max_size=4))
-    def test_preferred_address_first_present(self, public: Optional[str],
-                                             private: Optional[str],
-                                             overlay_values: List[Optional[str]],
-                                             planes: List[AddressPlane]) -> None:
-        """
-            ``preferred_address(planes=[...])`` returns the address of
-            the first populated plane in the supplied order, or raises
-            consistently when none are populated.
-        """
-        overlay_map = _build_overlay(overlay_values)
-        addr_set = DeviceAddressSet(public=public, private=private,
-                                    overlay=overlay_map)
+    expected_addr: Optional[str] = None
+    for p in planes:
+        candidate = addr_set.address_for(plane=p)
+        if candidate is not None:
+            expected_addr = candidate
+            break
 
-        expected_addr: Optional[str] = None
-        for p in planes:
-            candidate = addr_set.address_for(plane=p)
-            if candidate is not None:
-                expected_addr = candidate
-                break
+    if expected_addr is None:
+        with testbase.raises(LookupError):
+            _ = addr_set.preferred_address(planes=planes)
+    else:
+        result = addr_set.preferred_address(planes=planes)
+        assert result == expected_addr
 
-        if expected_addr is None:
-            with self.assertRaises(LookupError):
-                _ = addr_set.preferred_address(planes=planes)
-        else:
-            result = addr_set.preferred_address(planes=planes)
-            self.assertEqual(result, expected_addr)
+    return
 
-        return
+@given(public=_OPTIONAL_ADDR, private=_OPTIONAL_ADDR,
+       overlay_values=st.lists(_OPTIONAL_ADDR, min_size=0, max_size=3),
+       plane=_PLANE,
+       fallbacks=st.lists(_PLANE, min_size=0, max_size=3))
+def test_resolve_is_total_and_deterministic(public: Optional[str],
+                                            private: Optional[str],
+                                            overlay_values: List[Optional[str]],
+                                            plane: AddressPlane,
+                                            fallbacks: List[AddressPlane]) -> None:
+    """
+        ``resolve`` returns ``Optional[str]`` without raising and
+        returns the same value on repeated invocation with the
+        same input.
+    """
+    overlay_map = _build_overlay(overlay_values)
+    addr_set = DeviceAddressSet(public=public, private=private,
+                                overlay=overlay_map)
 
-    @given(public=_OPTIONAL_ADDR, private=_OPTIONAL_ADDR,
-           overlay_values=st.lists(_OPTIONAL_ADDR, min_size=0, max_size=3),
-           plane=_PLANE,
-           fallbacks=st.lists(_PLANE, min_size=0, max_size=3))
-    def test_resolve_is_total_and_deterministic(self, public: Optional[str],
-                                                private: Optional[str],
-                                                overlay_values: List[Optional[str]],
-                                                plane: AddressPlane,
-                                                fallbacks: List[AddressPlane]) -> None:
-        """
-            ``resolve`` returns ``Optional[str]`` without raising and
-            returns the same value on repeated invocation with the
-            same input.
-        """
-        overlay_map = _build_overlay(overlay_values)
-        addr_set = DeviceAddressSet(public=public, private=private,
-                                    overlay=overlay_map)
+    first = addr_set.resolve(plane=plane, fallback_planes=fallbacks)
+    second = addr_set.resolve(plane=plane, fallback_planes=fallbacks)
 
-        first = addr_set.resolve(plane=plane, fallback_planes=fallbacks)
-        second = addr_set.resolve(plane=plane, fallback_planes=fallbacks)
+    is_valid = first is None or isinstance(first, str)
+    assert is_valid
+    assert first == second
 
-        is_valid = first is None or isinstance(first, str)
-        self.assertTrue(is_valid)
-        self.assertEqual(first, second)
-
-        return
+    return
 
 
 if __name__ == "__main__":
