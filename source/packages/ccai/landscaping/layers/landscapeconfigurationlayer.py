@@ -426,6 +426,11 @@ class LandscapeConfigurationLayer(LandscapingLayerBase):
 
         device_config_list = []
 
+        # No landscape declared (a job that sets requires_landscape=False)
+        # means no devices -- not an error.
+        if self._landscape_info is None:
+            return device_config_list
+
         if "apod" in self._landscape_info:
             pod_info = self._landscape_info["apod"]
 
@@ -452,6 +457,9 @@ class LandscapeConfigurationLayer(LandscapingLayerBase):
 
         power_config_list = []
 
+        if self._landscape_info is None:
+            return power_config_list
+
         if "apod" in self._landscape_info:
             pod_info = self._landscape_info["apod"]
             if "power" in pod_info:
@@ -471,6 +479,9 @@ class LandscapeConfigurationLayer(LandscapingLayerBase):
 
         serial_config_list = []
 
+        if self._landscape_info is None:
+            return serial_config_list
+
         if "apod" in self._landscape_info:
             pod_info = self._landscape_info["apod"]
             if "serial" in pod_info:
@@ -489,6 +500,9 @@ class LandscapeConfigurationLayer(LandscapingLayerBase):
         """
 
         service_config_list = []
+
+        if self._landscape_info is None:
+            return service_config_list
 
         if "infrastructure" in self._landscape_info:
             infrastructure_info = self._landscape_info["infrastructure"]
