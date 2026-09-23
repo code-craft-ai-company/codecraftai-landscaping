@@ -332,7 +332,6 @@ class LandscapeIntegrationLayer(LandscapingLayerBase):
                 self._integrated_devices = devices.copy()
                 self._integrated_services = services.copy()
             else:
-                devices = {}
                 self._integrated_devices = {}
                 self._integrated_power = {}
                 self._integrated_serial = {}

@@ -9,7 +9,6 @@ sys.path.insert(0, os.path.abspath("source/packages"))
 
 from ccai.landscaping.layers.landscapeoperationallayer import LandscapeOperationalLayer
 from ccai.landscaping.services.power.dlipower.dlipowercoordinator import DliPowerCoordinator
-from ccai.errors.exceptions import CheckoutError
 
 class TestControlKeyFormat(unittest.TestCase):
     def test_key_generation_operational_layer(self):

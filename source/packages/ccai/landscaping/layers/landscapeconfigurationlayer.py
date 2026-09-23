@@ -38,10 +38,7 @@ from ccai.interfaces.iincludefilter import IIncludeFilter
 
 from ccai.interfaces.addressplane import AddressPlane
 
-from ccai.landscaping.config.landscapeconfigdiagnostic import (
-    LandscapeConfigError,
-    SEVERITY_ERROR,
-)
+from ccai.landscaping.config.landscapeconfigdiagnostic import LandscapeConfigError
 from ccai.landscaping.config.vpnconfigschema import (
     parse_landscape_vpn_block,
     validate_landscape_vpn_block,

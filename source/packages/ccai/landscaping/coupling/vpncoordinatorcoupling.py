@@ -27,7 +27,6 @@ from ccai.xmodules.xlogging.enhancedloggers import getEnhancedLogger
 
 from ccai.aspects.aspects import Aspects
 from ccai.errors.exceptions import ConfigurationError
-from ccai.interfaces.ivpnclient import IVPNClient
 from ccai.interfaces.ivpncontrolplane import IVPNControlPlane, VPNDeviceRecord
 
 from ccai.landscaping.coupling.aspectslandscapecoupling import (

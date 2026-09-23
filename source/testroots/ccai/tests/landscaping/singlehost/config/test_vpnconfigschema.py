@@ -19,17 +19,14 @@ from typing import Any, Dict
 from ccai.interfaces.addressplane import AddressPlane
 
 from ccai.landscaping.config.landscapeconfigdiagnostic import (
-    LandscapeConfigDiagnostic,
     LandscapeConfigError,
     SEVERITY_ERROR,
-    SEVERITY_WARNING,
 )
 from ccai.landscaping.config.vpnconfigschema import (
     parse_landscape_vpn_block,
     validate_landscape_vpn_block,
     warnings_from,
 )
-from ccai.landscaping.config.vpnproviderentry import VPNProviderEntry
 
 
 def _tailscale_doc() -> Dict[str, Any]:

@@ -34,13 +34,11 @@ def create_landscape(constraints: Optional[dict] = None) -> Generator[Landscape,
     """
         Creates the global :class:`Landscape` instance.
 
-        :param constraints: Optional dictionary of constraints used while constructing the Landscape.
-            Defaults to ``None``; an empty dictionary is materialised inside the function when omitted.
+        :param constraints: Optional dictionary of constraints supplied through the resource factory
+            protocol.  The :class:`Landscape` is a singleton, so the constraints are not used.
 
         :returns: A generator yielding the Landscape object.
     """
-    if constraints is None:
-        constraints = {}
     lscape = LandscapeSingleton()
     yield lscape
 

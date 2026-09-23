@@ -16,7 +16,7 @@
         appends, plus inverted semantic).
 """
 
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, Optional
 from unittest.mock import MagicMock
 
 from ccai.testbase import verification

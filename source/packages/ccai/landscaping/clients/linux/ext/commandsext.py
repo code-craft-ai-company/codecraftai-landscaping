@@ -13,7 +13,6 @@ __credits__ = []
 
 from typing import Optional, TYPE_CHECKING
 
-import os
 import posixpath
 import shlex
 import weakref
@@ -22,8 +21,6 @@ from ccai.errors.exceptions import CommandError, SemanticError
 
 from ccai.interop.interfaces.isystemcontext import ISystemContext
 from ccai.xmodules.xformatting import format_command_result
-
-from ccai.interop.protocols.ssh.sshagent import SshSession
 
 if TYPE_CHECKING:
     from ccai.landscaping.clients.linux.linuxclient import LinuxClient

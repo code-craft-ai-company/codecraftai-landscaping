@@ -26,13 +26,9 @@ from ccai.landscaping.layers.landscapeintegrationlayer import LandscapeIntegrati
 from ccai.landscaping.extensions.control.controlextension import ControlExtension
 from ccai.landscaping.landscapedevice import LandscapeDevice
 from ccai.landscaping.landscapedevicecluster import LandscapeDeviceCluster
-from ccai.landscaping.landscapeservice import LandscapeService
 from ccai.landscaping.clusters.nodecoordinatorbase import NodeCoordinatorBase
 
-from ccai.landscaping.landscapeparameters import (
-    LandscapeActivationParams,
-    DEFAULT_LANDSCAPE_ACTIVATION_PARAMS,
-)
+from ccai.landscaping.landscapeparameters import LandscapeActivationParams
 
 if TYPE_CHECKING:
     from ccai.landscaping.landscape import Landscape

@@ -12,7 +12,7 @@
         glued onto one line instead of being two distinct list entries.
 """
 
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, Optional
 from unittest.mock import MagicMock
 
 from ccai.testbase import verification

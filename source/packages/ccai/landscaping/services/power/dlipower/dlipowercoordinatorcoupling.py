@@ -12,16 +12,10 @@ __copyright__ = "Copyright 2025, Code Craft AI LLC"
 __credits__ = []
 
 
-from typing import TYPE_CHECKING
-
 from ccai.landscaping.services.power.powerservicecoordinatorcouplingbase import PowerServiceCoordinatorCouplingBase
 from ccai.landscaping.services.power.dlipower.dlipowercoordinator import DliPowerCoordinator
 from ccai.landscaping.integrationclasses import INTEGRATION_CLASS_NETWORK_DLIPOWER
 
-
-# Types imported only for type checking purposes
-if TYPE_CHECKING:
-    from ccai.landscaping.landscape import Landscape
 
 class DLIPowerServiceCoordinatorCoupling(PowerServiceCoordinatorCouplingBase):
     """

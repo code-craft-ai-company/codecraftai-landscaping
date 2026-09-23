@@ -21,7 +21,6 @@ import zipfile
 from ccai.xmodules.xlogging.enhancedloggers import getEnhancedLogger
 
 from ccai.interop.interfaces.isystemcontext import ISystemContext
-from ccai.interop.protocols.ssh.sshagent import SshAgent
 
 
 logger = getEnhancedLogger()

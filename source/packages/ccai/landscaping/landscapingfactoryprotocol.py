@@ -26,13 +26,13 @@ class LandscapingFactoryProtocol(FactoryProtocolBase):
     factory_protocol_name = "ccai-landscaping-factory-protocol"
 
     @classmethod
-    def get_landscape_type(self) -> Type:
+    def get_landscape_type(cls) -> Type:
         """
             Used to lookup and return the most relevant `Landscape` type.
         """
 
     @classmethod
-    def get_integration_coupling_types(self) -> List[Type[IntegrationCoupling]]:
+    def get_integration_coupling_types(cls) -> List[Type[IntegrationCoupling]]:
         """
             Used to lookup and return the most relevant list of integration coupling types.
         """

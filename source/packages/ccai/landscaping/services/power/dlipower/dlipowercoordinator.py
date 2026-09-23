@@ -12,12 +12,11 @@ __credits__ = []
 
 
 import socket
-from typing import List, Tuple, Union
+from typing import List, Tuple
 import weakref
 
 from ccai.landscaping.services.servicecoordinatorbase import ServiceCoordinatorBase
 from ccai.landscaping.landscapeparameters import LandscapeActivationParams
-from ccai.landscaping.landscapedevice import LandscapeDevice
 from ccai.landscaping.extensions.control.controlextension import ControlExtension
 from ccai.landscaping.extensions.control.dlipowercontrolextension import DliPowerControlExtension
 from ccai.interop.protocols.power.dlipower.dlipowerclient import DliPowerRestClient

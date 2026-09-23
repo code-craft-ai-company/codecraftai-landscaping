@@ -506,6 +506,7 @@ class Landscape:
                 if caller_func_name != "__init__":
                     break
         except IndexError:
+            # A stack shallower than expected leaves 'caller_func_name' as None or '__init__', which the check below rejects.
             pass
         
         if caller_func_name != "LandscapeSingleton":

@@ -10,11 +10,7 @@ __copyright__ = "Copyright 2025, Code Craft AI LLC"
 __credits__ = []
 
 
-from typing import Optional
-
 import weakref
-
-from ccai.credentials.basiccredential import BasicCredential
 
 from ccai.landscaping.extensions.control.controlextension import ControlExtension
 

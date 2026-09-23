@@ -314,7 +314,9 @@ class DeviceAddressSet:
 
 
 # Runtime assertion: the concrete class must satisfy the protocol.
-_proto_check: IDeviceAddressSet = DeviceAddressSet()
+if not isinstance(DeviceAddressSet(), IDeviceAddressSet):
+    errmsg = "The 'DeviceAddressSet' class does not satisfy the 'IDeviceAddressSet' protocol."
+    raise TypeError(errmsg)
 
 
 __all__ = ["DeviceAddressSet"]

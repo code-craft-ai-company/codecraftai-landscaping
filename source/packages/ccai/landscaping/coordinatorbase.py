@@ -14,7 +14,7 @@ __credits__ = []
 
 
 
-from typing import Any, List, Optional, TYPE_CHECKING
+from typing import List, Optional, TYPE_CHECKING
 
 import threading
 import weakref

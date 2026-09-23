@@ -21,9 +21,9 @@ def test_vsphereagent_shim_warns_only_once_per_process() -> None:
         warnings.simplefilter("always")
 
         first_module = importlib.import_module(target_path)
-        first_module = importlib.reload(first_module)
+        importlib.reload(first_module)
         second_module = importlib.import_module(target_path)
-        second_module = importlib.reload(second_module)
+        importlib.reload(second_module)
 
     matching = [
         w for w in captured
@@ -42,9 +42,9 @@ def test_vmext_shim_warns_only_once_per_process() -> None:
         warnings.simplefilter("always")
 
         first_module = importlib.import_module(target_path)
-        first_module = importlib.reload(first_module)
+        importlib.reload(first_module)
         second_module = importlib.import_module(target_path)
-        second_module = importlib.reload(second_module)
+        importlib.reload(second_module)
 
     matching = [
         w for w in captured
@@ -63,9 +63,9 @@ def test_metasphere_vcenter_shim_warns_only_once_per_process() -> None:
         warnings.simplefilter("always")
 
         first_module = importlib.import_module(target_path)
-        first_module = importlib.reload(first_module)
+        importlib.reload(first_module)
         second_module = importlib.import_module(target_path)
-        second_module = importlib.reload(second_module)
+        importlib.reload(second_module)
 
     matching = [
         w for w in captured

@@ -18,11 +18,9 @@ import pprint
 import weakref
 
 from ccai.errors.exceptions import ConfigurationError
-from ccai.interop.protocols.ssh.sshagent import SshAgent
 
 from ccai.landscaping.friendlyidentifier import FriendlyIdentifier
 from ccai.landscaping.coordinatorbase import CoordinatorBase
-from ccai.landscaping.includefilters import IncludeServiceByName
 from ccai.landscaping.landscapeparameters import LandscapeActivationParams
 from ccai.landscaping.landscapedevice import LandscapeDevice
 from ccai.landscaping.coordinators.ssh.sshdevice import SshDevice

@@ -13,16 +13,14 @@ __copyright__ = "Copyright 2025, Code Craft AI LLC"
 __credits__ = []
 
 
-from typing import Dict, Union, TYPE_CHECKING
+from typing import TYPE_CHECKING
 
 from ccai.xmodules.xlogging.enhancedloggers import getEnhancedLogger
 import weakref
 
 if TYPE_CHECKING:
-    from ccai.landscaping.services.servicecoordinatorbase import ServiceCoordinatorBase
     from ccai.landscaping.services.servicebase import ServiceBase
     from ccai.landscaping.landscapedevice import LandscapeDevice
-    from ccai.landscaping.landscapeservice import LandscapeService
 
 class ControlExtension:
     """

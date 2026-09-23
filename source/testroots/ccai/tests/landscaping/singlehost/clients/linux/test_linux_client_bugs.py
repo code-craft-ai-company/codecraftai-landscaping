@@ -2,6 +2,7 @@
 import posixpath
 import shlex
 
+from ccai.errors.exceptions import CommandError
 from ccai.testbase import mocking
 from ccai.testbase import verification
 from ccai.testbase.mocking import Mock
@@ -120,7 +121,9 @@ def test_bug_unpacking_order():
         # We need to suppress the exception or catch it
         try:
             cmd_ext.cifs_mount("//server/share", "/mnt/point", "user", "pass")
-        except Exception:
+        except CommandError:
+            # Expected: the mocked non-zero status makes cifs_mount raise; only the arguments
+            # passed to format_command_result are verified below.
             pass
 
         # check call to format_command_result

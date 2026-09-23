@@ -1,7 +1,6 @@
 
 import shlex
 
-from ccai.testbase import mocking
 from ccai.testbase import verification
 from ccai.testbase.mocking import Mock
 
