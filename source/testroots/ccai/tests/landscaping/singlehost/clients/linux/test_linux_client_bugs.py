@@ -2,7 +2,7 @@
 import posixpath
 import shlex
 
-from ccai.errors.exceptions import CommandError
+from ccai.errors.exceptions import CommandError, SemanticError
 from ccai.testbase import mocking
 from ccai.testbase import verification
 from ccai.testbase.mocking import Mock
@@ -58,7 +58,9 @@ def test_bug_cifs_mount_arguments():
 
 def test_bug_cifs_mount_options_inclusion():
     """
-    Regression test ensuring cifs_mount includes the constructed options in the mount command.
+    Regression test ensuring cifs_mount includes the constructed options in the mount command.  The option
+    values are not wrapped in double quotes: the whole argument is already shell-quoted and mount.cifs does
+    not strip quotes, so quote characters would become part of the credentials.
     """
     mock_client = LocalMagicMock()
     mock_client.ipaddr = "1.2.3.4"
@@ -85,12 +87,14 @@ def test_bug_cifs_mount_options_inclusion():
     args, _ = mount_call
     cmd = args[0]
 
-    # Check for options
-    verification.assert_equal('username="myuser"' in cmd, True)
-    verification.assert_equal('password="mypass"' in cmd, True)
-    verification.assert_equal('domain=mydomain' in cmd, True)
-    verification.assert_equal('-o ' in cmd, True)
-    verification.assert_equal('mount -t cifs' in cmd, True)
+    # Check for options: one comma separated -o argument with unquoted values
+    argv = shlex.split(cmd)
+    expected_argv = [
+        "mount", "-t", "cifs", "-o", "username=myuser,password=mypass,domain=mydomain",
+        "//server/share", "/mnt/point"
+    ]
+    verification.assert_equal(argv, expected_argv)
+    verification.assert_equal('"' in cmd, False)
 
 def test_bug_unpacking_order():
     """
@@ -229,3 +233,117 @@ def test_install_systemd_service_runtime_config_file_push():
                 break
 
     verification.assert_equal(chown_found, True)
+
+
+def _create_cifs_command_ext(run_cmd_results):
+    """
+        Creates a :class:`CommandsExt` over a mocked client whose session returns the given run_cmd results.
+
+        :returns: A tuple of the extension, the mocked session and the mocked client (keep the client alive,
+                  the extension only holds a weak reference to it).
+    """
+    mock_client = LocalMagicMock()
+    mock_client.ipaddr = "1.2.3.4"
+
+    scripted_results = list(run_cmd_results)
+
+    def scripted_run_cmd(*args, **kwargs):
+        result = scripted_results.pop(0)
+        return result
+
+    mock_session = LocalMagicMock()
+    mock_session.run_cmd.side_effect = scripted_run_cmd
+    mock_session.directory_exists.return_value = True
+
+    mock_sysctx = LocalMagicMock()
+    mock_sysctx.open_session.return_value = mock_session
+    mock_client.get_default_system_context.return_value = mock_sysctx
+
+    cmd_ext = CommandsExt(mock_client)
+    return cmd_ext, mock_session, mock_client
+
+
+def _run_commands(mock_session):
+    """
+        Returns the commands passed to the mocked session's run_cmd.
+    """
+    commands = []
+    for args, _ in mock_session.run_cmd.call_args_list:
+        commands.append(args[0])
+    return commands
+
+
+def test_cifs_mount_passes_credential_characters_literally():
+    """
+        Spaces, quotes, backslashes and shell metacharacters in the credentials reach mount.cifs unchanged
+        inside the single mount option argument.
+    """
+    cmd_ext, mock_session, mock_client = _create_cifs_command_ext([(0, "", ""), (0, "", "")])
+
+    cmd_ext.cifs_mount("//server/share", "/mnt/point", "my user", 'pa"ss\\$(id)=x\'y')
+
+    argv = shlex.split(_run_commands(mock_session)[1])
+    verification.assert_equal(argv[:4], ["mount", "-t", "cifs", "-o"])
+    verification.assert_equal(argv[4], 'username=my user,password=pa"ss\\$(id)=x\'y')
+    verification.assert_equal(argv[5:], ["//server/share", "/mnt/point"])
+
+
+def test_cifs_mount_passes_a_password_with_a_comma_in_the_environment():
+    """
+        mount.cifs cannot parse a password containing a comma from its options and reads it from the PASSWD
+        environment variable instead, so such a password is passed with ``env PASSWD=...`` and left out of
+        the ``-o`` option.
+    """
+    cmd_ext, mock_session, mock_client = _create_cifs_command_ext([(0, "", ""), (0, "", "")])
+
+    cmd_ext.cifs_mount("//server/share", "/mnt/point", "myuser", "pa,ss", domain="mydomain")
+
+    argv = shlex.split(_run_commands(mock_session)[1])
+    expected_argv = [
+        "env", "PASSWD=pa,ss", "mount", "-t", "cifs", "-o", "username=myuser,domain=mydomain",
+        "//server/share", "/mnt/point"
+    ]
+    verification.assert_equal(argv, expected_argv)
+
+
+def test_cifs_mount_rejects_a_comma_in_the_username_or_domain():
+    """
+        A comma in the user name or the domain cannot be passed to mount.cifs, so it raises a SemanticError
+        naming the option before any command runs on the client.
+    """
+    for username, domain, option_name in [("my,user", None, "username"), ("myuser", "my,domain", "domain")]:
+        cmd_ext, mock_session, mock_client = _create_cifs_command_ext([])
+
+        raised = None
+        try:
+            cmd_ext.cifs_mount("//server/share", "/mnt/point", username, "pass", domain=domain)
+        except SemanticError as xcpt:
+            raised = xcpt
+
+        verification.assert_equal(raised is not None, True)
+        verification.assert_equal(f"'{option_name}' cannot contain a comma" in str(raised), True)
+        verification.assert_equal(mock_session.run_cmd.call_count, 0)
+
+
+def test_cifs_mount_failure_redacts_the_password():
+    """
+        The command reported for a failing CIFS mount shows the password redacted, whether it was passed in
+        the ``-o`` option or in PASSWD.
+    """
+    cases = [
+        ("s3cret-value", "username=myuser,password=***"),
+        ("s3cret,value", "env 'PASSWD=***' mount -t cifs -o username=myuser"),
+    ]
+    for password, expected_text in cases:
+        cmd_ext, mock_session, mock_client = _create_cifs_command_ext([(0, "", ""), (1, "MY_STDOUT", "MY_STDERR")])
+
+        raised = None
+        try:
+            cmd_ext.cifs_mount("//server/share", "/mnt/point", "myuser", password)
+        except CommandError as xcpt:
+            raised = xcpt
+
+        verification.assert_equal(raised is not None, True)
+        message = str(raised)
+        verification.assert_equal(expected_text in message, True)
+        verification.assert_equal("s3cret" in message, False)
