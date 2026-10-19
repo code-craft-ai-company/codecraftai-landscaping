@@ -29,6 +29,10 @@ dependencies = [
     "codecraftai-integration-runtime<2.0.0",
 ]
 
+[project.urls]
+Repository = "https://github.com/code-craft-ai-company/codecraftai-landscaping"
+Issues = "https://github.com/code-craft-ai-company/codecraftai-landscaping/issues"
+
 [dependency-groups]
 dev = []
 
